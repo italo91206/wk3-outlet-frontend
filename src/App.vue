@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    <wk3header v-if="$route.layout != 'Login'"></wk3header>
-    <router-view></router-view>
+    <AppLayout>
+      <router-view></router-view>
+    </AppLayout>
   </div>
 </template>
 
 <script>
-import wk3header from '@/components/wk3header.vue'
+import AppLayout from '@/layouts/AppLayout'
 
 export default {
   name: 'App',
-  components: {
-    wk3header
-  }
+  components: { AppLayout }
 }
 </script>
 

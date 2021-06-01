@@ -13,13 +13,19 @@ const routes = [
         path: '/dashboard',
         component: Dashboard,
         name: 'Dashboard',
-        meta: {title: 'WK3 Admin'}
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'    
+        }
     },
     {
         path: '/',
         component: Home,
         name: 'Home',
-        meta: {title: 'WK3 Homepage'}
+        meta: {
+            title: 'WK3 Homepage',
+            layout: 'AppLayoutDefault'
+        }
     }
 ]
 
