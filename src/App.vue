@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <wk3header v-if="$route.layout != 'Login'"></wk3header>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import wk3header from '@/components/wk3header.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    wk3header
   }
 }
 </script>
