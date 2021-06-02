@@ -36,24 +36,95 @@
             <li class="nav-item">
               <router-link to="" class="nav-link">
                 <i class="nav-icon fas fa-box-open"></i>
-                <p>Catálogo</p>
+                <p>
+                  Catálogo
+                  <i class="fas fa-angle-left right"></i>
+                </p>
               </router-link>
+
+              <ul class="nav nav-treeview">
+                <!-- opção de produtos -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Produtos</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de categorias -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Categorias</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de acerto -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Acerto de estoque</p>
+                  </router-link>
+                </li>
+              </ul>
             </li>
 
             <!-- opção de marketing -->
             <li class="nav-item">
               <router-link to="" class="nav-link">
                 <i class="nav-icon fas fa-bullhorn"></i>
-                <p>Marketing</p>
+                <p>
+                  Marketing
+                  <i class="fas fa-angle-left right"></i>
+                </p>
               </router-link>
+
+              <ul class="nav nav-treeview">
+                <!-- opção de cupons -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Cupons</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de newsletter -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Newsletter</p>
+                  </router-link>
+                </li>
+              </ul>
             </li>
 
             <!-- opção de relatórios -->
             <li class="nav-item">
               <router-link to="" class="nav-link">
                 <i class="nav-icon fas fa-clipboard"></i>
-                <p>Relatórios</p>
+                <p>
+                  Relatórios
+                  <i class="fas fa-angle-left right"></i>
+                </p>
               </router-link>
+
+              <ul class="nav nav-treeview">
+                <!-- opção de relatório por produtos -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Produtos</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de relatório por usuários -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Usuários</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de relatório por vendas -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Vendas</p>
+                  </router-link>
+                </li>
+              </ul>
             </li>
 
             <!-- opção de suporte -->
@@ -64,23 +135,63 @@
               </router-link>
             </li>
 
-            <!-- opção de suporte -->
+            <!-- opção de configurações -->
             <li class="nav-item">
               <router-link to="" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
-                <p>Configurações</p>
+                <p>
+                  Configurações
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </router-link>
+
+              <ul class="nav nav-treeview">
+                <!-- opção de produtos -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Atributos</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de preferências -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Preferências</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de loja -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Loja</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de motivos -->
+                <li class="nav-item">
+                  <router-link to="" class="nav-link">
+                    <p>Motivos</p>
+                  </router-link>
+                </li>
+              </ul>
+            </li>
+
+            <!-- opção de sair -->
+            <li class="nav-item">
+              <router-link to="" class="nav-link">
+                <i class="nav-icon fas fa-power-off"></i>
+                <p>Sair</p>
               </router-link>
             </li>
           </ul>
         </nav>
-        <!-- /.sidebar-menu -->
       </div>
     </aside>
 </template>
 
 <script>
 export default {
-    name: "SideMenu"
+  name: "SideMenu"
 }
 </script>
 
