@@ -1,5 +1,5 @@
 <template>
-  <h2>teste</h2>
+  <h2>Isto é a página "Dashboard.vue"</h2>
 </template>
 
 <script>
