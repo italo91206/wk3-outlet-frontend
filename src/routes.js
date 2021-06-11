@@ -1,6 +1,7 @@
 import Login from '@/pages/Login.vue'
 import Home from '@/pages/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
+import AtributosConfig from '@/pages/AtributosConfig.vue'
 
 const routes = [
     {
@@ -16,6 +17,15 @@ const routes = [
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'    
+        }
+    },
+    {
+        path: '/atributos',
+        component: AtributosConfig,
+        name: 'Editar atributos',
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
         }
     },
     {
