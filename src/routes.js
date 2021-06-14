@@ -3,6 +3,8 @@ import Home from '@/pages/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
 import AtributosConfig from '@/pages/AtributosConfig.vue'
 import CoresConfig from '@/pages/CoresConfig.vue'
+import MarcasConfig from '@/pages/MarcasConfig.vue'
+import ModelosConfig from '@/pages/ModelosConfig.vue'
 
 const routes = [
     {
@@ -32,6 +34,22 @@ const routes = [
     {
         path: '/cores',
         component: CoresConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/marcas',
+        component: MarcasConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/modelos',
+        component: ModelosConfig,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'

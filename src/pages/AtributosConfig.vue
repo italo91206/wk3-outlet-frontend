@@ -14,13 +14,13 @@
       </li>
 
       <li>
-        <router-link to="/">
+        <router-link to="/modelos">
           Gerenciar Modelos
         </router-link>
       </li>
 
       <li>
-        <router-link to="/">
+        <router-link to="/marcas">
           Gerenciar Marcas
         </router-link>
       </li>
