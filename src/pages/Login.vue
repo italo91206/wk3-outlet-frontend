@@ -1,23 +1,29 @@
 <template>
     <main id="admin-login">
         <div class="wrapper">
-            <form>
+            <div class="login-form">
                 <h3 class="text-center">Wk3 Outlet</h3>
 
                 <div class="form-group">
                     <label for="">Usuário</label>
-                    <input type="text" v-model="user">
+                    <input type="text" v-model="userInput">
                 </div>
 
                 <div class="form-group">
                     <label for="">Senha</label>
-                    <input type="password" v-model="password">
+                    <input type="password" v-model="passwordInput">
                 </div>
 
+                <p v-if="errorMsg">
+                    {{ errorMsg }}
+                </p>
+
                 <div>
-                    <input type="button" value="login" class="login-btn" @click="fazerLogin">
+                    <button @click="fazerLogin">Fazer login</button>
+                    <button @click="preencherAdmin">Preencher como admin</button>
+                    <button @click="preencherDefault">Preencher como normal</button>
                 </div>
-            </form>
+            </div>
         </div>
     </main>
 </template>
@@ -29,17 +35,49 @@ export default {
     name: 'Login',
     data(){
         return {
-            user: '',
-            password: '',
-            info: ''
+            uri: 'http://localhost:5000',
+            userInput: '',
+            passwordInput: '',
+            info: '',
+            loginDefault:{
+                admin:{
+                    email: "admin@wk3outlet.com.br",
+                    password: "teste@123#"
+                },
+                default:{
+                    email: "funcionario@wk3outlet.com.br",
+                    password: "teste@123#"
+                }
+            },
+            errorMsg: ''
         }
     },
     methods:{
-        fazerLogin(){
+        fazerLogin(){            
             axios
-                .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-                .then(response => (this.info = response))
+                .post(`${this.uri}/login/login`, {
+                    email: this.userInput,
+                    password: this.passwordInput
+                })
+                .then((response) => {
+                    if(response.data.success == false){
+                        this.errorMsg = response.data.message
+                    }
+                    else{
+                        this.errorMsg = ""
+                        this.$router.push('/dashboard')
+                    }
+                })
+        },
+        preencherAdmin(){
+            this.userInput = this.loginDefault.admin.email;
+            this.passwordInput = this.loginDefault.admin.password;
+        },
+        preencherDefault(){
+            this.userInput = this.loginDefault.default.email;
+            this.passwordInput = this.loginDefault.admin.password;
         }
+
     }
 }
 </script>
@@ -52,7 +90,7 @@ export default {
     height: 100%;
 }
 
-#admin-login form{
+#admin-login .login-form{
     max-width: 300px;
     max-height: 400px;
     margin: 200px auto;
@@ -66,7 +104,7 @@ export default {
     width: 100%;
 }
 
-#admin-login form{
+#admin-login .login-form{
     background-color: #fff;
     border: 1px solid #e3e3e3;
     box-shadow: 0 5px 30px 0 #000;

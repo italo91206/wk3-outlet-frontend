@@ -178,7 +178,7 @@
 
             <!-- opção de sair -->
             <li class="nav-item">
-              <router-link to="" class="nav-link">
+              <router-link to="/admin" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
                 <p>Sair</p>
               </router-link>
