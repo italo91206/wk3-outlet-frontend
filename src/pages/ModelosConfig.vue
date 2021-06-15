@@ -91,7 +91,7 @@ export default {
                     })                                    
             }
             else if(this.tipoAcao == "Adicionar novo"){
-                if(this.modeloInput.lenghth <= 0)
+                if(this.modeloInput.length == 0)
                     alert('Por favor escreva algo.')
                 else
                     this.inserir()
