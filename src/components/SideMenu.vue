@@ -45,7 +45,7 @@
               <ul class="nav nav-treeview">
                 <!-- opção de produtos -->
                 <li class="nav-item">
-                  <router-link to="" class="nav-link">
+                  <router-link to="produtos" class="nav-link">
                     <p>Produtos</p>
                   </router-link>
                 </li>
