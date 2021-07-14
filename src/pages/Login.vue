@@ -1,27 +1,29 @@
 <template>
     <main id="admin-login">
         <div class="wrapper">
-            <div class="login-form">
-                <h3 class="text-center">Wk3 Outlet</h3>
+            <div class="card card-primary login-form">
+                <div class="card-header">
+                    <h3 class="text-center">Wk3 Outlet</h3>
+                </div>
+                
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="inputEmail">Usuário</label>
+                        <input type="text" id="inputEmail" v-model="userInput" class="form-control">
+                    </div>
 
-                <div class="form-group">
-                    <label for="">Usuário</label>
-                    <input type="text" v-model="userInput">
+                    <div class="form-group">
+                        <label for="">Senha</label>
+                        <input type="password" v-model="passwordInput" class="form-control">
+                    </div>
+
+                    <p v-if="errorMsg">
+                        {{ errorMsg }}
+                    </p>
                 </div>
 
-                <div class="form-group">
-                    <label for="">Senha</label>
-                    <input type="password" v-model="passwordInput">
-                </div>
-
-                <p v-if="errorMsg">
-                    {{ errorMsg }}
-                </p>
-
-                <div>
-                    <button @click="fazerLogin">Fazer login</button>
-                    <button @click="preencherAdmin">Preencher como admin</button>
-                    <button @click="preencherDefault">Preencher como normal</button>
+                <div class="card-footer">
+                    <button @click="fazerLogin" class="btn btn-primary">Fazer login</button>
                 </div>
             </div>
         </div>
@@ -29,55 +31,35 @@
 </template>
 
 <script>
-import axios from 'axios';
+import service from '../services/login/login-service.js'
 
 export default {
     name: 'Login',
     data(){
         return {
-            uri: 'http://localhost:5000',
             userInput: '',
             passwordInput: '',
             info: '',
-            loginDefault:{
-                admin:{
-                    email: "admin@wk3outlet.com.br",
-                    password: "teste@123#"
-                },
-                default:{
-                    email: "funcionario@wk3outlet.com.br",
-                    password: "teste@123#"
-                }
-            },
             errorMsg: ''
         }
     },
     methods:{
-        fazerLogin(){            
-            axios
-                .post(`${this.uri}/login/login`, {
-                    email: this.userInput,
-                    password: this.passwordInput
-                })
-                .then((response) => {
-                    if(response.data.success == false){
-                        this.errorMsg = response.data.message
-                    }
-                    else{
-                        this.errorMsg = ""
-                        this.$router.push('/dashboard')
-                    }
-                })
-        },
-        preencherAdmin(){
-            this.userInput = this.loginDefault.admin.email;
-            this.passwordInput = this.loginDefault.admin.password;
-        },
-        preencherDefault(){
-            this.userInput = this.loginDefault.default.email;
-            this.passwordInput = this.loginDefault.admin.password;
-        }
+        async fazerLogin(){     
+            var email = this.userInput;
+            var senha = this.passwordInput;
 
+            const response = await service.fazerLogin(email, senha);
+            try{
+                if(response.status == 200){
+                    const token = response.data.token;
+                    localStorage.JWT = token;
+                    this.$router.push('/dashboard')
+                }
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
     }
 }
 </script>
@@ -108,6 +90,6 @@ export default {
     background-color: #fff;
     border: 1px solid #e3e3e3;
     box-shadow: 0 5px 30px 0 #000;
-    padding: 50px;
+    padding: 25px;
 }
 </style>
