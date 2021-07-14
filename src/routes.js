@@ -6,6 +6,7 @@ import CoresConfig from '@/pages/CoresConfig.vue'
 import MarcasConfig from '@/pages/MarcasConfig.vue'
 import ModelosConfig from '@/pages/ModelosConfig.vue'
 import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
+import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
 
 const routes = [
     {
@@ -59,6 +60,14 @@ const routes = [
     {
         path: '/produtos',
         component: ProdutosConfig,
+        meta: {
+            title: 'Wk3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/produtos/novo',
+        component: ProdutosNovo,
         meta: {
             title: 'Wk3 Admin',
             layout: 'AppLayoutAdmin'
