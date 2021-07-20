@@ -1,15 +1,15 @@
 import api from '../api/instanceApi';
 
-const CorService = {
-    listarCores: async() => {
+const MarcasService = {
+    getMarcas: async() => {
         try {
-            const response = await api.get('/cor/cores');
+            const response = await api.get('/marca/marcas')
             return response;
         }
         catch(error){
             console.log(error)
-        }   
+        }
     }
 }
 
-export default CorService;
+export default MarcasService;
