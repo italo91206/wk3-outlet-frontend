@@ -1,5 +1,5 @@
 import Login from '@/pages/Login.vue'
-import Home from '@/pages/Homepage.vue'
+import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
 import AtributosConfig from '@/pages/AtributosConfig.vue'
 import CoresConfig from '@/pages/CoresConfig.vue'
@@ -7,6 +7,7 @@ import MarcasConfig from '@/pages/MarcasConfig.vue'
 import ModelosConfig from '@/pages/ModelosConfig.vue'
 import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
+import ProductPage from '@/pages/Loja/ProductPage.vue'
 
 const routes = [
     {
@@ -77,6 +78,15 @@ const routes = [
         path: '/',
         component: Home,
         name: 'Home',
+        meta: {
+            title: 'WK3 Homepage',
+            layout: 'AppLayoutDefault'
+        }
+    },
+    {
+        path: '/:slug',
+        component: ProductPage,
+        name: 'Página de produto',
         meta: {
             title: 'WK3 Homepage',
             layout: 'AppLayoutDefault'

@@ -1,6 +1,8 @@
 <template>
   <main v-if="!maintenance">
-    <h2>Eba, estamos no ar!</h2>
+    <loja-header></loja-header>
+    <slot/>
+    <loja-footer></loja-footer>
   </main>
 
   <main v-else id="maintenance">
@@ -18,11 +20,17 @@
 </template>
 
 <script>
+import LojaHeader from "@/components/Loja/Header.vue";
+import LojaFooter from "@/components/Loja/Footer.vue";
+
 export default {
   name: "AppLayoutDefault",
+  components: {
+    LojaHeader, LojaFooter
+  },
   data() {
     return{
-      maintenance: true
+      maintenance: false
     }
   }
 }

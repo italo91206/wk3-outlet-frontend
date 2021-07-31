@@ -4,6 +4,10 @@ const ProdutoService = {
     listarProdutos: async() => {
         const response = await api.get('/produto/produtos');
         return response;
+    },
+
+    recuperarProduto: async(slug) => {
+
     }
 }
 
