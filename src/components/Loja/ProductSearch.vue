@@ -1,8 +1,8 @@
 <template>
     <div>
-        <a v-for="produto in produtos" v-bind:key="produto.id" v-bind:href="`/${produto.url}`">
+        <router-link v-for="produto in produtos" v-bind:key="produto.id" v-bind:to="`/${produto.url}`">
             {{ produto.nome }}
-        </a>
+        </router-link>
     </div>
 </template>
 
