@@ -8,6 +8,7 @@ import ModelosConfig from '@/pages/ModelosConfig.vue'
 import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
 import ProductPage from '@/pages/Loja/ProductPage.vue'
+import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
 
 const routes = [
     {
@@ -75,6 +76,15 @@ const routes = [
         }
     },
     {
+        path: '/404',
+        component: NaoEncontrado,
+        name: 'Não encontrado',
+        meta: {
+            title: 'WK3 Outlet - Nada foi encontrado',
+            layout: 'AppLayoutDefault'
+        }
+    },
+    {
         path: '/',
         component: Home,
         name: 'Home',
@@ -84,7 +94,7 @@ const routes = [
         }
     },
     {
-        path: '/:slug',
+        path: '/:product_url',
         component: ProductPage,
         name: 'Página de produto',
         meta: {
