@@ -1,5 +1,5 @@
 <template>
-    <h2>Nome do produto: {{ slug }}</h2>
+    <p>Página de produto {{ $route.params.product_url }}</p>
 </template>
 
 <script>
@@ -13,15 +13,17 @@ export default {
         }
     },
     methods: {
-        async recuperarProduto(){
-            const response = await service.recuperarProduto(slug)
-            if(response.data.success)
-                this.produtos = response.data.dados;
+        async recuperarProduto(url){
+            const response = await service.recuperarProduto(url);
+            this.produto = response.data.dados;
+            
+            if(!this.produto)
+                this.$router.push('/404')
         }
     },
     mounted() {
-        this.$router.params
-        alert(this.slug)
+        const url = this.$route.params.product_url;
+        this.recuperarProduto(url);
     }
 }
 </script>

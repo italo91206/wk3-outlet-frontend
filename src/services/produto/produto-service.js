@@ -6,8 +6,11 @@ const ProdutoService = {
         return response;
     },
 
-    recuperarProduto: async(slug) => {
-
+    recuperarProduto: async(data) => {
+        const response = await api.get('/produto/produto', {
+            params: { url: data }
+        });
+        return response;
     }
 }
 
