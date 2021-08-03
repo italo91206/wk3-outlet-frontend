@@ -9,6 +9,9 @@ import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
 import ProductPage from '@/pages/Loja/ProductPage.vue'
 import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
+import UsuariosConfig from '@/pages/Admin/Usuarios/UsuariosConfig.vue'
+import UsuariosEditar from '@/pages/Admin/Usuarios/UsuariosEditar.vue'
+import UsuariosNovo from '@/pages/Admin/Usuarios/UsuariosNovo.vue'
 
 const routes = [
     {
@@ -38,6 +41,30 @@ const routes = [
     {
         path: '/cores',
         component: CoresConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/usuarios',
+        component: UsuariosConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/usuarios/editar/:id',
+        component: UsuariosEditar,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/usuario/novo',
+        component: UsuariosNovo,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'
