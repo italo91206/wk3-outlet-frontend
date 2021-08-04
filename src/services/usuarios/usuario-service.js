@@ -10,7 +10,11 @@ const UsuarioService = {
         return response;
     },
     novoUsuario: async(usuario) => {
-        const response = await api.post('/usuario/novo', { usuario: usuario })
+        const response = await api.post('/usuario/novo', { usuario: usuario });
+        return response;
+    },
+    deletarUsuario: async(id) => {
+        const response = await api.post('/usuario/deletar', { id: id });
         return response;
     }
 }

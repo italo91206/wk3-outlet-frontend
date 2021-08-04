@@ -101,7 +101,7 @@
     <div class="row">
       <div class="col-lg-9">
         <button class="btn btn-primary float-right" :disabled="isChanged" @click="salvarUsuario">Salvar</button>
-        <button class="btn btn-danger float-right">Deletar</button>
+        <button @click="deletar" class="btn btn-danger float-right">Deletar</button>
         <router-link to="/admin/usuarios" class="btn btn-default float-right">Voltar</router-link>
       </div>
     </div>
@@ -136,6 +136,10 @@ export default {
       const response = await service.salvarUsuario(this.usuario);
       console.log(response.data);
     },
+    async deletarUsuario(id){
+      const response = await service.deletarUsuario(id);
+      console.log(response.data);
+    },
     mudarPessoa(tipo){
       if(tipo == 'pj')
         this.usuario.isCompany = true;
@@ -147,6 +151,11 @@ export default {
     },
     setEtapa(num){
       this.etapa = num;
+    },
+    deletar(){
+      let resposta = confirm('Tem certeza que deseja excluir ? Não há volta.')
+      if(resposta)
+        this.deletarUsuario(this.usuario.id);
     }
   },
   mounted() {
