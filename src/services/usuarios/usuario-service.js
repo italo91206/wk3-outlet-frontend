@@ -8,6 +8,10 @@ const UsuarioService = {
     listarUsuario: async(id) => {
         const response = await api.post('/usuario/usuario', { id: id });
         return response;
+    },
+    novoUsuario: async(usuario) => {
+        const response = await api.post('/usuario/novo', { usuario: usuario })
+        return response;
     }
 }
 
