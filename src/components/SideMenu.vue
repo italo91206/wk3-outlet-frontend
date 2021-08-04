@@ -16,13 +16,6 @@
             role="menu"
             data-accordion="false"
           >
-            <!-- opção de perfil -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-user"></i>
-                <p>Perfil</p>
-              </router-link>
-            </li>
 
             <!-- opção de vendas -->
             <li class="nav-item">
@@ -171,6 +164,13 @@
                 <li class="nav-item">
                   <router-link to="" class="nav-link">
                     <p>Motivos</p>
+                  </router-link>
+                </li>
+
+                <!-- opção de usuários -->
+                <li class="nav-item">
+                  <router-link to="/admin/usuarios" class="nav-link">
+                    <p>Perfis</p>
                   </router-link>
                 </li>
               </ul>
