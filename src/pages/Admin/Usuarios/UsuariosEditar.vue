@@ -100,7 +100,7 @@
 
     <div class="row">
       <div class="col-lg-9">
-        <button class="btn btn-primary float-right" :disabled="isChanged" @click="salvarUsuario">Salvar</button>
+        <button class="btn btn-primary float-right" :disabled="isChanged" @click="atualizarUsuario">Salvar</button>
         <button @click="deletar" class="btn btn-danger float-right">Deletar</button>
         <router-link to="/admin/usuarios" class="btn btn-default float-right">Voltar</router-link>
       </div>
@@ -132,12 +132,12 @@ export default {
       }
       else this.$router.push("/dashboard");
     },
-    async salvarUsuario(){
-      const response = await service.salvarUsuario(this.usuario);
-      console.log(response.data);
-    },
     async deletarUsuario(id){
       const response = await service.deletarUsuario(id);
+      console.log(response.data);
+    },
+    async atualizarUsuario(){
+      const response = await service.atualizarUsuario(this.usuario);
       console.log(response.data);
     },
     mudarPessoa(tipo){

@@ -16,6 +16,10 @@ const UsuarioService = {
     deletarUsuario: async(id) => {
         const response = await api.post('/usuario/deletar', { id: id });
         return response;
+    },
+    atualizarUsuario: async(usuario) => {
+        const response = await api.put('/usuario/editar', { usuario: usuario });
+        return response;
     }
 }
 
