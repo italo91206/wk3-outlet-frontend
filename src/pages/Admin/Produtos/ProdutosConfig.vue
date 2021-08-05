@@ -21,8 +21,7 @@
                                 <td>{{produto.preco | preco}}</td>
                                 <td>{{produto.estoque}}</td>
                                 <td>
-                                    <button class="btn" @click="preparaEditar(marca)"><i class="fas fa-pencil-alt"></i></button>
-                                    <button class="btn" @click="remover(marca)"><i class="fas fa-times"></i></button>
+                                    <router-link :to="`/admin/produtos/editar/${produto.url}`">Editar</router-link>
                                 </td>
                             </tr>
                         </tbody>
@@ -34,7 +33,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <router-link to="/produtos/novo">
+            <router-link to="/admin/produtos/novo">
                 <button class="btn btn-success float-right">
                     Novo Produto
                 </button>

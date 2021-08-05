@@ -5,8 +5,9 @@ import AtributosConfig from '@/pages/AtributosConfig.vue'
 import CoresConfig from '@/pages/CoresConfig.vue'
 import MarcasConfig from '@/pages/MarcasConfig.vue'
 import ModelosConfig from '@/pages/ModelosConfig.vue'
-import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
-import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
+import ProdutosConfig from '@/pages/Admin/Produtos/ProdutosConfig.vue'
+import ProdutosNovo from '@/pages/Admin/Produtos/ProdutosNovo.vue'
+import ProdutosEditar from '@/pages/Admin/Produtos/ProdutosEditar.vue'
 import ProductPage from '@/pages/Loja/ProductPage.vue'
 import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
 import UsuariosConfig from '@/pages/Admin/Usuarios/UsuariosConfig.vue'
@@ -87,7 +88,7 @@ const routes = [
         }
     },
     {
-        path: '/produtos',
+        path: '/admin/produtos',
         component: ProdutosConfig,
         meta: {
             title: 'Wk3 Admin',
@@ -95,8 +96,17 @@ const routes = [
         }
     },
     {
-        path: '/produtos/novo',
+        path: '/admin/produtos/novo',
         component: ProdutosNovo,
+        meta: {
+            title: 'Wk3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/produtos/editar/:product_url',
+        name: 'Editar produto',
+        component: ProdutosEditar,
         meta: {
             title: 'Wk3 Admin',
             layout: 'AppLayoutAdmin'

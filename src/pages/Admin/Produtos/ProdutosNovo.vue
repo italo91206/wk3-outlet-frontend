@@ -13,7 +13,7 @@
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
-              <div class="custom-file col-sm-2 col-form-label">
+              <div class="custom-file col-sm-2 col-form-label disabled">
                 <input type="file" class="custom-file-input" id="custom-file-input">
                 <label for="custom-file-input" class="custom-file-label">Adicionar imagens</label>
               </div>
@@ -21,37 +21,37 @@
 
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Nome produto</label>
-              <input type="text" class="col-sm-8 form-control" />
+              <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.nome"/>
             </div>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Preço</label>
-                <input type="text" class="col-sm-8 form-control">
+                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.preco">
             </div>
 
             <hr/>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Custo</label>
-                <input type="text" class="col-sm-8 form-control">
+                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.custo">
             </div>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Estoque</label>
-                <input type="text" class="col-sm-8 form-control">
+                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.estoque">
             </div>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Peso (gramas)</label>
-                <input type="text" class="col-sm-8 form-control">
+                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.peso">
             </div>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Descrição do produto</label>
-                <textarea type="text" rows="3" class="col-sm-8 form-control"></textarea>
+                <textarea type="text" rows="3" class="col-sm-8 form-control" v-model="produtoToPost.descricao"></textarea>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row disabled">
                 <label for="" class="col-sm-2 col-form-label">Categoria</label>
                 <input type="text" class="col-sm-8 form-control">
             </div>
@@ -60,22 +60,22 @@
 
              <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Modelo</label>
-                <select name="" id="" class="col-sm-8 form-control">
+                <select name="" id="" class="col-sm-8 form-control" v-model="modeloSelecionado">
                   <option value="" selected>-- Escolher um modelo --</option>
-                  <option v-for="modelo in modelos" v-bind:key="modelo.id" value="modelo">{{modelo.modelo}}</option>
+                  <option v-for="modelo in modelos" v-bind:key="modelo.id" :value="modelo.modelo_id">{{modelo.modelo}}</option>
                 </select>
                 
             </div>
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Marca</label>
-                <select name="" id="" class="col-sm-8 form-control">
+                <select name="" id="" v-model="marcaSelecionado" class="col-sm-8 form-control">
                   <option value="" selected>-- Escolher uma marca --</option>
-                  <option v-for="marca in marcas" v-bind:key="marca.id" value="marca">{{marca.marca}}</option>
+                  <option v-for="marca in marcas" v-bind:key="marca.id" :value="marca.marca_id">{{marca.marca}}</option>
                 </select>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row disabled">
                 <label for="" class="col-sm-2 col-form-label">Cores</label>
                 
                 <div v-for="cor in cores" v-bind:key="cor.id" class="color-option">
@@ -92,6 +92,10 @@
                 <button class="btn btn-success float-right" @click="salvarProduto">
                   Salvar Produto
                 </button>
+
+                <router-link class="btn btn-default float-right" to="/admin/produtos">
+                  Voltar
+                </router-link>
               </div>
             </div>
           </div>
@@ -105,24 +109,27 @@
 import marcasService from '@/services/marcas/marcas-service.js'
 import modelosService from '@/services/modelos/modelos-service.js'
 import coresService from '@/services/cores/cor-service.js'
+import produtoService from '@/services/produto/produto-service.js'
 
 export default {
   name: "ProdutosNovo",
   data(){
     return {
-      nomeInput: '',
-      precoInput: '',
-      custoInput: '',
-      modeloInput: '',
-      marcaInput: '',
-      pesoInput: '',
-      categoriaInput: '',
-      descricaoInput: '',
-      coresInput: '',
-      estoqueInput: '',
-      marcas: '',
-      modelos: '',
-      cores: ''
+      produtoToPost: {
+        nome: '',
+        preco: '',
+        custo: '',
+        peso: '',
+        descricao: '',
+        estoque: '',
+        marca_id: '',
+        modelo_id: '',
+      },
+      modeloSelecionado: '',
+      marcaSelecionado: '',
+      modelos: [],
+      marcas: [],
+      cores: []
     }
   },
   methods: {
@@ -138,14 +145,23 @@ export default {
       const response = await coresService.listarCores();
       this.cores = response.data;
     },
-    salvarProduto(){
-      alert('Estou tentando salvar o produto')
+    async salvarProduto(){
+      const response = await produtoService.novoProduto(this.produtoToPost);
+      console.log(response.data);
     }
   },
   mounted(){
     this.getMarcas();
     this.getModelos();
     this.getCores();
+  },
+  watch: {
+    modeloSelecionado: function(){
+      this.produtoToPost.modelo_id = this.modeloSelecionado;
+    },
+    marcaSelecionado: function() {
+      this.produtoToPost.marca_id = this.marcaSelecionado;
+    }
   }
 };
 </script>

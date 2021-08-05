@@ -11,6 +11,21 @@ const ProdutoService = {
             params: { url: data }
         });
         return response;
+    },
+
+    novoProduto: async(produto) => {
+        const response = await api.post('/produto/novo', { produto: produto });
+        return response;
+    },
+
+    deletarProduto: async(id) => {
+        const response = await api.post('/produto/deletar', { id: id });
+        return response;
+    },
+
+    atualizarProduto: async(produto) => {
+        const response = await api.put('produto/atualizar', { produto: produto });
+        return response;
     }
 }
 
