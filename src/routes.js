@@ -2,7 +2,9 @@ import Login from '@/pages/Login.vue'
 import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
 import AtributosConfig from '@/pages/AtributosConfig.vue'
-import CoresConfig from '@/pages/CoresConfig.vue'
+import CoresConfig from '@/pages/Admin/Cores/CoresConfig.vue'
+import CoresEditar from '@/pages/Admin/Cores/CoresEditar.vue'
+import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
 import MarcasConfig from '@/pages/MarcasConfig.vue'
 import ModelosConfig from '@/pages/ModelosConfig.vue'
 import ProdutosConfig from '@/pages/Admin/Produtos/ProdutosConfig.vue'
@@ -40,8 +42,24 @@ const routes = [
         }
     },
     {
-        path: '/cores',
+        path: '/admin/cores',
         component: CoresConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/cores/editar/:id',
+        component: CoresEditar,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/cores/novo',
+        component: CoresNovo,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'

@@ -2,7 +2,7 @@
   <section>
     <ul>
       <li>
-        <router-link to="/cores">
+        <router-link to="/admin/cores">
           Gerenciar Cores
         </router-link>
       </li>
