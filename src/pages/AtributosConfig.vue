@@ -8,19 +8,19 @@
       </li>
 
       <li>
-        <router-link to="/">
+        <router-link to="/admin/tamanhos">
           Gerenciar Tamanhos
         </router-link>
       </li>
 
       <li>
-        <router-link to="/modelos">
+        <router-link to="/admin/modelos">
           Gerenciar Modelos
         </router-link>
       </li>
 
       <li>
-        <router-link to="/marcas">
+        <router-link to="/admin/marcas">
           Gerenciar Marcas
         </router-link>
       </li>
