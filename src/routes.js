@@ -15,6 +15,9 @@ import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
 import UsuariosConfig from '@/pages/Admin/Usuarios/UsuariosConfig.vue'
 import UsuariosEditar from '@/pages/Admin/Usuarios/UsuariosEditar.vue'
 import UsuariosNovo from '@/pages/Admin/Usuarios/UsuariosNovo.vue'
+import MotivosConfig from '@/pages/Admin/Motivos/MotivosConfig.vue'
+import MotivosEditar from '@/pages/Admin/Motivos/MotivosEditar.vue'
+import MotivosNovo from '@/pages/Admin/Motivos/MotivosNovo.vue'
 
 const routes = [
     {
@@ -92,6 +95,30 @@ const routes = [
     {
         path: '/marcas',
         component: MarcasConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/motivos',
+        component: MotivosConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/motivos/editar/:id',
+        component: MotivosEditar,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/motivos/novo',
+        component: MotivosNovo,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'

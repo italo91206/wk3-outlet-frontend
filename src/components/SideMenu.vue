@@ -162,7 +162,7 @@
 
                 <!-- opção de motivos -->
                 <li class="nav-item">
-                  <router-link to="" class="nav-link">
+                  <router-link to="/admin/motivos" class="nav-link">
                     <p>Motivos</p>
                   </router-link>
                 </li>
