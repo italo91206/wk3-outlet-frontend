@@ -141,7 +141,7 @@
               <ul class="nav nav-treeview">
                 <!-- opção de atributos -->
                 <li class="nav-item">
-                  <router-link to="/atributos" class="nav-link">
+                  <router-link to="/admin/atributos" class="nav-link">
                     <p>Atributos</p>
                   </router-link>
                 </li>
