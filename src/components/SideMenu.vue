@@ -72,7 +72,7 @@
               <ul class="nav nav-treeview">
                 <!-- opção de cupons -->
                 <li class="nav-item">
-                  <router-link to="" class="nav-link">
+                  <router-link to="/admin/cupons" class="nav-link">
                     <p>Cupons</p>
                   </router-link>
                 </li>

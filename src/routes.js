@@ -21,6 +21,7 @@ import MotivosNovo from '@/pages/Admin/Motivos/MotivosNovo.vue'
 import TamanhosConfig from '@/pages/Admin/Tamanhos/TamanhosConfig.vue'
 import TamanhosEditar from '@/pages/Admin/Tamanhos/TamanhosEditar.vue'
 import TamanhosNovo from '@/pages/Admin/Tamanhos/TamanhosNovo.vue'
+import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
 
 const routes = [
     {
@@ -69,6 +70,14 @@ const routes = [
         path: '/admin/tamanhos/novo',
         component: TamanhosNovo,
         name: 'Editar atributos',
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/cupons',
+        component: CuponsConfig,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'
