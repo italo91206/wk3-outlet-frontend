@@ -18,6 +18,9 @@ import UsuariosNovo from '@/pages/Admin/Usuarios/UsuariosNovo.vue'
 import MotivosConfig from '@/pages/Admin/Motivos/MotivosConfig.vue'
 import MotivosEditar from '@/pages/Admin/Motivos/MotivosEditar.vue'
 import MotivosNovo from '@/pages/Admin/Motivos/MotivosNovo.vue'
+import TamanhosConfig from '@/pages/Admin/Tamanhos/TamanhosConfig.vue'
+import TamanhosEditar from '@/pages/Admin/Tamanhos/TamanhosEditar.vue'
+import TamanhosNovo from '@/pages/Admin/Tamanhos/TamanhosNovo.vue'
 
 const routes = [
     {
@@ -36,8 +39,35 @@ const routes = [
         }
     },
     {
-        path: '/atributos',
+        path: '/admin/atributos',
         component: AtributosConfig,
+        name: 'Editar atributos',
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/tamanhos',
+        component: TamanhosConfig,
+        name: 'Editar atributos',
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/tamanhos/editar/:id',
+        component: TamanhosEditar,
+        name: 'Editar atributos',
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/tamanhos/novo',
+        component: TamanhosNovo,
         name: 'Editar atributos',
         meta: {
             title: 'WK3 Admin',
