@@ -24,6 +24,7 @@ import TamanhosNovo from '@/pages/Admin/Tamanhos/TamanhosNovo.vue'
 import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
 import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
 import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
+import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
 
 const routes = [
     {
@@ -101,6 +102,15 @@ const routes = [
         name: 'Editar cupom',
         meta: {
             title: 'WK3 Admin | Editar Cupom',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/acertos',
+        component: AcertosConfig,
+        name: 'Acertos de estoque',
+        meta: {
+            title: 'WK3 Admin | Acertos De Estoque',
             layout: 'AppLayoutAdmin'
         }
     },

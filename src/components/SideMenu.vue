@@ -52,7 +52,7 @@
 
                 <!-- opção de acerto -->
                 <li class="nav-item">
-                  <router-link to="" class="nav-link">
+                  <router-link to="/admin/acertos" class="nav-link">
                     <p>Acerto de estoque</p>
                   </router-link>
                 </li>
