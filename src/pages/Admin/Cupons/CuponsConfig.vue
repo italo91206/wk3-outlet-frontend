@@ -22,12 +22,12 @@
                   <tr v-for="cupom in cupons" v-bind:key="cupom.cupom_id">
                     <td>{{cupom.cupom_id}}</td>
                     <td>{{cupom.codigo}}</td>
-                    <td>{{cupom.status | status}}</td>
+                    <td>{{cupom.status}}</td>
                     <td>{{cupom.nome}}</td>
                     <td>{{cupom.valor}}</td>
                     <td>{{cupom.validade}}</td>
                     <td>
-                      <router-link to="/">
+                      <router-link :to="`/admin/cupons/editar/${cupom.cupom_id}`">
                         Editar
                       </router-link>
                     </td>
@@ -64,15 +64,47 @@ export default {
     async listarCupons(){
       const response = await service.listarCupons();
       this.cupons = response.data;
+    },
+    pad(num, size) {
+      num = num.toString();
+      while (num.length < size) num = "0" + num;
+      return num;
     }
   },
   mounted(){
     this.listarCupons();
   },
-  filters:{
-    status: function(){
-      console.log(this);
-      return '';
+  watch:{
+    cupons: function(){
+      this.cupons.forEach( (item) => {
+        if(item.is_fixed){
+          let novo = item.valor.toFixed(2)
+          item.valor = `R$ ${novo}`;
+        }
+        else{
+          let novo = item.valor.toFixed(2);
+          novo = this.pad(novo, 2);
+          item.valor = `${novo} %`
+        }
+
+        let data = new Date(item.validade);
+        let hoje = new Date();
+
+        if(hoje > data)
+          item.status = "expirado";
+        else
+          item.status = "válido";
+        
+        let dia = data.getDate();
+        let mes = data.getMonth() + 1;
+        let ano = data.getFullYear();
+
+        dia = this.pad(dia, 2);
+        mes = this.pad(mes, 2);
+
+        item.validade = `${dia}/${mes}/${ano}`;
+
+      })
     }
   }
 }

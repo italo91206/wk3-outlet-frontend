@@ -22,6 +22,8 @@ import TamanhosConfig from '@/pages/Admin/Tamanhos/TamanhosConfig.vue'
 import TamanhosEditar from '@/pages/Admin/Tamanhos/TamanhosEditar.vue'
 import TamanhosNovo from '@/pages/Admin/Tamanhos/TamanhosNovo.vue'
 import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
+import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
+import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
 
 const routes = [
     {
@@ -78,6 +80,22 @@ const routes = [
     {
         path: '/admin/cupons',
         component: CuponsConfig,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/cupons/novo',
+        component: CuponsNovo,
+        meta: {
+            title: 'WK3 Admin',
+            layout: 'AppLayoutAdmin'
+        }
+    },
+    {
+        path: '/admin/cupons/editar/:id',
+        component: CuponsEditar,
         meta: {
             title: 'WK3 Admin',
             layout: 'AppLayoutAdmin'
