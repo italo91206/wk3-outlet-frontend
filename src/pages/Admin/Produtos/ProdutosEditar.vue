@@ -38,7 +38,15 @@
 
             <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Estoque</label>
-                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.estoque">
+                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.estoque" @change="mudouEstoque">
+            </div>
+
+            <div class="form-group row" v-if="estoque_changed">
+              <label for="" class="col-sm-2 col-form-label">Motivo de acerto</label>
+              <select name="" id="" v-model="motivo" class="col-sm-8 form-control">
+                <option value="" disabled selected>-- Selecionar um --</option>
+                <option v-for="motivo in motivos" :key="motivo.motivo_id" :value="motivo.motivo_id">{{ motivo.motivo }}</option>
+              </select>
             </div>
 
             <div class="form-group row">
@@ -114,6 +122,8 @@ import marcasService from '@/services/marcas/marcas-service.js'
 import modelosService from '@/services/modelos/modelos-service.js'
 import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
+import motivosService from '@/services/motivo/motivos-service.js'
+import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
 
 export default {
   name: "ProdutosEditar",
@@ -133,7 +143,10 @@ export default {
       marcaSelecionado: '',
       modelos: [],
       marcas: [],
-      cores: []
+      cores: [],
+      estoque_changed: false,
+      motivo: '',
+      motivos: []
     }
   },
   methods: {
@@ -150,8 +163,23 @@ export default {
       this.cores = response.data;
     },
     async salvarProduto(){
-      const response = await produtoService.atualizarProduto(this.produtoToPost);
-      console.log(response.data);
+      let liberar = true;
+      
+      if(this.estoque_changed){
+        if(this.motivo == ""){
+          liberar = false;
+          alert('Por favor selecione um motivo');
+        }
+        else{
+          const acerto = await acertoService.gravarAcerto(this.produtoToPost, 1, this.motivo);
+          liberar = true;
+          console.log(acerto.data);
+        }
+      }
+      if(liberar){
+        const response = await produtoService.atualizarProduto(this.produtoToPost);
+        console.log(response.data);
+      }
     },
     async getProduto(){
       const url = this.$route.params.product_url;
@@ -162,10 +190,17 @@ export default {
       const response = await produtoService.deletarProduto(this.produtoToPost.produto_id);
       console.log(response.data);
     },
+    async carregarMotivos(){
+      const response = await motivosService.listarMotivos();
+      this.motivos = response.data;
+    },
     deletarConfirm(){
       const acao = confirm('Deseja mesmo remover o produto ? Esta ação é irreversível !');
       if(acao)
         this.deletarProduto();
+    },
+    mudouEstoque(){
+      this.estoque_changed = true;
     }
   },
   mounted(){
@@ -178,6 +213,9 @@ export default {
     produtoToPost: function(){
       this.modeloSelecionado = this.produtoToPost.modelo_id;
       this.marcaSelecionado = this.produtoToPost.marca_id;
+    },
+    estoque_changed: function(){
+      this.carregarMotivos();
     }
   }
 };
