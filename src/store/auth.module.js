@@ -1,6 +1,7 @@
 import LoginService from '../services/login/login-service.js';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = localStorage.getItem('user');
+
 const initialState = user
   ? { status: { loggedIn: true }, user }
   : { status: { loggedIn: false }, user: null };
@@ -10,20 +11,21 @@ export const auth = {
   state: initialState,
   actions: {
     login({ commit }, user) {
-      console.log("estou aqui");
       return LoginService.fazerLogin(user).then(
         user => {
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
-        },
-        error => {
-          commit('loginFailure');
-          return Promise.reject(error);
+          if(user){
+            commit('loginSuccess', user.data.data);
+            return Promise.resolve(user);
+          }
+          else{
+            commit('loginFailure');
+            return Promise.reject(user);
+          }
         }
       );
     },
     logout({ commit }) {
-      LoginService.logout();
+      // LoginService.logout();
       commit('logout');
     },
     register({ commit }, user) {
@@ -40,7 +42,8 @@ export const auth = {
     }
   },
   mutations: {
-    loginSuccess(state, user) {
+    loginSuccess(state, data) {
+      let user  = data;
       state.status.loggedIn = true;
       state.user = user;
     },
