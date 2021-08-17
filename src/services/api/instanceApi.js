@@ -10,11 +10,11 @@ const configApiLocal = {
 
 const api = axios.create(configApiLocal);
 
-// api.interceptors.request.use(async (config) => {
-//     const token = localStorage.getItem('Token');
+api.interceptors.request.use(async (config) => {
+    const token = localStorage.getItem('user');
 
-//     if (token) config.headers.Authorization = token;
-//     return config;
-// });
+    if (token) config.headers.Authorization = token;
+    return config;
+});
 
 export default api;
