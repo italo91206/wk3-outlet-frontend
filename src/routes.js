@@ -8,7 +8,9 @@ import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
 import MarcasConfig from '@/pages/Admin/Marcas/MarcasConfig.vue'
 import MarcasEditar from '@/pages/Admin/Marcas/MarcasEditar.vue'
 import MarcasNovo from '@/pages/Admin/Marcas/MarcasNovo.vue'
-import ModelosConfig from '@/pages/ModelosConfig.vue'
+import ModelosConfig from '@/pages/Admin/Modelos/ModelosConfig.vue'
+import ModelosNovo from '@/pages/Admin/Modelos/ModelosNovo.vue'
+import ModelosEditar from '@/pages/Admin/Modelos/ModelosEditar.vue'
 import ProdutosConfig from '@/pages/Admin/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Admin/Produtos/ProdutosNovo.vue'
 import ProdutosEditar from '@/pages/Admin/Produtos/ProdutosEditar.vue'
@@ -231,6 +233,24 @@ const routes = [
     name: 'Todos os modelos',
     meta: {
       title: 'WK3 Admin | Modelos',
+      layout: 'AppLayoutAdmin'
+    }
+  },
+  {
+    path: '/admin/modelos/editar/:id',
+    component: ModelosEditar,
+    name: 'Editar modelo',
+    meta: {
+      title: 'WK3 Admin | Editar Modelo',
+      layout: 'AppLayoutAdmin'
+    }
+  },
+  {
+    path: '/admin/modelos/novo',
+    component: ModelosNovo,
+    name: 'Adicionar novo modelo',
+    meta: {
+      title: 'WK3 Admin | Adicionar Novo Modelo',
       layout: 'AppLayoutAdmin'
     }
   },

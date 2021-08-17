@@ -19,7 +19,7 @@
                     <td>{{modelo.modelo_id}}</td>
                     <td>{{modelo.modelo}}</td>
                     <td>
-                      <router-link :to="`/admin/marcas/editar/${modelo.modelo_id}`">
+                      <router-link :to="`/admin/modelos/editar/${modelo.modelo_id}`">
                         Editar
                       </router-link>
                     </td>
@@ -43,14 +43,13 @@
 </template>
 
 <script>
-import Axios from "axios";
+import service from '@/services/modelos/modelos-service.js'
 
 export default {
   name: "ModelosConfig",
   data() {
     return {
-      uri: "http://localhost:5000",
-      modelos: "",
+      modelos: [],
       modeloInput: "",
       modeloIdToEdit: null,
       tipoAcao: "Adicionar novo",
@@ -58,50 +57,12 @@ export default {
     };
   },
   methods: {
-    listarModelos() {
-      Axios.get(`${this.uri}/modelo/modelos`).then(
-        (response) => (this.modelos = response.data)
-      );
-    },
-    remover(modelo) {
-      var acao = confirm(`Deseja mesmo remover ${modelo.modelo} ?`);
-
-      if (acao == true) {
-        Axios.delete(`${this.uri}/modelo/deleteModelo`, {
-          data: { id: modelo.id },
-        }).then(() => {
-          this.listarModelos();
-        });
-      }
-    },
-    preparaEditar(modelo) {
-      this.tipoAcao = "Salvar edição";
-      this.modeloInput = modelo.modelo;
-      this.modeloIdToEdit = modelo.id;
-    },
-    inserir() {
-      Axios.post(`${this.uri}/modelo/novoModelo`, {
-        modelo: this.modeloInput,
-      }).then(() => {
-        this.listarModelos();
-        this.modeloInput = "";
-      });
-    },
-    botaoForm() {
-      if (this.tipoAcao == "Salvar edição") {
-        Axios.put(`${this.uri}/modelo/editarModelo`, {
-          id: this.modeloIdToEdit,
-          modelo: this.modeloInput,
-        }).then(() => {
-          this.tipoAcao = "Adicionar novo";
-          this.modeloInput = "";
-          this.modeloIdToEdit = null;
-          this.listarModelos();
-        });
-      } else if (this.tipoAcao == "Adicionar novo") {
-        if (this.modeloInput.length == 0) alert("Por favor escreva algo.");
-        else this.inserir();
-      }
+    async listarModelos() {
+      const response = await service.verModelos();
+      if(response.data.success)
+        this.modelos = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
   },
   mounted() {
