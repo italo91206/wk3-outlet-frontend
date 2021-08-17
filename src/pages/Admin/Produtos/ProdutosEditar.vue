@@ -158,15 +158,24 @@ export default {
   methods: {
     async getMarcas() {
       const response = await marcasService.getMarcas()
-      this.marcas = response.data;
+      if(response.data.success)
+        this.marcas = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     async getModelos(){
-      const response = await modelosService.getModelos();
-      this.modelos = response.data;
+      const response = await modelosService.verModelos();
+      if(response.data.success)
+        this.modelos = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     async getCores(){
       const response = await coresService.listarCores();
-      this.cores = response.data;
+      if(response.data.success)
+        this.cores = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     async getCategorias(){
       const response = await categoriaService.verCategorias();
@@ -174,6 +183,8 @@ export default {
         this.categorias = response.data.data;
         this.categorias.forEach((item) => { this.adicionar(item) })
       }
+      else
+        this.$toast.error(response.data.message);
     },
     async salvarProduto(){
       let liberar = true;
