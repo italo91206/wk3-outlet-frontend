@@ -5,7 +5,9 @@ import AtributosConfig from '@/pages/AtributosConfig.vue'
 import CoresConfig from '@/pages/Admin/Cores/CoresConfig.vue'
 import CoresEditar from '@/pages/Admin/Cores/CoresEditar.vue'
 import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
-import MarcasConfig from '@/pages/MarcasConfig.vue'
+import MarcasConfig from '@/pages/Admin/Marcas/MarcasConfig.vue'
+import MarcasEditar from '@/pages/Admin/Marcas/MarcasEditar.vue'
+import MarcasNovo from '@/pages/Admin/Marcas/MarcasNovo.vue'
 import ModelosConfig from '@/pages/ModelosConfig.vue'
 import ProdutosConfig from '@/pages/Admin/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Admin/Produtos/ProdutosNovo.vue'
@@ -170,11 +172,29 @@ const routes = [
     }
   },
   {
-    path: '/marcas',
+    path: '/admin/marcas',
     component: MarcasConfig,
     name: 'Todas as marcas',
     meta: {
       title: 'WK3 Admin | Marcas',
+      layout: 'AppLayoutAdmin'
+    }
+  },
+  {
+    path: '/admin/marcas/editar/:id',
+    component: MarcasEditar,
+    name: 'Editar marca',
+    meta: {
+      title: 'WK3 Admin | Editar Marca',
+      layout: 'AppLayoutAdmin'
+    }
+  },
+  {
+    path: '/admin/marcas/novo',
+    component: MarcasNovo,
+    name: 'Cadastrar nova marca',
+    meta: {
+      title: 'WK3 Admin | Cadastrar Nova Marca',
       layout: 'AppLayoutAdmin'
     }
   },
