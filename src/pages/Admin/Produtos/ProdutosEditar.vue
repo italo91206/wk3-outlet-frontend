@@ -61,7 +61,10 @@
 
             <div class="form-group row disabled">
                 <label for="" class="col-sm-2 col-form-label">Categoria</label>
-                <input type="text" class="col-sm-8 form-control">
+                <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
+                  <option value="" selected>-- Escolher uma categoria --</option>
+                  <option v-for="categoria in novasCategorias" v-bind:key="categoria.id" :value="categoria.id">{{categoria.nome}}</option>
+                </select>
             </div>
 
             <hr/>
@@ -72,7 +75,6 @@
                   <option value="" selected>-- Escolher um modelo --</option>
                   <option v-for="modelo in modelos" v-bind:key="modelo.id" :value="modelo.modelo_id">{{modelo.modelo}}</option>
                 </select>
-                
             </div>
 
             <div class="form-group row">
@@ -124,6 +126,7 @@ import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
 import motivosService from '@/services/motivo/motivos-service.js'
 import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
+import categoriaService from '@/services/categorias/categoria-service.js'
 
 export default {
   name: "ProdutosEditar",
@@ -146,7 +149,10 @@ export default {
       cores: [],
       estoque_changed: false,
       motivo: '',
-      motivos: []
+      motivos: [],
+      categorias: [],
+      novasCategorias: [],
+      categoriaSelecionado: '',
     }
   },
   methods: {
@@ -161,6 +167,13 @@ export default {
     async getCores(){
       const response = await coresService.listarCores();
       this.cores = response.data;
+    },
+    async getCategorias(){
+      const response = await categoriaService.verCategorias();
+      if(response.data.success){
+        this.categorias = response.data.data;
+        this.categorias.forEach((item) => { this.adicionar(item) })
+      }
     },
     async salvarProduto(){
       let liberar = true;
@@ -194,6 +207,25 @@ export default {
       const response = await motivosService.listarMotivos();
       this.motivos = response.data;
     },
+    adicionar(item) {
+      if (item.categoria_pai == null)
+        this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
+      else {
+        var string = `${item.nome}`;
+        var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
+        var pai = this.categorias[index];
+        string = `${pai.nome} / ${string}`; 
+
+        while(pai.categoria_pai != null){
+          index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
+          pai = this.categorias[index];
+          string = `${this.categorias[index].nome} / ${string}`;
+        }
+
+        //console.log(string);
+        this.novasCategorias.push({ nome: string, id: item.categoria_id });
+      }
+    },
     deletarConfirm(){
       const acao = confirm('Deseja mesmo remover o produto ? Esta ação é irreversível !');
       if(acao)
@@ -208,6 +240,7 @@ export default {
     this.getModelos();
     this.getCores();
     this.getProduto();
+    this.getCategorias();
   },
   watch: {
     produtoToPost: function(){
