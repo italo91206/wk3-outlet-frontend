@@ -178,10 +178,10 @@
 
             <!-- opção de sair -->
             <li class="nav-item">
-              <router-link to="/admin" class="nav-link">
+              <a class="nav-link" @click="logoff">
                 <i class="nav-icon fas fa-power-off"></i>
                 <p>Sair</p>
-              </router-link>
+              </a>
             </li>
           </ul>
         </nav>
@@ -191,7 +191,14 @@
 
 <script>
 export default {
-  name: "SideMenu"
+  name: "SideMenu",
+  methods:{
+    logoff(){
+      localStorage.removeItem('user');
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/admin');
+    }
+  }
 }
 </script>
 

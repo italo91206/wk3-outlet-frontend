@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import service from '../services/login/login-service.js';
+// import service from '../services/login/login-service.js';
 
 export default {
   name: "Login",
   data() {
     return {
-      userInput: "",
-      passwordInput: "",
+      userInput: "login",
+      passwordInput: "senha",
       info: "",
       errorMsg: "",
     };
@@ -60,22 +60,28 @@ export default {
       var senha = this.passwordInput;
       const user = { email, senha };
 
-      const response = await service.fazerLogin(user);
-      console.log(response);
-      
-      // try {
-      //   if (response.status == 200) {
-      //     const token = response.data.token;
-      //     localStorage.JWT = token;
-      //     this.$router.push("/dashboard");
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      // }
-    },
-  },
-  mounted(){
-    this.$store.dispatch('auth/login');
+      const res = await this.$store.dispatch('auth/login', user);
+      if(res.data.success){
+        const usuario = res.data.data.usuario;
+        // console.log(usuario);
+        if(usuario.isEmployee || usuario.isAdmin){
+          this.$store.dispatch('perfil/setPerfil', usuario);
+          this.$router.push('/dashboard');
+          // const nome = this.$store.state.perfil.perfil.nome;
+          // console.log(nome);
+          this.$toast.success(`Bem vindo de volta ${this.$store.state.perfil.perfil.nome}!`);
+        }
+        else
+          this.$toast.error('Este perfil não possui permissões de acesso.');
+      }
+      else{
+        this.$toast.error(res.data.message)
+        // console.log(res);
+        // console.log('login não existe: ' + res.data.message)
+        // alert(res.data.message);
+      }
+
+    }
   }
 }
 </script>
