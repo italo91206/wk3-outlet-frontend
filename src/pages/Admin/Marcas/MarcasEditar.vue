@@ -76,7 +76,7 @@ export default {
       if(/[^A-z\s\d][\\^]?/.test(string))
         this.erro_nome = "Não é possível inserir caracteres especiais";
       else
-        this.erro_nome = '';
+        this.erro_nome = null;
     },
     deletar(){
       const response = confirm('Tem certeza que deseja remover? Esta ação é irreversível!');
