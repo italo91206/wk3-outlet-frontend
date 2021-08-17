@@ -2,7 +2,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <router-link to="/dashboard" id="brand-link" class="w100">
         <img
-          src="logotipo-extenso-bw.png"
+          src="/logotipo-extenso-bw.png"
           alt="WK3 Logo"
           class="brand-image"
         />
@@ -45,7 +45,7 @@
 
                 <!-- opção de categorias -->
                 <li class="nav-item">
-                  <router-link to="" class="nav-link">
+                  <router-link to="/admin/categorias" class="nav-link">
                     <p>Categorias</p>
                   </router-link>
                 </li>

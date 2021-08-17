@@ -25,6 +25,7 @@ import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
 import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
 import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
 import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
+import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
 
 const routes = [
   {
@@ -247,6 +248,15 @@ const routes = [
     meta: {
       title: 'WK3 Outlet - Nada foi encontrado',
       layout: 'AppLayoutDefault'
+    }
+  },
+  {
+    path: '/admin/categorias',
+    component: CategoriasConfig,
+    name: 'Categorias',
+    meta: {
+      title: 'WK3 Outlet - Categorias',
+      layout: 'AppLayoutAdmin'
     }
   },
   {
