@@ -63,7 +63,10 @@ export default {
   methods: {
     async listarCupons(){
       const response = await service.listarCupons();
-      this.cupons = response.data;
+      if(response.data.success)
+        this.cupons = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     pad(num, size) {
       num = num.toString();

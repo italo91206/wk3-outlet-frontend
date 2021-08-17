@@ -18,6 +18,7 @@
               <div class="form-group">
                 <label for="" class="col-sm-2 col-form-label">Valor do cupom</label>
                 <input class="col-sm-8 form-control" type="text" v-model="cupomToPost.valor">
+                <span class="col-sm-8 text-danger" v-if="erro_valor" style="margin: 0 auto">{{erro_valor}}</span>
               </div>
 
               <div class="form-group">
@@ -30,11 +31,16 @@
                   <input type="radio" name="tipoCupom" class="form-check-input" value="fixo" v-model="tipoCupom">
                   <label for="" class="form-check-label">Valor Fixo</label>
                 </div>
+
+                <div class="form-group row">
+                  <span class="col-sm-8 text-danger" v-if="erro_tipo" style="margin: 0 auto">{{erro_tipo}}</span>
+                </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-2 col-form-label" for="">Validade</label>
                 <input type="date" class="col-sm-8 form-control" v-model="cupomToPost.validade">
+                <span class="col-sm-8 text-danger" v-if="erro_validade" style="margin: 0 auto">{{erro_validade}}</span>
               </div>
             </div>
           </div>
@@ -61,21 +67,37 @@ export default {
     return {
       cupomToPost: {},
       tipoCupom: '',
-      isChanged: true
+      isChanged: true,
+      erro_validade: '',
+      erro_tipo: '',
+      erro_valor: ''
     }
   },
   methods: {
     async listarCupom(id){
       const response = await service.listarCupom(id);
-      this.cupomToPost = response.data;
+      if(response.data.success)
+        this.cupomToPost = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     async salvarCupom(){
       const response = await service.atualizarCupom(this.cupomToPost);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Cupom foi atualizado com sucesso!');
+        this.$router.push('/admin/cupons');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     async deletarCupom(id){
       const response = await service.deletarCupom(id);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Cupom foi deletado com sucesso!');
+        this.$router.push('/admin/cupons');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     deletar(){
       const id = this.$route.params.id;

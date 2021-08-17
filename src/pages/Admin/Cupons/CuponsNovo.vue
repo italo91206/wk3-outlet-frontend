@@ -72,7 +72,12 @@ export default {
   methods: {
     async novoCupom(){
       const response = await service.novoCupom(this.cupomToPost);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('O cupom foi cadastrado com sucesso!');
+        this.$router.push('/admin/cupons');
+      }
+      else
+        this.$toast.error(response.data.message);
     }
   },
   watch: {
