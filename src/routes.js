@@ -36,7 +36,10 @@ const routes = [
     path: '/admin',
     component: Login,
     name: 'Login',
-    meta: { title: 'WK3 Administrativo' }
+    meta: { 
+      title: 'WK3 Administrativo',
+      is_public: true
+    }
   },
   {
     path: '/dashboard',
@@ -44,7 +47,8 @@ const routes = [
     name: 'Dashboard',
     meta: {
       title: 'WK3 | Dashboard',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -53,7 +57,8 @@ const routes = [
     name: 'Todos os atributos',
     meta: {
       title: 'WK3 Admin | Atributos',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -62,7 +67,8 @@ const routes = [
     name: 'Todos os tamanhos',
     meta: {
       title: 'WK3 Admin | Tamanhos',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -71,7 +77,8 @@ const routes = [
     name: 'Editar tamanho',
     meta: {
       title: 'WK3 Admin | Editar Tamanho',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -80,7 +87,8 @@ const routes = [
     name: 'Adicionar novo tamanho',
     meta: {
       title: 'WK3 Admin | Novo Tamanho',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -89,7 +97,8 @@ const routes = [
     name: 'Todos os cupons',
     meta: {
       title: 'WK3 Admin | Cupons',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -98,7 +107,8 @@ const routes = [
     name: 'Adicionar novo cupom',
     meta: {
       title: 'WK3 Admin | Novo Cupom',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -107,7 +117,8 @@ const routes = [
     name: 'Editar cupom',
     meta: {
       title: 'WK3 Admin | Editar Cupom',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -116,7 +127,8 @@ const routes = [
     name: 'Acertos de estoque',
     meta: {
       title: 'WK3 Admin | Acertos De Estoque',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -125,7 +137,8 @@ const routes = [
     name: 'Todas as cores',
     meta: {
       title: 'WK3 Admin | Cores',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -134,7 +147,8 @@ const routes = [
     name: 'Editar cor',
     meta: {
       title: 'WK3 Admin | Editar Cor',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -143,7 +157,8 @@ const routes = [
     name: 'Adicionar nova cor',
     meta: {
       title: 'WK3 Admin | Nova Cor',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -152,7 +167,8 @@ const routes = [
     name: 'Todos os usuários',
     meta: {
       title: 'WK3 Admin | Usuários',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -161,7 +177,8 @@ const routes = [
     name: 'Editar usuário',
     meta: {
       title: 'WK3 Admin | Editar Usuário',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -170,7 +187,8 @@ const routes = [
     name: 'Novo usuário',
     meta: {
       title: 'WK3 Admin | Novo Usuário',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -179,7 +197,8 @@ const routes = [
     name: 'Todas as marcas',
     meta: {
       title: 'WK3 Admin | Marcas',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -188,7 +207,8 @@ const routes = [
     name: 'Editar marca',
     meta: {
       title: 'WK3 Admin | Editar Marca',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -197,7 +217,8 @@ const routes = [
     name: 'Cadastrar nova marca',
     meta: {
       title: 'WK3 Admin | Cadastrar Nova Marca',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -206,7 +227,8 @@ const routes = [
     name: 'Todos os motivos',
     meta: {
       title: 'WK3 Admin | Motivos',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -215,7 +237,8 @@ const routes = [
     name: 'Editar movo',
     meta: {
       title: 'WK3 Admin | Editar Motivo',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -224,7 +247,8 @@ const routes = [
     name: 'Adicionar novo motivo',
     meta: {
       title: 'WK3 Admin | Adicionar Novo Motivo',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -233,7 +257,8 @@ const routes = [
     name: 'Todos os modelos',
     meta: {
       title: 'WK3 Admin | Modelos',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -242,7 +267,8 @@ const routes = [
     name: 'Editar modelo',
     meta: {
       title: 'WK3 Admin | Editar Modelo',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -251,7 +277,8 @@ const routes = [
     name: 'Adicionar novo modelo',
     meta: {
       title: 'WK3 Admin | Adicionar Novo Modelo',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -260,7 +287,8 @@ const routes = [
     name: 'Todos os produtos',
     meta: {
       title: 'Wk3 Admin | Produtos',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -269,7 +297,8 @@ const routes = [
     name: 'Adicionar novo produto',
     meta: {
       title: 'Wk3 Admin | Adicionar Novo Produto',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -278,7 +307,8 @@ const routes = [
     component: ProdutosEditar,
     meta: {
       title: 'Wk3 Admin | Editar Produto',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false
     }
   },
   {
@@ -287,7 +317,8 @@ const routes = [
     name: 'Não encontrado',
     meta: {
       title: 'WK3 Outlet - Nada foi encontrado',
-      layout: 'AppLayoutDefault'
+      layout: 'AppLayoutDefault',
+      is_public: true
     }
   },
   {
@@ -296,7 +327,8 @@ const routes = [
     name: 'Categorias',
     meta: {
       title: 'WK3 Outlet - Categorias',
-      layout: 'AppLayoutAdmin'
+      layout: 'AppLayoutAdmin',
+      is_public: false,
     }
   },
   {
@@ -305,7 +337,8 @@ const routes = [
     name: 'Home',
     meta: {
       title: 'WK3 Outlet',
-      layout: 'AppLayoutDefault'
+      layout: 'AppLayoutDefault',
+      is_public: true
     }
   },
   {
@@ -314,7 +347,8 @@ const routes = [
     name: 'WK3 Outlet | Página de produto',
     meta: {
       title: 'WK3 Homepage',
-      layout: 'AppLayoutDefault'
+      layout: 'AppLayoutDefault',
+      is_public: true
     }
   }
 ]
