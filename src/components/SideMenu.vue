@@ -38,22 +38,34 @@
               <ul class="nav nav-treeview">
                 <!-- opção de produtos -->
                 <li class="nav-item">
+                  <router-link to="/admin/produtos/novo" class="nav-link">
+                    <p>Novo produto</p>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
                   <router-link to="/admin/produtos" class="nav-link">
-                    <p>Produtos</p>
+                    <p>Consultar produtos</p>
                   </router-link>
                 </li>
 
                 <!-- opção de categorias -->
                 <li class="nav-item">
+                  <router-link to="/admin/categorias/novo" class="nav-link">
+                    <p>Nova categoria</p>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
                   <router-link to="/admin/categorias" class="nav-link">
-                    <p>Categorias</p>
+                    <p>Ver categorias</p>
                   </router-link>
                 </li>
 
                 <!-- opção de acerto -->
                 <li class="nav-item">
                   <router-link to="/admin/acertos" class="nav-link">
-                    <p>Acerto de estoque</p>
+                    <p>Acertos de estoque</p>
                   </router-link>
                 </li>
               </ul>
@@ -72,8 +84,14 @@
               <ul class="nav nav-treeview">
                 <!-- opção de cupons -->
                 <li class="nav-item">
+                  <router-link to="/admin/cupons/novo" class="nav-link">
+                    <p>Novo cupom</p>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
                   <router-link to="/admin/cupons" class="nav-link">
-                    <p>Cupons</p>
+                    <p>Consultar cupons</p>
                   </router-link>
                 </li>
 
