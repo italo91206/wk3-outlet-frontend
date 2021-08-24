@@ -8,7 +8,6 @@
               <table class="table table-stripe table-valign-middle">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Marca</th>
                     <th>Ações</th>
                   </tr>
@@ -16,7 +15,6 @@
 
                 <tbody>
                   <tr v-for="marca in marcas" :key="marca.marca_id">
-                    <td>{{marca.marca_id}}</td>
                     <td>{{marca.marca}}</td>
                     <td>
                       <router-link :to="`/admin/marcas/editar/${marca.marca_id}`">
