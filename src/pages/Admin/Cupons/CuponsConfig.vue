@@ -8,7 +8,6 @@
               <table class="table table-stripe table-valign-middle">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Código</th>
                     <th>Status</th>
                     <th>Nome do Cupom</th>
@@ -20,7 +19,6 @@
 
                 <tbody>
                   <tr v-for="cupom in cupons" v-bind:key="cupom.cupom_id">
-                    <td>{{cupom.cupom_id}}</td>
                     <td>{{cupom.codigo}}</td>
                     <td>{{cupom.status}}</td>
                     <td>{{cupom.nome}}</td>
