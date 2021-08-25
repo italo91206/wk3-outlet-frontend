@@ -180,8 +180,14 @@
 
                 <!-- opção de motivos -->
                 <li class="nav-item">
+                  <router-link to="/admin/motivos/novo" class="nav-link">
+                    <p>Novo motivo</p>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
                   <router-link to="/admin/motivos" class="nav-link">
-                    <p>Motivos</p>
+                    <p>Consultar motivos</p>
                   </router-link>
                 </li>
 
