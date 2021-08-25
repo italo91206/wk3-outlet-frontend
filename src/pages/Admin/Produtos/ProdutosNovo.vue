@@ -110,6 +110,7 @@ import marcasService from '@/services/marcas/marcas-service.js'
 import modelosService from '@/services/modelos/modelos-service.js'
 import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
+import categoriaService from '@/services/categorias/categoria-service.js'
 
 export default {
   name: "ProdutosNovo",
@@ -129,25 +130,73 @@ export default {
       marcaSelecionado: '',
       modelos: [],
       marcas: [],
-      cores: []
+      cores: [],
+      categorias: [],
+      novasCategorias: [],
+      categoriaSelecionado: '',
     }
   },
   methods: {
     async getMarcas() {
       const response = await marcasService.getMarcas()
-      this.marcas = response.data;
+      if(response.data.success)
+        this.marcas = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
     },
     async getModelos(){
-      const response = await modelosService.getModelos();
-      this.modelos = response.data;
+      const response = await modelosService.verModelos();
+      if(response.data.success)
+        this.modelos = response.data.data;
+      else
+        this.$toast.error(response.data.message);
     },
     async getCores(){
       const response = await coresService.listarCores();
-      this.cores = response.data;
+      if(response.data.success)
+        this.cores = response.data.data;
+      else
+        this.$toast.error(response.data.message);
+    },
+    async getCategorias(){
+      const response = await categoriaService.verCategorias();
+      if(response.data.success){
+        this.categorias = response.data.data;
+        this.categorias.forEach((item) => { this.adicionar(item) })
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     async salvarProduto(){
       const response = await produtoService.novoProduto(this.produtoToPost);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Produto foi adicionado com sucesso!');
+        this.$router.push('/admin/produtos');
+      }
+      else{
+        this.$toast.error(response.data.message);
+      }
+    },
+    adicionar(item) {
+      if (item.categoria_pai == null)
+        this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
+      else {
+        var string = `${item.nome}`;
+        var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
+        var pai = this.categorias[index];
+        string = `${pai.nome} / ${string}`; 
+
+        while(pai.categoria_pai != null){
+          index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
+          pai = this.categorias[index];
+          string = `${this.categorias[index].nome} / ${string}`;
+        }
+
+        //console.log(string);
+        this.novasCategorias.push({ nome: string, id: item.categoria_id });
+      }
     }
   },
   mounted(){

@@ -41,15 +41,30 @@ export default {
   methods: {
     async getMotivo(id){
       const response = await service.getMotivo(id);
-      this.motivoToPost = response.data;
+      if(response.data.success)
+        this.motivoToPost = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/motivos');
+      }
     },
     async salvarMotivo(){
       const response = await service.atualizarMotivo(this.motivoToPost);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Motivo foi atualizado com sucesso.');
+        this.$router.push('/admin/motivos');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     async deletarMotivo(id){
       const response = await service.deletarMotivo(id);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Motivo foi excluído com sucesso.');
+        this.$router.push('/admin/motivos');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     mudou(){
       this.isChange = false;

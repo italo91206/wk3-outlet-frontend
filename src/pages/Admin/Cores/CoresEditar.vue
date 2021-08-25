@@ -50,7 +50,12 @@ export default {
     methods: {
       async listarCor(id){
         const response = await service.listarCor(id);
-        this.corToPost = response.data;
+        if(response.data.success)
+          this.corToPost = response.data.data;
+        else{
+          this.$toast.error(response.data.message);
+          this.$router.push('/admin/cores');
+        }
       },
       async deletarCor(id){
         const response = await service.deletarCor(id);

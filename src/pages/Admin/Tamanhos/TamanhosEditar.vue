@@ -44,7 +44,12 @@ export default {
   methods: {
     async listarTamanho(id) {
       const response = await service.listarTamanho(id);
-      this.tamanhoToPost = response.data;
+      if(response.data.success)
+        this.tamanhoToPost = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/tamanhos');
+      }
     },
     async salvarMotivo() {
       if(this.erro_nome)

@@ -7,7 +7,8 @@
             <div class="form">
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="">Descrição motivo</label>
-                <input class="col-sm-8 form-control" v-model="motivoToPost.motivo" type="text">
+                <input class="col-sm-8 form-control" @change="validarNome" v-model="motivoToPost.motivo" type="text">
+                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
               </div>
             </div>
           </div>
@@ -33,14 +34,35 @@ export default {
     return {
       motivoToPost: {
         motivo: ''
-      }
+      },
+      isChanged: true,
+      erro_nome: null
     }
   },
   methods: {
     async novoMotivo(){
-      const response = await service.novoMotivo(this.motivoToPost);
-      console.log(response.data);
-    }
+      if(this.erro_nome)
+        this.$toast.error('Alguns campos não estão válidos');
+      else{
+        const response = await service.novoMotivo(this.motivoToPost);
+        if(response.data.success){
+          this.$toast.success('Motivo foi adicionado com sucesso!');
+          this.$router.push('/admin/motivos');
+        }
+        else
+          this.$toast.error(response.data.message);
+      }
+    },
+    validarNome(e){
+      var string = e.target.value;
+      if(/[^A-z\s\d][\\^]?/.test(string))
+        this.erro_nome = "Não é possível inserir caracteres especiais";
+      else
+        this.erro_nome = '';
+    },
+    mudou() {
+      this.isChanged = false;
+    },
   }
 };
 </script>

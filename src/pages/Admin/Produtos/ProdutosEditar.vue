@@ -160,8 +160,10 @@ export default {
       const response = await marcasService.getMarcas()
       if(response.data.success)
         this.marcas = response.data.data;
-      else
+      else{
         this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
     },
     async getModelos(){
       const response = await modelosService.verModelos();
@@ -196,27 +198,50 @@ export default {
         }
         else{
           const acerto = await acertoService.gravarAcerto(this.produtoToPost, 1, this.motivo);
-          liberar = true;
-          console.log(acerto.data);
+          if(acerto.data.success)
+            this.$toast.success('Estoque foi acertado com sucesso').
+          else
+            this.$toast.error(acerto.data.message);
         }
       }
       if(liberar){
         const response = await produtoService.atualizarProduto(this.produtoToPost);
-        console.log(response.data);
+        if(response.data.success){
+          this.$toast.success('Produto foi atualizado com sucesso');
+          this.$router.push('/admin/produtos');
+        }
+        else
+          this.$toast.error(response.data.message);
       }
     },
     async getProduto(){
       const url = this.$route.params.product_url;
       const response = await produtoService.recuperarProduto(url);
-      this.produtoToPost = response.data.dados;
+      
+      if(response.data.success)
+        this.produtoToPost = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
     }, 
     async deletarProduto(){
       const response = await produtoService.deletarProduto(this.produtoToPost.produto_id);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Produto foi removido com sucesso!');
+        this.$router.push('/admin/produtos');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     async carregarMotivos(){
       const response = await motivosService.listarMotivos();
-      this.motivos = response.data;
+      if(response.data.success)
+        this.motivos = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
     },
     adicionar(item) {
       if (item.categoria_pai == null)
@@ -255,8 +280,8 @@ export default {
   },
   watch: {
     produtoToPost: function(){
-      this.modeloSelecionado = this.produtoToPost.modelo_id;
-      this.marcaSelecionado = this.produtoToPost.marca_id;
+      if(this.produtoToPost.modelo_id) this.modeloSelecionado = this.produtoToPost.modelo_id;
+      if(this.produtoToPost.marca_id) this.marcaSelecionado = this.produtoToPost.marca_id;
     },
     estoque_changed: function(){
       this.carregarMotivos();

@@ -43,8 +43,10 @@ export default {
       const response = await service.verModelo(id);
       if(response.data.success)
         this.modeloToPost = response.data.data;
-      else
+      else{
         this.$toast.error(response.data.message);
+        this.$router.push('/admin/modelos');
+      }
     },
     async salvarModelo(){
       if(this.erro_nome)
