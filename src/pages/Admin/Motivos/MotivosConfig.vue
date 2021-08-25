@@ -7,7 +7,6 @@
             <table class="table table-stripe table-valign-middle">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Motivo</th>
                   <th>Ações</th>
                 </tr>
@@ -15,7 +14,6 @@
 
               <tbody>
                 <tr v-for="motivo in motivos" v-bind:key="motivo.motivo_id">
-                  <td>{{ motivo.motivo_id }}</td>
                   <td>{{ motivo.motivo }}</td>
                   <td>
                     <router-link :to="`/admin/motivos/editar/${motivo.motivo_id}`">Editar</router-link>
@@ -52,7 +50,11 @@ export default {
   methods: {
     async listarMotivos(){
       const response = await service.listarMotivos();
-      this.motivos = response.data;
+      if(response.data.success)
+        this.motivos = response.data.data;
+      else{
+        console.error(response.data.message);
+      }
     }
   },
   mounted(){

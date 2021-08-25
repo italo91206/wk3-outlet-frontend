@@ -7,7 +7,6 @@
             <table class="table table-striped table-valign-middle">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Cor</th>
                   <th>Nome</th>
                   <th>Ações</th>
@@ -16,7 +15,6 @@
 
               <tbody>
                 <tr v-for="cor in cores" :key="cor.id">
-                  <td>{{ cor.cor_id }}</td>
                   <td>
                     <div
                       :style="`background-color: ${cor.hexa}`"
@@ -60,7 +58,11 @@ export default {
   methods: {
     async listarCores() {
       const response = await service.listarCores();
-      this.cores = response.data;
+      if(response.data.success)
+        this.cores = response.data.data;
+      else{
+        console.error(response.data.message);
+      }
     },
   },
   mounted() {

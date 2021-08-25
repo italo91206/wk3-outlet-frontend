@@ -7,7 +7,6 @@
             <table class="table table-stripe table-valign-middle">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Tamanho</th>
                   <th>Ações</th>
                 </tr>
@@ -15,7 +14,6 @@
 
               <tbody>
                 <tr v-for="tamanho in tamanhos" v-bind:key="tamanho.tamanho_id">
-                  <td>{{ tamanho.tamanho_id }}</td>
                   <td>{{ tamanho.tamanho }}</td>
                   <td>
                     <router-link :to="`/admin/tamanhos/editar/${tamanho.tamanho_id}`">
@@ -53,7 +51,11 @@ export default {
   methods: {
     async listarTamanhos(){
       const response = await service.listarTamanhos();
-      this.tamanhos = response.data;
+      if(response.data.success)
+        this.tamanhos = response.data.data;
+      else{
+        console.error(response.data.message);
+      }
     }
   },
   mounted(){

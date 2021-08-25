@@ -8,7 +8,6 @@
               <table class="table table-stripe table-valign-middle">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Modelo</th>
                     <th>Ações</th>
                   </tr>
@@ -16,7 +15,6 @@
 
                 <tbody>
                   <tr v-for="modelo in modelos" :key="modelo.modelo_id">
-                    <td>{{modelo.modelo_id}}</td>
                     <td>{{modelo.modelo}}</td>
                     <td>
                       <router-link :to="`/admin/modelos/editar/${modelo.modelo_id}`">

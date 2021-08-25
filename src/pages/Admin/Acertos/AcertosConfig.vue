@@ -45,7 +45,10 @@ export default {
   methods: {
     async listarAcertos(){
       const response = await service.listarAcertos();
-      this.acertos = response.data;
+      if(response.data.success)
+        this.acertos = response.data.data;
+      else
+        console.error(response.data.message);
     },
     pad(num, size) {
       num = num.toString();

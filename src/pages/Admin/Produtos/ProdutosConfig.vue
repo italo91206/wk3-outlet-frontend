@@ -7,7 +7,6 @@
             <table class="table table-striped table-valign-middle">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Produto</th>
                   <th>Preço</th>
                   <th>Estoque</th>
@@ -16,7 +15,6 @@
               </thead>
               <tbody>
                 <tr v-for="produto in produtos" v-bind:key="produto.id">
-                  <td>{{ produto.produto_id }}</td>
                   <td>{{ produto.nome }}</td>
                   <td>{{ produto.preco | preco }}</td>
                   <td>{{ produto.estoque }}</td>
@@ -56,7 +54,8 @@ export default {
   methods: {
     async listarProdutos() {
       const response = await service.listarProdutos();
-      if (response.data.success) this.produtos = response.data.dados;
+      if (response.data.success) this.produtos = response.data.data;
+      else console.error(response.data.message);
     },
   },
   mounted() {
