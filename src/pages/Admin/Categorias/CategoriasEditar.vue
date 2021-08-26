@@ -4,7 +4,7 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <div class="form">
+            <div class="form" @change="mudou">
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Nome da categoria</label>
                 <input type="text" class="col-sm-8 form-control" @change="validarNome" v-model="categoriaToPost.nome">
@@ -15,7 +15,7 @@
                 <label for="" class="col-sm-2 col-form-label">Categoria Pai</label>
                 <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
                   <option value="0" disabled selected>-- Escolher uma categoria --</option>
-                  <option v-for="categoria in novo" v-bind:key="categoria.id" :value="categoria.id">{{categoria.nome}}</option>
+                  <option v-for="categoria in categorias" v-bind:key="categoria.categoria_id" :value="categoria.categoria_id">{{categoria.nome}}</option>
                 </select>
               </div>
             </div>
@@ -26,7 +26,8 @@
 
     <div class="row">
       <div class="col-lg-12">
-        <button @click="salvarCategoria" class="btn btn-success float-right">Salvar categoria</button>
+        <button @click="salvarCategoria" class="btn btn-success float-right" :disabled="isChanged">Salvar categoria</button>
+        <button @click="deletar" class="btn btn-danger float-right">Deletar</button>
         <router-link to="/admin/categorias" class="btn btn-default float-right">Voltar</router-link>
       </div>
     </div>
@@ -37,27 +38,49 @@
 import service from '@/services/categorias/categoria-service.js'
 
 export default {
-  name: 'CategoriasNovo',
+  name: 'CategoriasEditar',
   data(){
     return {
       categoriaToPost: {},
       categorias: [],
       novo: [],
       categoriaSelecionado: 0,
-      erro_nome: null
+      erro_nome: null,
+      isChanged: true,
     }
   },
   methods:{
     async getCategoria(id){
-      const response = await service.verCategorias();
+      const response = await service.verCategoria(id);
       if(response.data.success){
-        this.categorias = response.data.data;
-        this.categorias.forEach((item) => { this.adicionar(item) })
+        this.categoriaToPost = response.data.data;
       }
       else{
         this.$toast.error(response.data.message);
         this.$router.push('/admin/categorias');
       }
+    },
+    async getCategorias(){
+      const response = await service.verCategorias();
+      if(response.data.success){
+        this.categorias = response.data.data;
+        // this.categorias.forEach((item) => { this.adicionar(item) })
+      }
+      else
+        this.$toast.error(response.data.message); 
+    },
+    async deletarCategoria(id){
+      const response = await service.deletarCategoria(id);
+      if(response.data.success){
+        this.$toast.success('Categoria foi removida com sucesso!');
+        this.$router.push('/admin/categorias');
+      }
+      else
+        this.$toast.error(response.data.message);
+    },
+    deletar(){
+      const id = this.$route.params.id;
+      this.deletarCategoria(id);
     },
     adicionar(item) {
       if (item.categoria_pai == null)
@@ -89,27 +112,35 @@ export default {
       if(this.erro_nome)
         this.$toast.error('Alguns campos estão inválidos');
       else{
-        const response = await service.novaCategoria(this.categoriaToPost)
+        const response = await service.atualizarCategoria(this.categoriaToPost)
         if(response.data.success){
-          this.$toast.success('Categoria adicionado com sucesso!');
+          this.$toast.success('Categoria foi atualizada com sucesso!');
           this.$router.push('/admin/categorias');
         }
         else
           this.$toast.error(response.data.message);
       }
-    }
+    },
+    mudou(){
+      this.isChanged = false;
+    },
   },
   mounted(){
     let id = this.$route.params.id;
-    this.getCategorias(id);
+    this.getCategoria(id);
+    this.getCategorias();
   },
   watch: {
-    categoriaSelecionado(){
-      if(this.categoriaSelecionado != 0)
-        this.categoriaToPost.categoria_pai = this.categoriaSelecionado;
-      else
-        this.categoriaToPost.categoria_pai = null;
-    }
+    categoriaToPost(){
+      if(this.categoriaToPost.categoria_pai != null)
+        this.categoriaSelecionado = this.categoriaToPost.categoria_pai;
+    },
+    // categoriaSelecionado(){
+    //   if(this.categoriaSelecionado != 0)
+    //     this.categoriaToPost.categoria_pai = this.categoriaSelecionado;
+    //   else
+    //     this.categoriaToPost.categoria_pai = null;
+    // },
   }
 }
 </script>

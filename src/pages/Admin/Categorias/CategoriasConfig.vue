@@ -90,15 +90,17 @@ export default {
     findById(id){
       let categoria = ''
       this.categorias.forEach((item) => {
-        if(item.categoria_id == id)
+        if(item.categoria_id == id){
           categoria = item.nome
+        }
       })
       return categoria;
     },
     remanejaPai(){
       this.categorias.forEach((item) => {
+        // console.log(item.nome);
         if(item.categoria_pai != null){
-          item.categoria_pai = this.findById(item.categoria_id)
+          item.categoria_pai = this.findById(item.categoria_pai);
         }
       })
     }

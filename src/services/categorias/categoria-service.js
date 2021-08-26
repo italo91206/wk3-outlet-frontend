@@ -10,7 +10,19 @@ const CategoriaService = {
       console.log(error);
     }
   },
-  // verCategoria: async(id) => { },
+
+  verCategoria: async(id) => {
+    try{
+      const response = await api.get('/categorias/categoria', {
+        params: { id: id }
+      });
+      return response;
+    }
+    catch(error){
+      console.log(error);
+    }
+  },
+
   novaCategoria: async(categoria) => {
     try{
       const response = await api.post('/categorias/novo', {
@@ -22,7 +34,19 @@ const CategoriaService = {
       console.log(error);
     }
   },
-  // deletarCategoria: async(id) => { },
+  
+  deletarCategoria: async(id) => {
+    try{
+      const response = await api.delete('/categorias/deletar/', {
+        params: { id: id }
+      });
+      return response;
+    }
+    catch(error){
+      console.log(error);
+    }
+  },
+
   atualizarCategoria: async(categoria) => {
     try{
       const response = await api.put('/categorias/atualizar', { categoria: categoria });
@@ -32,6 +56,7 @@ const CategoriaService = {
       console.log(error);
     }
   },
+  
 }
 
 export default CategoriaService;
