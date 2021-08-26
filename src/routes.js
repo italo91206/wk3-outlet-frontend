@@ -31,6 +31,7 @@ import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
 import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
 import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
 import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
+import CategoriasEditar from '@/pages/Admin/Categorias/CategoriasEditar.vue'
 
 const routes = [
   {
@@ -333,9 +334,19 @@ const routes = [
     }
   },
   {
+    path: '/admin/categorias/editar/:id',
+    component: CategoriasEditar,
+    name: 'Editar Categoria',
+    meta: {
+      title: 'WK3 Outlet - Editar Categoria',
+      layout: 'AppLayoutAdmin',
+      is_public: false,
+    }
+  },
+  {
     path: '/admin/categorias/novo',
     component: CategoriasNovo,
-    name: 'Categorias',
+    name: 'Nova Categoria',
     meta: {
       title: 'WK3 Outlet - Adicionar Nova Categoria',
       layout: 'AppLayoutAdmin',
