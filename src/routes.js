@@ -30,6 +30,7 @@ import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
 import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
 import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
 import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
+import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
 
 const routes = [
   {
@@ -327,6 +328,16 @@ const routes = [
     name: 'Categorias',
     meta: {
       title: 'WK3 Outlet - Categorias',
+      layout: 'AppLayoutAdmin',
+      is_public: false,
+    }
+  },
+  {
+    path: '/admin/categorias/novo',
+    component: CategoriasNovo,
+    name: 'Categorias',
+    meta: {
+      title: 'WK3 Outlet - Adicionar Nova Categoria',
       layout: 'AppLayoutAdmin',
       is_public: false,
     }

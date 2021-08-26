@@ -20,7 +20,7 @@ export default {
         async listarProdutos(){
             const response = await service.listarProdutos()
             if(response.data.success)
-                this.produtos = response.data.dados;
+                this.produtos = response.data.data;
         }
     },
     mounted(){

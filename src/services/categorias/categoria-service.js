@@ -11,11 +11,10 @@ const CategoriaService = {
     }
   },
   // verCategoria: async(id) => { },
-  novaCategoria: async(categoria, parentesco) => {
+  novaCategoria: async(categoria) => {
     try{
       const response = await api.post('/categorias/novo', {
         categoria: categoria,
-        parentesco: parentesco
       })
       return response;
     }
