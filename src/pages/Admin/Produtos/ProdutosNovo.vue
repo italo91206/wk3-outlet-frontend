@@ -4,9 +4,21 @@
       <div class="card">
         <div class="card-body">
           <div class="form">
-            <div class="form-group">
-              <div class="imagem-place-holder">
-                <span>+</span>
+
+            <div class="form-group row">
+
+              <div class="col-sm-2" style="opacity: 0">
+                <span>hidden</span>
+              </div>
+
+              <div class="col-sm-8 row">
+                <div v-if="produtoToPost.imagens.length == 0" class="imagem-place-holder">
+                  <span>+</span>
+                </div>
+
+                <div v-else v-for="imagem in produtoToPost.imagens" v-bind:key="imagem.id" class="imagem-place-holder">
+                  <img :src="imagem" alt="">
+                </div>
               </div>
             </div>
 
@@ -15,7 +27,7 @@
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
               <div class="custom-file col-sm-2 col-form-label disabled">
-                <input type="file" class="custom-file-input" id="custom-file-input">
+                <input type="file" class="custom-file-input" id="custom-file-input" multiple @input="imagemAdicionado">
                 <label for="custom-file-input" class="custom-file-label">Adicionar imagens</label>
               </div>
             </div>
@@ -142,6 +154,7 @@ export default {
         marca_id: null,
         modelo_id: null,
         categoria_id: null,
+        imagens: [],
       },
       modeloSelecionado: '',
       marcaSelecionado: '',
@@ -205,6 +218,16 @@ export default {
         }
       }
     },
+    imagemAdicionado(e){
+      let imagens = e.target.files;
+      let caminhos = [];
+
+      imagens.forEach((imagem) => {
+        caminhos.push(URL.createObjectURL(imagem));
+      })
+      // console.log(imagens);
+      this.produtoToPost.imagens = caminhos;
+    },
     // adicionar(item) {
     //   if (item.categoria_pai == null)
     //     this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
@@ -265,13 +288,20 @@ export default {
 </script>
 
 <style>
+.imagem-place-holder img{
+  width: 100%;
+  height: 100%;
+}
+
 .imagem-place-holder {
   height: 80px;
   width: 80px;
-  border: #343a40 2px dashed;
+  border: #f4f6f9 2px;
   display: flex;
+  border-style: dashed;
   justify-content: center;
   align-items: center;
+  margin-right: 2px;
 }
 
 .color-checkbox{
