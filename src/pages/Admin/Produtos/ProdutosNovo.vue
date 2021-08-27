@@ -12,11 +12,11 @@
               </div>
 
               <div class="col-sm-8 row">
-                <div v-if="produtoToPost.imagens.length == 0" class="imagem-place-holder">
+                <div v-if="imagens.length == 0" class="imagem-place-holder">
                   <span>+</span>
                 </div>
 
-                <div v-else v-for="imagem in produtoToPost.imagens" v-bind:key="imagem.id" class="imagem-place-holder">
+                <div v-else v-for="imagem in imagens" v-bind:key="imagem.id" class="imagem-place-holder">
                   <img :src="imagem" alt="">
                 </div>
               </div>
@@ -27,7 +27,7 @@
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
               <div class="custom-file col-sm-2 col-form-label disabled">
-                <input type="file" class="custom-file-input" id="custom-file-input" multiple @input="imagemAdicionado">
+                <input type="file" class="custom-file-input" id="custom-file-input" @input="imagemInput" multiple>
                 <label for="custom-file-input" class="custom-file-label">Adicionar imagens</label>
               </div>
             </div>
@@ -139,6 +139,7 @@ import modelosService from '@/services/modelos/modelos-service.js'
 import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
+import imagemService from '@/services/imagens/imagem-service.js'
 
 export default {
   name: "ProdutosNovo",
@@ -154,7 +155,6 @@ export default {
         marca_id: null,
         modelo_id: null,
         categoria_id: null,
-        imagens: [],
       },
       modeloSelecionado: '',
       marcaSelecionado: '',
@@ -166,7 +166,8 @@ export default {
       categoriaSelecionado: '',
       erro_nome: null,
       erro_custo: null,
-      erro_preco: null
+      erro_preco: null,
+      imagens: [],
     }
   },
   methods: {
@@ -209,6 +210,7 @@ export default {
         this.$toast.error('Preço do produto não pode ser vazio')
       else{
         const response = await produtoService.novoProduto(this.produtoToPost);
+        this.imagemAdicionado();
         if(response.data.success){
           this.$toast.success('Produto foi adicionado com sucesso!');
           this.$router.push('/admin/produtos');
@@ -218,35 +220,25 @@ export default {
         }
       }
     },
-    imagemAdicionado(e){
-      let imagens = e.target.files;
+    async imagemAdicionado(){
+      const formData = new FormData();
+      const imagefile = document.querySelector("#custom-file-input");
+
+      formData.append("fileimage", imagefile.files)
+      const response = await imagemService.enviarImagens(formData);
+      if(!response.data.success)
+        this.$toast.error(response.data.message);
+    },
+    imagemInput(e){
+      let input = e.target.files;
       let caminhos = [];
 
-      imagens.forEach((imagem) => {
+      input.forEach((imagem) => {
         caminhos.push(URL.createObjectURL(imagem));
       })
-      // console.log(imagens);
-      this.produtoToPost.imagens = caminhos;
+
+      this.imagens = caminhos;
     },
-    // adicionar(item) {
-    //   if (item.categoria_pai == null)
-    //     this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
-    //   else {
-    //     var string = `${item.nome}`;
-    //     var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
-    //     var pai = this.categorias[index];
-    //     string = `${pai.nome} / ${string}`; 
-
-    //     while(pai.categoria_pai != null){
-    //       index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
-    //       pai = this.categorias[index];
-    //       string = `${this.categorias[index].nome} / ${string}`;
-    //     }
-
-    //     //console.log(string);
-    //     this.novasCategorias.push({ nome: string, id: item.categoria_id });
-    //   }
-    // },
     validarCusto(e){
       let valor = e.target.value;
       valor = parseFloat(valor);
