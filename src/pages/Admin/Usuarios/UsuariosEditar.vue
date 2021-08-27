@@ -18,26 +18,34 @@
         <div class="card">
           <div class="card-body">
             <div class="form" @change="mudou">
+              <!-- nome -->
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Nome</label>
-                <input type="text" class="col-sm-8 form-control" v-model="usuario.nome">
+                <input type="text" class="col-sm-8 form-control" @change="validar_nome" v-model="usuario.nome">
+                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
               </div>
 
+              <!-- sobrenome -->
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Sobrenome</label>
-                <input type="text" class="col-sm-8 form-control" v-model="usuario.sobrenome">
+                <input type="text" class="col-sm-8 form-control" @change="validar_sobrenome" v-model="usuario.sobrenome">
+                <span class="col-sm-8 text-danger" v-if="erro_sobrenome" style="margin: 0 auto">{{erro_sobrenome}}</span>
               </div>
               
-              <div class="form-group row">
-                <label for="">Pessoa Jurídica</label>
-                <input type="radio" name="tipoPessoa" :checked="usuario.isCompany" @change="mudarPessoa('pj')">
+              <!-- Tipos de pessoa -->
+              <div class="form-group">
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" name="tipoPessoa" :checked="usuario.isCompany" @change="mudarPessoa('pj')">
+                  <label for="" class="form-check-label">Pessoa Jurídica</label>
+                </div>
+
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" name="tipoPessoa" :checked="!usuario.isCompany" @change="mudarPessoa('pf')">
+                  <label for="" class="form-check-label">Pessoa Física</label>
+                </div>
               </div>
 
-              <div class="form-group row">
-                <label for="">Pessoa Física</label>
-                <input type="radio" name="tipoPessoa" :checked="!usuario.isCompany" @change="mudarPessoa('pf')">
-              </div>
-
+              <!-- Tipo de usuário -->
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">Tipo</label>
                 <select name="" id="" class="col-sm-8 form-control" :disabled="isAdmin">
@@ -47,11 +55,13 @@
                 </select>
               </div>
 
+              <!-- rg -->
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">RG</label>
                 <input type="text" class="col-sm-8 form-control" v-model="usuario.rg">
               </div>
 
+              <!-- cpf -->
               <div class="form-group row">
                 <label for="" class="col-sm-2 col-form-label">CPF</label>
                 <input type="text" class="col-sm-8 form-control" v-model="usuario.cpf">
@@ -125,20 +135,31 @@ export default {
   methods: {
     async listarUsuario(id) {
       const response = await service.listarUsuario(id);
-      if (response.data){
-        this.usuario = response.data;
-        this.isAdmin = this.usuario.isAdmin ;
-        this.isEmployee = this.usuario.isEmployee ;
+      if(response.data.success){
+        this.usuario = response.data.data;
       }
-      else this.$router.push("/dashboard");
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/usuarios');
+      }
     },
     async deletarUsuario(id){
       const response = await service.deletarUsuario(id);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Usuário foi removido com sucesso!');
+        this.$router.push('/admin/usuarios');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     async atualizarUsuario(){
       const response = await service.atualizarUsuario(this.usuario);
-      console.log(response.data);
+      if(response.data.success){
+        this.$toast.success('Usuário foi atualizado com sucesso!');
+        this.$router.push('/admin/usuarios');
+      }
+      else
+        this.$toast.error(response.data.message);
     },
     mudarPessoa(tipo){
       if(tipo == 'pj')
@@ -153,14 +174,19 @@ export default {
       this.etapa = num;
     },
     deletar(){
-      let resposta = confirm('Tem certeza que deseja excluir ? Não há volta.')
-      if(resposta)
-        this.deletarUsuario(this.usuario.id);
+      let id = this.$route.params.id;  
+      this.deletarUsuario(id);
     }
   },
   mounted() {
     const id = this.$route.params.id;
     this.listarUsuario(id);
+  },
+  watch: {
+    usuario: function(){
+      this.isAdmin = this.usuario.isAdmin ;
+      this.isEmployee = this.usuario.isEmployee ;
+    }
   }
 };
 </script>

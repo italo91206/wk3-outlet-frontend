@@ -12,7 +12,9 @@
                   type="text"
                   class="col-sm-8 form-control"
                   v-model="usuarioToPost.nome"
+                  @change="validar_nome"
                 />
+                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
               </div>
 
               <div class="form-group row">
@@ -21,31 +23,9 @@
                   type="text"
                   class="col-sm-8 form-control"
                   v-model="usuarioToPost.sobrenome"
+                  @change="validar_sobrenome"
                 />
-              </div>
-
-              <div class="form-group">
-                <div class="form-check">
-                  <input
-                    type="radio"
-                    class="form-check-input"
-                    name="tipoPessoa"
-                    value="pf"
-                    v-model="tipoPessoa"
-                  />
-                  <label for="" class="form-check-label">Pessoa Física</label>
-                </div>
-                
-                <div class="form-check">
-                  <input
-                    type="radio"
-                    class="form-check-input"
-                    name="tipoPessoa"
-                    value="pj"
-                    v-model="tipoPessoa"
-                  />
-                  <label for="" class="form-check-label">Pessoa Jurídica</label>
-                </div>
+                <span class="col-sm-8 text-danger" v-if="erro_sobrenome" style="margin: 0 auto">{{erro_sobrenome}}</span>
               </div>
 
               <div class="form-group row">
@@ -56,11 +36,12 @@
                   class="col-sm-8 form-control"
                   v-model="tipoCargo"
                 >
-                  <option disabled value="">Escolha um item</option>
-                  <option value="cliente" selected>Cliente</option>
+                  <option disabled selected value="0">Escolha um item</option>
+                  <option value="cliente" >Cliente</option>
                   <option value="funcionario" >Funcionário</option>
                   <option value="administrador">Administrador</option>
                 </select>
+                <span class="col-sm-8 text-danger" v-if="erro_cargo" style="margin: 0 auto">{{erro_cargo}}</span>
               </div>
 
               <div class="form-group row">
@@ -69,7 +50,9 @@
                   type="text"
                   class="col-sm-8 form-control"
                   v-model="usuarioToPost.email"
+                  @change="validar_email"
                 />
+                <span class="col-sm-8 text-danger" v-if="erro_email" style="margin: 0 auto">{{erro_email}}</span>
               </div>
 
               <div class="form-group row">
@@ -89,7 +72,7 @@
     <div class="row">
       <div class="col-lg-9">
         <button
-          class="btn btn-primary float-right"
+          class="btn btn-success float-right"
           :disabled="isChanged"
           @click="salvarUsuario"
         >
@@ -120,26 +103,59 @@ export default {
         isCompany: false
       },
       isChanged: true,
-      tipoPessoa: '',
-      tipoCargo: ''
+      erro_nome: null,
+      erro_sobrenome: null,
+      erro_email: null,
+      erro_senha: null,
+      erro_cargo: null,
+      tipoCargo: 0,
     };
   },
   methods:{
     mudou(){
       this.isChanged = false;
     },
+    validar_nome(e){
+      var string = e.target.value;
+      if(/[^A-z\s\d][\\^]?/.test(string))
+        this.erro_nome = "Não é possível inserir caracteres especiais";
+      else
+        this.erro_nome = null;
+    },
+    validar_sobrenome(e){
+      var string = e.target.value;
+      if(/[^A-z\s\d][\\^]?/.test(string))
+        this.erro_sobrenome = "Não é possível inserir caracteres especiais";
+      else
+        this.erro_sobrenome = null;
+    },
+    validar_email(e){
+      var valor = e.target.value;
+      if(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(valor))
+        this.erro_email = null;        
+      else
+        this.erro_email = 'Email inválido';
+    },
     async salvarUsuario(){
-      const response = await service.novoUsuario(this.usuarioToPost);
-      console.log(response);
+      if(this.tipoCargo == 0)
+        this.erro_cargo = 'Selecione um cargo.';
+      else
+        this.erro_cargo = null;
+      
+      if(this.erro_nome || this.erro_email || this.erro_senha || this.erro_sobrenome || this.erro_cargo)
+        this.$toast.error('Alguns campos estão inválidos');
+      else{
+        const response = await service.novoUsuario(this.usuarioToPost);
+        if(response.data.success){
+          this.$toast.success('Usuário cadastrado com sucesso');
+          this.$router.push('/admin/usuarios');
+        }
+        else
+          this.$toast.error(response.data.message);
+      }
     },
   },
   watch: {
-    tipoPessoa() {
-      if(this.tipoPessoa == 'pj')
-        this.usuarioToPost.isCompany = true;
-      else if(this.tipoPessoa == 'pf')
-        this.usuarioToPost.isCompany = false;
-    },
     tipoCargo(){
       if(this.tipoCargo == 'cliente'){
         this.usuarioToPost.isEmployee = false;

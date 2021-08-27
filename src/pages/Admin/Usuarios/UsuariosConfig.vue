@@ -7,7 +7,6 @@
             <table class="table table-striped table-valign-middle">
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Nome</th>
                   <th>Email</th>
                   <th>Permissões</th>
@@ -17,7 +16,6 @@
 
               <tbody>
                 <tr v-for="usuario in usuarios" :key="usuario.id">
-                  <td>{{ usuario.id }}</td>
                   <td>{{ usuario.nome }} {{ usuario.sobrenome }}</td>
                   <td>{{ usuario.email }}</td>
                   <td v-if="usuario.isAdmin">Administrador</td>
@@ -53,7 +51,10 @@ export default {
   methods: {
     async getUsuarios(){
       const response = await service.listarUsuarios();
-      this.usuarios = response.data;
+      if(response.data.success)
+        this.usuarios = response.data.data;
+      else
+        console.error(response.data.message);
     }
   },
   mounted(){
