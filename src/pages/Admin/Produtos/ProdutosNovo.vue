@@ -39,6 +39,12 @@
               <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
             </div>
 
+            <!-- SKU do produto -->
+            <div class="form-group row">
+              <label for="" class="col-sm-2 col-form-label">SKU</label>
+              <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.sku"/>
+            </div>
+
             <!-- Preço do produto -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Preço</label>
@@ -82,8 +88,6 @@
               </select>
             </div>
 
-            <hr/>
-
             <!-- Modelo -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Modelo</label>
@@ -102,18 +106,35 @@
               </select>
             </div>
 
-            <!-- Cores -->
-            <div class="form-group row disabled">
-              <label for="" class="col-sm-2 col-form-label">Cores</label>
-              
-              <div v-for="cor in cores" v-bind:key="cor.id" class="color-option">
-                <input type="checkbox" class="color-checkbox" v-bind:value="cor.id" v-bind:id="`cor-${cor.id}`">
-                <label v-bind:for="`cor-${cor.id}`" style="display: flex">
-                  <div v-bind:style="`background-color: ${cor.hexa}`"></div>
-                  {{cor.cor}}
-                </label>
+            <hr/>
+            <h4>Variações de produto</h4>
+
+            <div class="form-group row">
+              <!-- Cores -->
+              <div class="form-group row col-sm-5">            
+                <label for="" class="col-sm-5 col-form-label">Cor</label>
+                
+                <select name="" id="" v-model="corSelecionado" class="col-sm-5 form-control">
+                  <option value="0" selected>-- Escolher uma cor --</option>
+                  <option v-for="cor in cores" v-bind:key="cor.cor_id" :value="cor.cor_id">{{cor.cor}}</option>
+                </select>
+              </div>
+
+              <!-- Cores -->
+              <div class="form-group row col-sm-5">
+                <label for="" class="col-sm-5 col-form-label">Tamanho</label>
+
+                <select name="" id="" v-model="tamanhoSelecionado" class="col-sm-5 form-control">
+                  <option value="0" selected>-- Escolher um tamanho --</option>
+                  <option v-for="tamanho in tamanhos" v-bind:key="tamanho.tamanho_id" :value="tamanho.tamanho_id">{{tamanho.tamanho}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-2">
+                <button class="btn btn-success">Adicionar variação</button>
               </div>
             </div>
+
 
             <div class="row">
               <div class="col-sm-10">
@@ -140,6 +161,7 @@ import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
 import imagemService from '@/services/imagens/imagem-service.js'
+import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
 
 export default {
   name: "ProdutosNovo",
@@ -158,10 +180,13 @@ export default {
       },
       modeloSelecionado: '',
       marcaSelecionado: '',
+      corSelecionado: 0,
+      tamanhoSelecionado: 0,
       modelos: [],
       marcas: [],
       cores: [],
       categorias: [],
+      tamanhos: [],
       novasCategorias: [],
       categoriaSelecionado: '',
       erro_nome: null,
@@ -171,6 +196,15 @@ export default {
     }
   },
   methods: {
+    async getTamanhos() {
+      const response = await tamanhoService.listarTamanhos()
+      if(response.data.success)
+        this.tamanhos = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
+    },
     async getMarcas() {
       const response = await marcasService.getMarcas()
       if(response.data.success)
@@ -223,8 +257,12 @@ export default {
     async imagemAdicionado(){
       const formData = new FormData();
       const imagefile = document.querySelector("#custom-file-input");
+      const files = imagefile.files;
 
-      formData.append("fileimage", imagefile.files)
+      files.forEach((item) => {
+        formData.append('fileimage', item);
+      })
+
       const response = await imagemService.enviarImagens(formData);
       if(!response.data.success)
         this.$toast.error(response.data.message);
@@ -264,6 +302,7 @@ export default {
     this.getModelos();
     this.getCores();
     this.getCategorias();
+    this.getTamanhos();
   },
   watch: {
     modeloSelecionado: function(){
