@@ -184,7 +184,7 @@ const routes = [
     }
   },
   {
-    path: '/admin/usuario/novo',
+    path: '/admin/usuarios/novo',
     component: UsuariosNovo,
     name: 'Novo usuário',
     meta: {
