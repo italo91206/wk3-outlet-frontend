@@ -120,6 +120,7 @@
 
 <script>
 import service from "@/services/usuarios/usuario-service.js";
+import validar from '@/utils/validacoes.js'
 
 export default {
   name: "UsuariosEditar",
@@ -129,7 +130,9 @@ export default {
       isAdmin: false,
       isEmployee: false,
       isChanged: true,
-      etapa: 1
+      etapa: 1,
+      erro_nome: null,
+      erro_sobrenome: null,
     };
   },
   methods: {
@@ -176,6 +179,12 @@ export default {
     deletar(){
       let id = this.$route.params.id;  
       this.deletarUsuario(id);
+    },
+    validar_nome(e){
+      this.erro_nome = validar.validarNome(e.target.value);
+    },
+    validar_sobrenome(e){
+      this.erro_sobrenome = validar.validarNome(e.target.value);
     }
   },
   mounted() {

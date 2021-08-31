@@ -59,6 +59,7 @@
 
 <script>
 import service from '@/services/cupons/cupons-service.js'
+import validar from '@/utils/validacoes.js'
 
 export default {
   name: 'CuponsNovo',
@@ -95,22 +96,11 @@ export default {
       }
     },
     validarValor(e){
-      var valor = e.target.value;
-      if(valor < 0.00)
-        this.erro_valor = 'Valor precisa ser positivo';
-      else
-        this.erro_valor = null;
+      this.erro_valor = validar.validarNumeroFlutuante(e.target.value);
     },
     validarData(e){
       var data = new Date(e.target.value);
-      var hoje = new Date();
-
-      if(data < hoje)
-        this.erro_data = 'Data precisa ser válida';
-      else if(e.target.value == "")
-        this.erro_data = 'Preencha este campo.';
-      else
-        this.erro_data = null;
+      this.erro_data = validar.validarDataCupom(data);
     },
     validarTipo(){
       if( this.cupomToPost.is_percent == false && this.cupomToPost.is_fixed == false){
