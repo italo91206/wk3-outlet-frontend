@@ -4,9 +4,8 @@
       <div class="card">
         <div class="card-body">
           <div class="form">
-
+            <!-- Renderização das imagens do produto -->
             <div class="form-group row">
-
               <div class="col-sm-2" style="opacity: 0">
                 <span>hidden</span>
               </div>
@@ -22,7 +21,7 @@
               </div>
             </div>
 
-            <!-- Imagens do produto -->
+            <!-- Input de imagens do produto -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
@@ -114,7 +113,7 @@
               <div class="form-group row col-sm-5">            
                 <label for="" class="col-sm-5 col-form-label">Cor</label>
                 
-                <select name="" id="" v-model="corSelecionado" class="col-sm-5 form-control">
+                <select name="" id="" v-model="variacao_corSelecionado" class="col-sm-5 form-control">
                   <option value="0" selected>-- Escolher uma cor --</option>
                   <option v-for="cor in cores" v-bind:key="cor.cor_id" :value="cor.cor_id">{{cor.cor}}</option>
                 </select>
@@ -124,17 +123,40 @@
               <div class="form-group row col-sm-5">
                 <label for="" class="col-sm-5 col-form-label">Tamanho</label>
 
-                <select name="" id="" v-model="tamanhoSelecionado" class="col-sm-5 form-control">
+                <select name="" id="" v-model="variacao_tamanhoSelecionado" class="col-sm-5 form-control">
                   <option value="0" selected>-- Escolher um tamanho --</option>
                   <option v-for="tamanho in tamanhos" v-bind:key="tamanho.tamanho_id" :value="tamanho.tamanho_id">{{tamanho.tamanho}}</option>
                 </select>
               </div>
 
               <div class="form-group col-sm-2">
-                <button class="btn btn-success">Adicionar variação</button>
+                <button class="btn btn-success" @click="adicionarVariacao">Adicionar</button>
               </div>
             </div>
 
+            <div class="form-group col-lg-12 row">
+              <table class="table table-striped table-valign-middle">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>SKU</th>
+                    <th>Cor</th>
+                    <th>Tamanho</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr v-for="variacao in variacoes" v-bind:key="variacao.id">
+                    <td>{{variacao.nome}}</td>
+                    <td>{{variacao.sku}}</td>
+                    <td>{{variacao.cor}}</td>
+                    <td>{{variacao.tamanho}}</td>
+                    <td><a class="link" @click="removerVariacao(variacao.nome)">remover</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div class="row">
               <div class="col-sm-10">
@@ -177,11 +199,12 @@ export default {
         marca_id: null,
         modelo_id: null,
         categoria_id: null,
+        tipo_produto: 'simples',
       },
       modeloSelecionado: '',
       marcaSelecionado: '',
-      corSelecionado: 0,
-      tamanhoSelecionado: 0,
+      variacao_corSelecionado: 0,
+      variacao_tamanhoSelecionado: 0,
       modelos: [],
       marcas: [],
       cores: [],
@@ -193,6 +216,7 @@ export default {
       erro_custo: null,
       erro_preco: null,
       imagens: [],
+      variacoes: [],
     }
   },
   methods: {
@@ -243,9 +267,12 @@ export default {
       else if(this.produtoToPost.preco <= 0)
         this.$toast.error('Preço do produto não pode ser vazio')
       else{
+        this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.novoProduto(this.produtoToPost);
-        this.imagemAdicionado();
+        
         if(response.data.success){
+          const novo = response.data.data[0];
+          this.imagemAdicionado(novo);
           this.$toast.success('Produto foi adicionado com sucesso!');
           this.$router.push('/admin/produtos');
         }
@@ -254,7 +281,7 @@ export default {
         }
       }
     },
-    async imagemAdicionado(){
+    async imagemAdicionado(novo){
       const formData = new FormData();
       const imagefile = document.querySelector("#custom-file-input");
       const files = imagefile.files;
@@ -262,6 +289,8 @@ export default {
       files.forEach((item) => {
         formData.append('fileimage', item);
       })
+
+      formData.append('id', novo);
 
       const response = await imagemService.enviarImagens(formData);
       if(!response.data.success)
@@ -296,6 +325,49 @@ export default {
       if(isNaN(valor))
         this.erro_preco = 'Precisa ser número'
     },
+    adicionarVariacao(){
+
+      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0){
+        this.$toast.error('Selecione ao menos uma variação.');
+      }
+      else{
+        let variacao = { ...this.produtoToPost };
+        
+        if(this.variacao_corSelecionado != 0){
+          variacao.cor_id = this.variacao_corSelecionado;
+          const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
+          variacao.cor = cor[0].cor;
+          variacao.nome = `${variacao.nome} ${variacao.cor}`;
+        }
+        if(this.variacao_tamanhoSelecionado != 0){
+          variacao.tamanho_id = this.variacao_tamanhoSelecionado;
+          const tamanho = this.tamanhos.filter(tamanho => { return tamanho.tamanho_id === variacao.tamanho_id });
+          variacao.tamanho = tamanho[0].tamanho;
+          variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
+        }
+        
+        this.variacoes.push(variacao);
+        this.variacao_tamanhoSelecionado = 0;
+        this.variacao_corSelecionado = 0;
+      }
+    },
+    removerVariacao(to_delete){
+      let index = 0;
+      let achei;
+      
+      this.variacoes.forEach((variacao) => {
+        if(variacao.nome != to_delete)
+          index++;
+        else
+          achei = index;
+      })
+
+      this.variacoes.splice(achei, 1);
+      // let encontrado = this.variacoes.filter( variacao => { return variacao === to_delete });
+      // encontrado = encontrado[0];
+      // let index = this.variacoes.findIndex(encontrado);
+      // console.log(index);
+    }
   },
   mounted(){
     this.getMarcas();
@@ -313,6 +385,9 @@ export default {
     },
     categoriaSelecionado: function(){
       this.produtoToPost.categoria_id = this.categoriaSelecionado;
+    },
+    variacoes: function(){
+      this.produtoToPost.tipo_produto = this.variacoes.length > 0 ? 'configuravel' : 'simples';
     }
   }
 };
