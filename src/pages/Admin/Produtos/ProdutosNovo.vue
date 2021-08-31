@@ -160,6 +160,7 @@
               </table>
             </div>
 
+            <!-- Botões de salvar / voltar -->
             <div class="row">
               <div class="col-sm-10">
                 <button class="btn btn-success float-right" @click="salvarProduto">

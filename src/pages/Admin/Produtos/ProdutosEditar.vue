@@ -21,6 +21,7 @@
               </div>
             </div>
 
+            <!-- Link para o produto pai, caso este seja uma variação -->
             <div class="form-group row" v-if="link_pai">
               <p>
                 Este produto é uma variação de 
@@ -30,6 +31,7 @@
               </p>
             </div>
 
+            <!-- Input de imagens do produto -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
@@ -39,28 +41,46 @@
               </div>
             </div>
 
+            <!-- Nome do produto -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Nome produto</label>
-              <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.nome"/>
+              <input type="text" class="col-sm-8 form-control" @change="validarNome" v-model="produtoToPost.nome"/>
+              <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
             </div>
 
+            <!-- SKU do produto -->
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Preço</label>
-                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.preco">
+              <label for="" class="col-sm-2 col-form-label">SKU</label>
+              <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.sku"/>
+            </div>
+
+            <!-- Preço do produto -->
+            <div class="form-group row">
+              <label for="" class="col-sm-2 col-form-label">Preço</label>
+              <input type="text" class="col-sm-8 form-control" @change="validarPreco" v-model="produtoToPost.preco">
+              <span class="col-sm-8 text-danger" v-if="erro_preco" style="margin: 0 auto">{{erro_preco}}</span>
             </div>
 
             <hr/>
 
+            <!-- Custo do produto -->
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Custo</label>
-                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.custo">
+              <label for="" class="col-sm-2 col-form-label">Custo</label>
+              <input type="text" class="col-sm-8 form-control" @change="validarCusto" v-model="produtoToPost.custo">
+              <span class="col-sm-8 text-danger" v-if="erro_custo" style="margin: 0 auto">{{erro_custo}}</span>
             </div>
 
+            <!-- Estoque -->
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Estoque</label>
-                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.estoque" @change="mudouEstoque">
+              <label for="" class="col-sm-2 col-form-label">Estoque</label>
+              <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.estoque" @change="mudouEstoque">
+              <span class="col-sm-8 text-danger" v-if="erro_estoque" style="margin: 0 auto">{{erro_estoque}}</span>
             </div>
 
+            <!--
+              Pra quando houver uma mudança de estoque
+              É obrigado escolher um motivo
+            -->
             <div class="form-group row" v-if="estoque_changed">
               <label for="" class="col-sm-2 col-form-label">Motivo de acerto</label>
               <select name="" id="" v-model="motivo" class="col-sm-8 form-control">
@@ -69,54 +89,100 @@
               </select>
             </div>
 
+            <!-- Peso (gramas) -->
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Peso (gramas)</label>
-                <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.peso">
+              <label for="" class="col-sm-2 col-form-label">Peso (gramas)</label>
+              <input type="text" class="col-sm-8 form-control" @change="validarPeso" v-model="produtoToPost.peso">
+              <span class="col-sm-8 text-danger" v-if="erro_peso" style="margin: 0 auto">{{erro_peso}}</span>
             </div>
 
+            <!-- Descrição -->
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Descrição do produto</label>
-                <textarea type="text" rows="3" class="col-sm-8 form-control" v-model="produtoToPost.descricao"></textarea>
+              <label for="" class="col-sm-2 col-form-label">Descrição do produto</label>
+              <textarea type="text" rows="3" class="col-sm-8 form-control" v-model="produtoToPost.descricao"></textarea>
             </div>
 
+            <!-- Categoria -->
             <div class="form-group row disabled">
-                <label for="" class="col-sm-2 col-form-label">Categoria</label>
-                <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
-                  <option value="" selected>-- Escolher uma categoria --</option>
-                  <option v-for="categoria in novasCategorias" v-bind:key="categoria.id" :value="categoria.id">{{categoria.nome}}</option>
-                </select>
+              <label for="" class="col-sm-2 col-form-label">Categoria</label>
+              <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
+                <option value="" selected>-- Escolher uma categoria --</option>
+                <option v-for="categoria in novasCategorias" v-bind:key="categoria.id" :value="categoria.id">{{categoria.nome}}</option>
+              </select>
+            </div>
+
+            <!-- Modelo -->
+            <div class="form-group row">
+              <label for="" class="col-sm-2 col-form-label">Modelo</label>
+              <select name="" id="" class="col-sm-8 form-control" v-model="modeloSelecionado">
+                <option value="" selected>-- Escolher um modelo --</option>
+                <option v-for="modelo in modelos" v-bind:key="modelo.id" :value="modelo.modelo_id">{{modelo.modelo}}</option>
+              </select>
+            </div>
+
+            <!-- Marca -->
+            <div class="form-group row">
+              <label for="" class="col-sm-2 col-form-label">Marca</label>
+              <select name="" id="" v-model="marcaSelecionado" class="col-sm-8 form-control">
+                <option value="" selected>-- Escolher uma marca --</option>
+                <option v-for="marca in marcas" v-bind:key="marca.id" :value="marca.marca_id">{{marca.marca}}</option>
+              </select>
             </div>
 
             <hr/>
-
-             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Modelo</label>
-                <select name="" id="" class="col-sm-8 form-control" v-model="modeloSelecionado">
-                  <option value="" selected>-- Escolher um modelo --</option>
-                  <option v-for="modelo in modelos" v-bind:key="modelo.id" :value="modelo.modelo_id">{{modelo.modelo}}</option>
-                </select>
-            </div>
+            <h4>Variações de produto</h4>
 
             <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Marca</label>
-                <select name="" id="" v-model="marcaSelecionado" class="col-sm-8 form-control">
-                  <option value="" selected>-- Escolher uma marca --</option>
-                  <option v-for="marca in marcas" v-bind:key="marca.id" :value="marca.marca_id">{{marca.marca}}</option>
-                </select>
-            </div>
-
-            <div class="form-group row disabled">
-                <label for="" class="col-sm-2 col-form-label">Cores</label>
+              <!-- Cores -->
+              <div class="form-group row col-sm-5">            
+                <label for="" class="col-sm-5 col-form-label">Cor</label>
                 
-                <div v-for="cor in cores" v-bind:key="cor.id" class="color-option">
-                  <input type="checkbox" class="color-checkbox" v-bind:value="cor.id" v-bind:id="`cor-${cor.id}`">
-                  <label v-bind:for="`cor-${cor.id}`" style="display: flex">
-                    <div v-bind:style="`background-color: ${cor.hexa}`"></div>
-                    {{cor.cor}}
-                  </label>
-                </div>
+                <select name="" id="" v-model="variacao_corSelecionado" class="col-sm-5 form-control">
+                  <option value="0" selected>-- Escolher uma cor --</option>
+                  <option v-for="cor in cores" v-bind:key="cor.cor_id" :value="cor.cor_id">{{cor.cor}}</option>
+                </select>
+              </div>
+
+              <!-- Tamanhos -->
+              <div class="form-group row col-sm-5">
+                <label for="" class="col-sm-5 col-form-label">Tamanho</label>
+
+                <select name="" id="" v-model="variacao_tamanhoSelecionado" class="col-sm-5 form-control">
+                  <option value="0" selected>-- Escolher um tamanho --</option>
+                  <option v-for="tamanho in tamanhos" v-bind:key="tamanho.tamanho_id" :value="tamanho.tamanho_id">{{tamanho.tamanho}}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-2">
+                <button class="btn btn-success" @click="adicionarVariacao">Adicionar</button>
+              </div>
             </div>
 
+            <div class="form-group col-lg-12 row">
+              <table class="table table-striped table-valign-middle">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>SKU</th>
+                    <th>Cor</th>
+                    <th>Tamanho</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr v-for="variacao in variacoes" v-bind:key="variacao.id">
+                    <td>{{variacao.nome}}</td>
+                    <td>{{variacao.sku}}</td>
+                    <td>{{variacao.cor}}</td>
+                    <td>{{variacao.tamanho}}</td>
+                    <td><a class="link" @click="removerVariacao(variacao.nome)">remover</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Botões de salvar / deletar / voltar -->
             <div class="row">
               <div class="col-sm-10">
                 <button class="btn btn-success float-right" @click="salvarProduto">
@@ -149,6 +215,7 @@ import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
 import imagemService from '@/services/imagens/imagem-service.js'
 import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
+import validar from '@/utils/validacoes.js'
 
 export default {
   name: "ProdutosEditar",
@@ -172,11 +239,20 @@ export default {
       estoque_changed: false,
       motivo: '',
       motivos: [],
+      erro_nome: null,
+      erro_custo: null,
+      erro_preco: null,
+      erro_estoque: null,
+      erro_peso: null,
       categorias: [],
+      tamanhos: [],
+      variacoes: [],
       novasCategorias: [],
       categoriaSelecionado: '',
       imagens: [],
       link_pai: null,
+      variacao_corSelecionado: 0,
+      variacao_tamanhoSelecionado: 0,
     }
   },
   methods: {
@@ -305,6 +381,11 @@ export default {
       else
         console.error(response.data.message);
     },
+    async recuperarVariacoes(){
+      const response = await produtoService.recuperarVariacoes(this.produtoToPost.produto_id);
+      if(response.data.success)
+        this.variacoes = response.data.data;
+    },
     adicionar(item) {
       if (item.categoria_pai == null)
         this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
@@ -331,7 +412,66 @@ export default {
     },
     mudouEstoque(){
       this.estoque_changed = true;
-    }
+    },
+    validarNome(e){
+      this.erro_nome = validar.validarNome(e.target.value);
+    },
+    validarEstoque(e){
+      this.erro_estoque = validar.validarNumeroInteiro(e.target.value);
+    },
+    validarCusto(e){
+      this.erro_custo = validar.validarNumeroInteiro(e.target.value);
+    },
+    validarPreco(e){
+      this.erro_preco = validar.validarNumeroFlutuante(e.target.value);
+    },
+    validarPeso(e){
+      this.erro_peso = validar.validarNumeroFlutuante(e.target.value);
+    },
+    adicionarVariacao(){
+
+      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0){
+        this.$toast.error('Selecione ao menos uma variação.');
+      }
+      else{
+        let variacao = { ...this.produtoToPost };
+        variacao.sku = `${variacao.sku}-${this.variacaoIndex++}`;
+        
+        if(this.variacao_corSelecionado != 0){
+          variacao.cor_id = this.variacao_corSelecionado;
+          const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
+          variacao.cor = cor[0].cor;
+          variacao.nome = `${variacao.nome} ${variacao.cor}`;
+        }
+        if(this.variacao_tamanhoSelecionado != 0){
+          variacao.tamanho_id = this.variacao_tamanhoSelecionado;
+          const tamanho = this.tamanhos.filter(tamanho => { return tamanho.tamanho_id === variacao.tamanho_id });
+          variacao.tamanho = tamanho[0].tamanho;
+          variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
+        }
+        
+        this.variacoes.push(variacao);
+        this.variacao_tamanhoSelecionado = 0;
+        this.variacao_corSelecionado = 0;
+      }
+    },
+    removerVariacao(to_delete){
+      let index = 0;
+      let achei;
+      
+      this.variacoes.forEach((variacao) => {
+        if(variacao.nome != to_delete)
+          index++;
+        else
+          achei = index;
+      })
+
+      this.variacoes.splice(achei, 1);
+      // let encontrado = this.variacoes.filter( variacao => { return variacao === to_delete });
+      // encontrado = encontrado[0];
+      // let index = this.variacoes.findIndex(encontrado);
+      // console.log(index);
+    },
   },
   mounted(){
     this.getMarcas();
@@ -346,10 +486,23 @@ export default {
       if(this.produtoToPost.modelo_id) this.modeloSelecionado = this.produtoToPost.modelo_id;
       if(this.produtoToPost.marca_id) this.marcaSelecionado = this.produtoToPost.marca_id;
       if(this.produtoToPost.produto_pai) this.carregarUrlProdutoPai(this.produtoToPost.produto_pai);
+      if(this.produtoToPost.tipo_produto == 'configuravel') this.recuperarVariacoes();
       this.recuperarImagens();
     },
     estoque_changed: function(){
       this.carregarMotivos();
+    },
+    variacoes: function(){
+      this.variacoes.forEach((variacao) => {
+        if(variacao.cor_id){
+          const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
+          variacao.cor = cor[0].cor;
+        }
+        if(variacao.tamanho_id){
+          const tamanho = this.tamanhos.filter(tamanho => { return tamanho.tamanho_id === variacao.tamanho_id });
+          variacao.tamanho = tamanho[0].tamanho;
+        }
+      })
     }
   }
 };

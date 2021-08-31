@@ -36,7 +36,19 @@ const ProdutoService = {
             return response;
         }
         catch(err){
-            console.log(err.message);
+            console.log(err);
+        }
+    },
+
+    recuperarVariacoes: async(id) => {
+        try {
+            const response = await api.get('/produto/filhos', {
+                params: { id: id }
+            });
+            return response;
+        }
+        catch(err){
+            console.log(err);
         }
     }
 }
