@@ -26,6 +26,18 @@ const ProdutoService = {
     atualizarProduto: async(produto) => {
         const response = await api.put('produto/atualizar', { produto: produto });
         return response;
+    },
+
+    recuperarUrlPorId: async(id) => {
+        try {
+            const response = await api.get('/produto/produtoPorId', {
+                params: { id: id}
+            });
+            return response;
+        }
+        catch(err){
+            console.log(err.message);
+        }
     }
 }
 

@@ -63,13 +63,15 @@
             <!-- Estoque -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Estoque</label>
-              <input type="number" class="col-sm-8 form-control" v-model="produtoToPost.estoque">
+              <input type="number" class="col-sm-8 form-control" @change="validarEstoque" v-model="produtoToPost.estoque">
+              <span class="col-sm-8 text-danger" v-if="erro_estoque" style="margin: 0 auto">{{erro_estoque}}</span>
             </div>
 
             <!-- Peso (gramas) -->
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Peso (gramas)</label>
-              <input type="number" class="col-sm-8 form-control" v-model="produtoToPost.peso">
+              <input type="number" class="col-sm-8 form-control" @change="validarPeso" v-model="produtoToPost.peso">
+              <span class="col-sm-8 text-danger" v-if="erro_peso" style="margin: 0 auto">{{erro_peso}}</span>
             </div>
 
             <!-- Descrição -->
@@ -215,8 +217,11 @@ export default {
       erro_nome: null,
       erro_custo: null,
       erro_preco: null,
+      erro_estoque: null,
+      erro_peso: null,
       imagens: [],
       variacoes: [],
+      variacaoIndex: 0,
     }
   },
   methods: {
@@ -310,7 +315,11 @@ export default {
       let valor = e.target.value;
       valor = parseFloat(valor);
       if(isNaN(valor))
-        this.erro_custo = 'Precisa ser número'
+        this.erro_custo = null;
+      else if(valor < 0)
+        this.erro_custo = 'Custo não pode ser menor que 0';
+      else
+        this.erro_custo = null;
     },
     validarNome(e){
       var string = e.target.value;
@@ -319,11 +328,34 @@ export default {
       else
         this.erro_nome = '';
     },
+    validarEstoque(e){
+      var valor = e.target.value;
+      if(isNaN(valor))
+        this.erro_estoque = null
+      else if(valor < 0)
+        this.erro_estoque = 'Estoque não pode ser menor que 0.'
+      else
+        this.erro_estoque = null;
+    },
     validarPreco(e){
       let valor = e.target.value;
       valor = parseFloat(valor);
       if(isNaN(valor))
-        this.erro_preco = 'Precisa ser número'
+        this.erro_preco = null;
+      else if(valor <= 0)
+        this.erro_preco = 'Precisa ser maior que 0';
+      else
+        this.erro_preco = null;
+    },
+    validarPeso(e){
+      let valor = e.target.value;
+      valor = parseFloat(valor);
+      if(isNaN(valor))
+        this.erro_peso = null;
+      else if(valor < 0)
+        this.erro_peso = 'Peso não pode ser menor que 0';
+      else
+        this.erro_peso = null;
     },
     adicionarVariacao(){
 
@@ -332,6 +364,7 @@ export default {
       }
       else{
         let variacao = { ...this.produtoToPost };
+        variacao.sku = `${variacao.sku}-${this.variacaoIndex++}`;
         
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;

@@ -21,9 +21,12 @@
               </div>
             </div>
 
-            <div class="form-group row" v-if="produtoToPost.produto_pai">
-              <p class="warning">
-                Este produto é uma variação de {{ produtoToPost.produto_pai }}
+            <div class="form-group row" v-if="link_pai">
+              <p>
+                Este produto é uma variação de 
+                <router-link :to="`/admin/produtos/editar/${link_pai}`" class="warning">
+                  /{{ link_pai }}
+                </router-link>
               </p>
             </div>
 
@@ -173,6 +176,7 @@ export default {
       novasCategorias: [],
       categoriaSelecionado: '',
       imagens: [],
+      link_pai: null,
     }
   },
   methods: {
@@ -294,6 +298,13 @@ export default {
         this.imagens = novo;
       }
     },
+    async carregarUrlProdutoPai(id){
+      const response = await produtoService.recuperarUrlPorId(id)
+      if(response.data.success)
+        this.link_pai = response.data.data.url;
+      else
+        console.error(response.data.message);
+    },
     adicionar(item) {
       if (item.categoria_pai == null)
         this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
@@ -334,6 +345,7 @@ export default {
     produtoToPost: function(){
       if(this.produtoToPost.modelo_id) this.modeloSelecionado = this.produtoToPost.modelo_id;
       if(this.produtoToPost.marca_id) this.marcaSelecionado = this.produtoToPost.marca_id;
+      if(this.produtoToPost.produto_pai) this.carregarUrlProdutoPai(this.produtoToPost.produto_pai);
       this.recuperarImagens();
     },
     estoque_changed: function(){
