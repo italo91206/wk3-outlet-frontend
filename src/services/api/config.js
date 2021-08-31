@@ -7,5 +7,5 @@ export const config = {
         if(ENVIROMENT === 'production') baseURL = `https://wk3-outlet-backend.herokuapp.com/`
 
         return baseURL;
-    }
+    },
 };
