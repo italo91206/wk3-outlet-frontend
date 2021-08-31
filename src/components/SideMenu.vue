@@ -193,8 +193,14 @@
 
                 <!-- opção de usuários -->
                 <li class="nav-item">
+                  <router-link to="/admin/usuarios/novo" class="nav-link">
+                    <p>Novo perfi</p>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
                   <router-link to="/admin/usuarios" class="nav-link">
-                    <p>Perfis</p>
+                    <p>Consultar perfis</p>
                   </router-link>
                 </li>
               </ul>
