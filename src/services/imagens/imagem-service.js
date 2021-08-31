@@ -13,6 +13,17 @@ const ImagemService = {
 		catch(error){
 			console.log(error)
 		}
+	},
+	recuperarImagens: async(id) => {
+		try {
+			const response = await api.get('/imagens/recuperar', {
+				params: { id: id },
+			});
+			return response;
+		}
+		catch(error){
+			console.log(error);
+		}
 	}
 }
 
