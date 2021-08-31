@@ -4,10 +4,27 @@
       <div class="card">
         <div class="card-body">
           <div class="form">
-            <div class="form-group">
-              <div class="imagem-place-holder">
-                <span>+</span>
+            <!-- Renderização das imagens do produto -->
+            <div class="form-group row">
+              <div class="col-sm-2" style="opacity: 0">
+                <span>hidden</span>
               </div>
+
+              <div class="col-sm-8 row">
+                <div v-if="imagens.length == 0" class="imagem-place-holder">
+                  <span>+</span>
+                </div>
+
+                <div v-else v-for="imagem in imagens" v-bind:key="imagem.id" class="imagem-place-holder">
+                  <img :src="imagem" alt="">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row" v-if="produtoToPost.produto_pai">
+              <p class="warning">
+                Este produto é uma variação de {{ produtoToPost.produto_pai }}
+              </p>
             </div>
 
             <div class="form-group row">
@@ -127,6 +144,8 @@ import produtoService from '@/services/produto/produto-service.js'
 import motivosService from '@/services/motivo/motivos-service.js'
 import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
+import imagemService from '@/services/imagens/imagem-service.js'
+import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
 
 export default {
   name: "ProdutosEditar",
@@ -153,6 +172,7 @@ export default {
       categorias: [],
       novasCategorias: [],
       categoriaSelecionado: '',
+      imagens: [],
     }
   },
   methods: {
@@ -197,7 +217,8 @@ export default {
           alert('Por favor selecione um motivo');
         }
         else{
-          const acerto = await acertoService.gravarAcerto(this.produtoToPost, 1, this.motivo);
+          const perfil_id = this.$store.state.perfil.perfil.id
+          const acerto = await acertoService.gravarAcerto(this.produtoToPost, perfil_id, this.motivo);
           if(acerto.data.success)
             this.$toast.success('Estoque foi acertado com sucesso').
           else
@@ -243,6 +264,36 @@ export default {
         this.$router.push('/admin/produtos');
       }
     },
+    async getTamanhos() {
+      const response = await tamanhoService.listarTamanhos()
+      if(response.data.success)
+        this.tamanhos = response.data.data;
+      else{
+        this.$toast.error(response.data.message);
+        this.$router.push('/admin/produtos');
+      }
+    },
+    async recuperarImagens() {
+      const id = this.produtoToPost.produto_id;
+      const response = await imagemService.recuperarImagens(id);
+
+      if(response.data.success){
+        const ENVIROMENT = process.env.NODE_ENV;
+        let baseURL = `http://localhost:5000`
+
+        if(ENVIROMENT === 'production')
+          baseURL = `https://wk3-outlet-backend.herokuapp.com`;
+
+        const recuperado = response.data.data;
+        let novo = [];
+
+        recuperado.forEach((item) => {
+          novo.push(`${baseURL}${item.url}`)
+        })
+        
+        this.imagens = novo;
+      }
+    },
     adicionar(item) {
       if (item.categoria_pai == null)
         this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
@@ -277,11 +328,13 @@ export default {
     this.getCores();
     this.getProduto();
     this.getCategorias();
+    this.getTamanhos();
   },
   watch: {
     produtoToPost: function(){
       if(this.produtoToPost.modelo_id) this.modeloSelecionado = this.produtoToPost.modelo_id;
       if(this.produtoToPost.marca_id) this.marcaSelecionado = this.produtoToPost.marca_id;
+      this.recuperarImagens();
     },
     estoque_changed: function(){
       this.carregarMotivos();
