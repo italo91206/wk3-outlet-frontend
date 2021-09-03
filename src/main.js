@@ -6,6 +6,8 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 import jwt_decode from "jwt-decode";
 import store from './store';
+import vuetify from '@/plugins/vuetify';
+
 
 Vue.config.productionTip = false
 
@@ -86,6 +88,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
+  vuetify,
   VueToast,
   store,
   render: h => h(App)

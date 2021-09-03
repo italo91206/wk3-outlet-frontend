@@ -1,227 +1,273 @@
 <template>
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <router-link to="/dashboard" id="brand-link" class="w100">
-        <img
-          src="/logotipo-extenso-bw.png"
-          alt="WK3 Logo"
-          class="brand-image"
-        />
-      </router-link>
+  <v-card class="mx-auto overflow-hidden" height="400">
+    <!-- <router-link to="/dashboard" id="brand-link" class="w100">
+      <img
+        src="/logotipo-extenso-bw.png"
+        alt="WK3 Logo"
+        class="brand-image"
+      />
+    </router-link> -->
 
-      <div class="sidebar">
-        <nav class="mt-2">
-          <ul
-            class="nav nav-pills nav-sidebar flex-column"
-            data-widget="treeview"
-            role="menu"
-            data-accordion="false"
-          >
+    <v-app-bar color="deep-purple" dark>
+      <v-app-bar-nav-icon @click="drawer = true">
+      </v-app-bar-nav-icon>
 
-            <!-- opção de vendas -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-dollar-sign"></i>
-                <p>Vendas</p>
-              </router-link>
-            </li>
+      <v-toolbar-title>Title</v-toolbar-title>
+    </v-app-bar>
 
-            <!-- opção de catálogo -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-box-open"></i>
-                <p>
-                  Catálogo
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </router-link>
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list nav dense>
+        <!-- Item de vendas -->
+        <v-list-item>
+          <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
 
-              <ul class="nav nav-treeview">
-                <!-- opção de produtos -->
-                <li class="nav-item">
-                  <router-link to="/admin/produtos/novo" class="nav-link">
-                    <p>Novo produto</p>
-                  </router-link>
-                </li>
+          <v-list-item-title>Vendas</v-list-item-title>
+        </v-list-item>
 
-                <li class="nav-item">
-                  <router-link to="/admin/produtos" class="nav-link">
-                    <p>Consultar produtos</p>
-                  </router-link>
-                </li>
+        <!-- Item de catálogo -->
+        <template v-slot:activator>
+            <v-list-item-title>Catálogo</v-list-item-title>
+        </template>
 
-                <!-- opção de categorias -->
-                <li class="nav-item">
-                  <router-link to="/admin/categorias/novo" class="nav-link">
-                    <p>Nova categoria</p>
-                  </router-link>
-                </li>
+        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <template v-slot:activator>
+            <v-list-item-title>Produtos</v-list-item-title>
+          </template>
+        </v-list-item-group>
 
-                <li class="nav-item">
-                  <router-link to="/admin/categorias" class="nav-link">
-                    <p>Ver categorias</p>
-                  </router-link>
-                </li>
+        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <template v-slot:activator>
+            <v-list-item-title>Categorias</v-list-item-title>
+          </template>
+        </v-list-item-group>
 
-                <!-- opção de acerto -->
-                <li class="nav-item">
-                  <router-link to="/admin/acertos" class="nav-link">
-                    <p>Acertos de estoque</p>
-                  </router-link>
-                </li>
-              </ul>
-            </li>
+        <v-list-item>
+          <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
 
-            <!-- opção de marketing -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-bullhorn"></i>
-                <p>
-                  Marketing
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </router-link>
+          <v-list-item-title>Sair</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
-              <ul class="nav nav-treeview">
-                <!-- opção de cupons -->
-                <li class="nav-item">
-                  <router-link to="/admin/cupons/novo" class="nav-link">
-                    <p>Novo cupom</p>
-                  </router-link>
-                </li>
+    <!-- <div class="sidebar">
+      <nav class="mt-2">
+        <ul
+          class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview"
+          role="menu"
+          data-accordion="false"
+        >
 
-                <li class="nav-item">
-                  <router-link to="/admin/cupons" class="nav-link">
-                    <p>Consultar cupons</p>
-                  </router-link>
-                </li>
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-dollar-sign"></i>
+              <p>Vendas</p>
+            </router-link>
+          </li>
 
-                <!-- opção de newsletter -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Newsletter</p>
-                  </router-link>
-                </li>
-              </ul>
-            </li>
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-box-open"></i>
+              <p>
+                Catálogo
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </router-link>
 
-            <!-- opção de relatórios -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-clipboard"></i>
-                <p>
-                  Relatórios
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </router-link>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/admin/produtos/novo" class="nav-link">
+                  <p>Novo produto</p>
+                </router-link>
+              </li>
 
-              <ul class="nav nav-treeview">
-                <!-- opção de relatório por produtos -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Produtos</p>
-                  </router-link>
-                </li>
+              <li class="nav-item">
+                <router-link to="/admin/produtos" class="nav-link">
+                  <p>Consultar produtos</p>
+                </router-link>
+              </li>
 
-                <!-- opção de relatório por usuários -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Usuários</p>
-                  </router-link>
-                </li>
+              <li class="nav-item">
+                <router-link to="/admin/categorias/novo" class="nav-link">
+                  <p>Nova categoria</p>
+                </router-link>
+              </li>
 
-                <!-- opção de relatório por vendas -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Vendas</p>
-                  </router-link>
-                </li>
-              </ul>
-            </li>
+              <li class="nav-item">
+                <router-link to="/admin/categorias" class="nav-link">
+                  <p>Ver categorias</p>
+                </router-link>
+              </li>
 
-            <!-- opção de suporte -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-question-circle"></i>
-                <p>Suporte</p>
-              </router-link>
-            </li>
+              <li class="nav-item">
+                <router-link to="/admin/acertos" class="nav-link">
+                  <p>Acertos de estoque</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
 
-            <!-- opção de configurações -->
-            <li class="nav-item">
-              <router-link to="" class="nav-link">
-                <i class="nav-icon fas fa-cog"></i>
-                <p>
-                  Configurações
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </router-link>
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-bullhorn"></i>
+              <p>
+                Marketing
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </router-link>
 
-              <ul class="nav nav-treeview">
-                <!-- opção de atributos -->
-                <li class="nav-item">
-                  <router-link to="/admin/atributos" class="nav-link">
-                    <p>Atributos</p>
-                  </router-link>
-                </li>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/admin/cupons/novo" class="nav-link">
+                  <p>Novo cupom</p>
+                </router-link>
+              </li>
 
-                <!-- opção de preferências -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Preferências</p>
-                  </router-link>
-                </li>
+              <li class="nav-item">
+                <router-link to="/admin/cupons" class="nav-link">
+                  <p>Consultar cupons</p>
+                </router-link>
+              </li>
 
-                <!-- opção de loja -->
-                <li class="nav-item">
-                  <router-link to="" class="nav-link">
-                    <p>Loja</p>
-                  </router-link>
-                </li>
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Newsletter</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
 
-                <!-- opção de motivos -->
-                <li class="nav-item">
-                  <router-link to="/admin/motivos/novo" class="nav-link">
-                    <p>Novo motivo</p>
-                  </router-link>
-                </li>
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-clipboard"></i>
+              <p>
+                Relatórios
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </router-link>
 
-                <li class="nav-item">
-                  <router-link to="/admin/motivos" class="nav-link">
-                    <p>Consultar motivos</p>
-                  </router-link>
-                </li>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Produtos</p>
+                </router-link>
+              </li>
 
-                <!-- opção de usuários -->
-                <li class="nav-item">
-                  <router-link to="/admin/usuarios/novo" class="nav-link">
-                    <p>Novo perfi</p>
-                  </router-link>
-                </li>
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Usuários</p>
+                </router-link>
+              </li>
 
-                <li class="nav-item">
-                  <router-link to="/admin/usuarios" class="nav-link">
-                    <p>Consultar perfis</p>
-                  </router-link>
-                </li>
-              </ul>
-            </li>
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Vendas</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
 
-            <!-- opção de sair -->
-            <li class="nav-item">
-              <a class="nav-link" @click="logoff">
-                <i class="nav-icon fas fa-power-off"></i>
-                <p>Sair</p>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </aside>
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-question-circle"></i>
+              <p>Suporte</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link to="" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+                Configurações
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </router-link>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/admin/atributos" class="nav-link">
+                  <p>Atributos</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Preferências</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="" class="nav-link">
+                  <p>Loja</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/admin/motivos/novo" class="nav-link">
+                  <p>Novo motivo</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/admin/motivos" class="nav-link">
+                  <p>Consultar motivos</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/admin/usuarios/novo" class="nav-link">
+                  <p>Novo perfi</p>
+                </router-link>
+              </li>
+
+              <li class="nav-item">
+                <router-link to="/admin/usuarios" class="nav-link">
+                  <p>Consultar perfis</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" @click="logoff">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Sair</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div> -->
+  </v-card>
 </template>
 
 <script>
 export default {
   name: "SideMenu",
+  data(){
+    return {
+      drawer: false,
+      group: null,
+      admins: [
+        ['Management', 'mdi-account-multiple-outline'],
+        ['Settings', 'mdi-cog-outline'],
+      ],
+      catalogo: [
+        ['Cupons', 'mdi-account-multiple-outline'],
+        ['Produtos', 'mdi-account-multiple-outline'],
+        ['Estoque', 'mdi-account-multiple-outline']
+      ],
+      cruds: [
+        ['Create', 'mdi-plus-outline'],
+        ['Read', 'mdi-file-outline'],
+        ['Update', 'mdi-update'],
+        ['Delete', 'mdi-delete'],
+      ],
+    }
+  },
   methods:{
     logoff(){
       localStorage.removeItem('user');
