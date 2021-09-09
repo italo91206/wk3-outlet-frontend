@@ -1,13 +1,5 @@
 <template>
-  <v-card class="mx-auto overflow-hidden" height="400">
-    <!-- <router-link to="/dashboard" id="brand-link" class="w100">
-      <img
-        src="/logotipo-extenso-bw.png"
-        alt="WK3 Logo"
-        class="brand-image"
-      />
-    </router-link> -->
-
+  <v-card class="mx-auto overflow-hidden" height="100%">
     <v-app-bar color="deep-purple" dark>
       <v-app-bar-nav-icon @click="drawer = true">
       </v-app-bar-nav-icon>
@@ -16,36 +8,367 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
+      <router-link to="/dashboard" id="brand-link" class="w100" style="background: #333333;">
+        <img
+          src="/logotipo-extenso-bw.png"
+          alt="WK3 Logo"
+          class="brand-image"
+        />
+      </router-link>
+      
       <v-list nav dense>
         <!-- Item de vendas -->
-        <v-list-item>
+        <v-list-item to="/admin/vendas">
           <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+            <v-icon small>fas fa-dollar-sign</v-icon>
           </v-list-item-icon>
 
           <v-list-item-title>Vendas</v-list-item-title>
         </v-list-item>
 
         <!-- Item de catálogo -->
-        <template v-slot:activator>
+        <v-list-group :value="false">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon small>fas fa-box-open</v-icon>
+            </v-list-item-icon>
+            
             <v-list-item-title>Catálogo</v-list-item-title>
-        </template>
+          </template>
+          
+          <!-- Item de produtos -->
+          <v-list-group :value="false" no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Produtos</v-list-item-title>
+              </v-list-item-content>
+            </template>
 
-        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+            <v-list-item to="/admin/produtos/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/produtos">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>Consultar</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de categorias -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Categorias</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/categorias/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/categorias">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Acerto de estoque -->
+          <v-list-item to="/admin/acertos">
+            <v-list-item-title>
+              Acerto de estoque
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <!-- Item de marketing -->
+        <v-list-group :value="false">
           <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon small>fas fa-bullhorn</v-icon>
+            </v-list-item-icon>
+            
+            <v-list-item-title>Marketing</v-list-item-title>
+          </template>
+          
+          <!-- Item de cupons -->
+          <v-list-group :value="false" no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Cupons</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/cupons/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/cupons">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>Consultar</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de newsletter -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Newsletter</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/categorias/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/categorias">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <!-- Item de relatórios -->
+        <v-list-group :value="false">
+          <template v-slot:activator>
+            <v-list-item-icon>
+              <v-icon small>fas fa-clipboard</v-icon>
+            </v-list-item-icon>
+            
+            <v-list-item-title>Relatórios</v-list-item-title>
+          </template>
+
+          <!-- Produtos -->
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon small>fas fa-tshirt</v-icon>
+            </v-list-item-icon>
+
             <v-list-item-title>Produtos</v-list-item-title>
-          </template>
-        </v-list-item-group>
+          </v-list-item>
 
-        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <!-- Usuários -->
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon small>fas fa-user</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Usuários</v-list-item-title>
+          </v-list-item>
+
+          <!-- Vendas -->
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon small>fas fa-dollar-sign</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Vendas</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <!-- Item de atributos -->
+        <v-list-group :value="false">
           <template v-slot:activator>
-            <v-list-item-title>Categorias</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon small>fas fa-cog</v-icon>
+            </v-list-item-icon>
+            
+            <v-list-item-title>Atributos</v-list-item-title>
           </template>
-        </v-list-item-group>
+          
+          <!-- Item de cores -->
+          <v-list-group :value="false" no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Cores</v-list-item-title>
+              </v-list-item-content>
+            </template>
 
-        <v-list-item>
+            <v-list-item to="/admin/cores/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/cores">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>Consultar</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de marcas -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Marcas</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/marcas/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/marcas">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de modelos -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Modelos</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/modelos/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/modelos">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de tamanhos -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Tamanhos</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/tamanhos/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/tamanhos">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Item de motivos -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Motivos</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/motivos/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/motivos">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <!-- Item para sair -->
+        <v-list-item @click="logoff">
           <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon small>fas fa-power-off</v-icon>
           </v-list-item-icon>
 
           <v-list-item-title>Sair</v-list-item-title>
@@ -53,194 +376,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- <div class="sidebar">
-      <nav class="mt-2">
-        <ul
-          class="nav nav-pills nav-sidebar flex-column"
-          data-widget="treeview"
-          role="menu"
-          data-accordion="false"
-        >
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-dollar-sign"></i>
-              <p>Vendas</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-box-open"></i>
-              <p>
-                Catálogo
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </router-link>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/admin/produtos/novo" class="nav-link">
-                  <p>Novo produto</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/produtos" class="nav-link">
-                  <p>Consultar produtos</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/categorias/novo" class="nav-link">
-                  <p>Nova categoria</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/categorias" class="nav-link">
-                  <p>Ver categorias</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/acertos" class="nav-link">
-                  <p>Acertos de estoque</p>
-                </router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-bullhorn"></i>
-              <p>
-                Marketing
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </router-link>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/admin/cupons/novo" class="nav-link">
-                  <p>Novo cupom</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/cupons" class="nav-link">
-                  <p>Consultar cupons</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Newsletter</p>
-                </router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-clipboard"></i>
-              <p>
-                Relatórios
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </router-link>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Produtos</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Usuários</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Vendas</p>
-                </router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-question-circle"></i>
-              <p>Suporte</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                Configurações
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </router-link>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/admin/atributos" class="nav-link">
-                  <p>Atributos</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Preferências</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="" class="nav-link">
-                  <p>Loja</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/motivos/novo" class="nav-link">
-                  <p>Novo motivo</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/motivos" class="nav-link">
-                  <p>Consultar motivos</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/usuarios/novo" class="nav-link">
-                  <p>Novo perfi</p>
-                </router-link>
-              </li>
-
-              <li class="nav-item">
-                <router-link to="/admin/usuarios" class="nav-link">
-                  <p>Consultar perfis</p>
-                </router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" @click="logoff">
-              <i class="nav-icon fas fa-power-off"></i>
-              <p>Sair</p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div> -->
+    <v-main>
+      <slot/>
+    </v-main>
   </v-card>
 </template>
 
@@ -250,22 +388,7 @@ export default {
   data(){
     return {
       drawer: false,
-      group: null,
-      admins: [
-        ['Management', 'mdi-account-multiple-outline'],
-        ['Settings', 'mdi-cog-outline'],
-      ],
-      catalogo: [
-        ['Cupons', 'mdi-account-multiple-outline'],
-        ['Produtos', 'mdi-account-multiple-outline'],
-        ['Estoque', 'mdi-account-multiple-outline']
-      ],
-      cruds: [
-        ['Create', 'mdi-plus-outline'],
-        ['Read', 'mdi-file-outline'],
-        ['Update', 'mdi-update'],
-        ['Delete', 'mdi-delete'],
-      ],
+      group: null
     }
   },
   methods:{
