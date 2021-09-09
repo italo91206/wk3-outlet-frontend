@@ -1,5 +1,40 @@
 <template>
-  <main id="admin-login">
+    <v-card>
+      <v-form>
+        <v-container>
+          <v-row>
+            <v-col cols="12" md="12">
+              <v-text-field v-model="userInput"></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" md="12">
+              <v-text-field 
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
+                v-model="passwordInput"
+                @click:append="show = !show"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" md="12">
+              <v-btn
+                color="success"
+                class="mr-4"
+                @click="fazerLogin"
+              >
+                Fazer Login
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-card>
+  <!-- <main id="admin-login">
     <div class="wrapper">
       <div class="card card-primary login-form">
         <div class="card-header">
@@ -38,7 +73,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -48,10 +83,11 @@ export default {
   name: "Login",
   data() {
     return {
-      userInput: "login",
-      passwordInput: "senha",
+      userInput: "",
+      passwordInput: "",
       info: "",
       errorMsg: "",
+      show: false,
     };
   },
   methods: {
