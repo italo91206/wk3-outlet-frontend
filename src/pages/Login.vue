@@ -34,46 +34,6 @@
         </v-container>
       </v-form>
     </v-card>
-  <!-- <main id="admin-login">
-    <div class="wrapper">
-      <div class="card card-primary login-form">
-        <div class="card-header">
-          <h3 class="text-center">Wk3 Outlet</h3>
-        </div>
-
-        <div class="card-body">
-          <div class="form-group">
-            <label for="inputEmail">Usuário</label>
-            <input
-              type="text"
-              id="inputEmail"
-              v-model="userInput"
-              class="form-control"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="">Senha</label>
-            <input
-              type="password"
-              v-model="passwordInput"
-              class="form-control"
-            />
-          </div>
-
-          <p v-if="errorMsg">
-            {{ errorMsg }}
-          </p>
-        </div>
-
-        <div class="card-footer">
-          <button @click="fazerLogin" class="btn btn-primary">
-            Fazer login
-          </button>
-        </div>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
