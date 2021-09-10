@@ -1,5 +1,37 @@
 <template>
-  <main id="produtos">
+  <v-main>
+    <v-card>
+      <v-card-title>
+        <v-text-field
+          v-model="termoBusca"
+          append-icon="mdi-magnify"
+          label="Buscar por termo"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :search="termoBusca"
+        :items="produtos"
+        :loading="produtos.length == 0"
+        loading-text="Carregando produtos... aguarde"
+      >
+        <template v-slot:item.url="{ item }">
+          <router-link
+            :to="`/admin/produtos/editar/${item.url}`"
+          >
+            Editar
+          </router-link>
+        </template>
+      </v-data-table>
+    </v-card>
+
+    <v-btn to="/admin/produtos/novo">
+      Novo produto
+    </v-btn>
+  </v-main>
+  <!-- <main id="produtos">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -38,7 +70,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -49,6 +81,13 @@ export default {
   data() {
     return {
       produtos: [],
+      termoBusca: '',
+      headers: [
+        { text: 'Nome', value: 'nome' },
+        { text: 'Preço', value: 'preco' },
+        { text: 'Estoque', value: 'estoque' },
+        { text: 'Ações', value: 'url', filterable: false, },
+      ]
     };
   },
   methods: {
