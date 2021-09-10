@@ -376,11 +376,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <v-container>
-        <slot/>
-      </v-container>
-    </v-main>
+    <slot/>
   </v-app>
 </template>
 
