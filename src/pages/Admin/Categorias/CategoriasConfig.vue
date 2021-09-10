@@ -1,7 +1,46 @@
 <template>
-  <main id="categorias">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por categoria"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="categorias"
+            :loading="categorias.length == 0"
+            loading-text="Carregando categorias... aguarde"
+          >
+            <template v-slot:item.categoria_id="{ item }">
+              <router-link
+                :to="`/admin/categorias/editar/${item.categoria_id}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+      
+      <v-row class="float-right">
+        <v-btn color="success" to="/admin/categorias/novo">
+          Nova categoria
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="categorias">
     <div class="row">
-      <!-- pra mostrar a árvore de categorias -->
+      pra mostrar a árvore de categorias
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body table-response p-0">
@@ -40,7 +79,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -53,6 +92,13 @@ export default {
     return {
       categorias: [],
       novo: [],
+      termoBusca: '',
+      headers: [ 
+        { text: 'Nome', value: 'nome' },
+        { text: 'Categoria pai', value: 'categoria_pai' },
+        { text: 'URL', value: 'url' },
+        { text: 'Ações', value: 'categoria_id' },
+      ],
       categoriaToPost: {},
       categoriaSelecionado: '',
       isChanged: true,
@@ -113,5 +159,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

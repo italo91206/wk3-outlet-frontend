@@ -1,5 +1,50 @@
 <template>
-  <main id="cores">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por cor"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="cores"
+            :loading="cores.length == 0"
+            loading-text="Carregando cores... aguarde"
+          >
+            <template v-slot:item.hexa="{ item }">
+              <div
+                :style="`background-color: ${item.hexa}`"
+                class="color-swatch"
+              ></div>
+            </template>
+
+            <template v-slot:item.cor_id="{ item }">
+              <router-link
+                :to="`/admin/cores/editar/${item.cor_id}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+      
+      <v-row class="float-rigth">
+        <v-btn color="success" to="/admin/cores/novo">
+          Nova cor
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+  <!-- <main id="cores">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -42,7 +87,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -53,6 +98,12 @@ export default {
   data() {
     return {
       cores: [],
+      termoBusca: '',
+      headers: [
+        { text: 'Cor', value: 'hexa' },
+        { text: 'Nome', value: 'cor' },
+        { text: 'Ações', value: 'cor_id' },
+      ]
     };
   },
   methods: {
@@ -71,9 +122,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
 .color-swatch {
   width: 24px;
   height: 24px;
+}
+
+.row+.row {
+  margin-top: 24px;
 }
 </style>

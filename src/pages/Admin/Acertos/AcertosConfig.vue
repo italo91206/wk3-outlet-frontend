@@ -1,5 +1,31 @@
 <template>
-  <main id="acertos-config">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por acerto"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="acertos"
+            :loading="acertos.length == 0"
+            loading-text="Carregando acertos... aguarde"
+          >
+          </v-data-table>
+        </v-card>
+      </v-row>
+    </v-container>
+  </v-main>
+  
+  <!-- <main id="acertos-config">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -29,7 +55,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -39,7 +65,15 @@ export default {
   name: 'AcertosConfig',
   data() {
     return {
-      acertos: []
+      acertos: [],
+      termoBusca: '',
+      headers: [
+        { text: 'Data alteração', value: 'data' },
+        { text: 'Produto', value: 'produto' },
+        { text: 'Estoque (anterior)', value: 'valor' },
+        { text: 'Motivo', value: 'motivo' },
+        { text: 'Usuário', value: 'usuario' },
+      ]
     }
   },
   methods: {
@@ -71,12 +105,20 @@ export default {
         mes = this.pad(mes, 2);
 
         item.data = `${dia}/${mes}/${ano}`;
+
+        let valor = Math.abs(item.valor_anterior - item.valor_novo);
+        if(valor > 0)
+          item.valor = `+ ${valor}`;
+        else
+          item.valor = `- ${valor}`
       })
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

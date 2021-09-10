@@ -1,35 +1,41 @@
 <template>
   <v-main>
-    <v-card>
-      <v-card-title>
-        <v-text-field
-          v-model="termoBusca"
-          append-icon="mdi-magnify"
-          label="Buscar por termo"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :search="termoBusca"
-        :items="produtos"
-        :loading="produtos.length == 0"
-        loading-text="Carregando produtos... aguarde"
-      >
-        <template v-slot:item.url="{ item }">
-          <router-link
-            :to="`/admin/produtos/editar/${item.url}`"
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por produto"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="produtos"
+            :loading="produtos.length == 0"
+            loading-text="Carregando produtos... aguarde"
           >
-            Editar
-          </router-link>
-        </template>
-      </v-data-table>
-    </v-card>
-
-    <v-btn to="/admin/produtos/novo">
-      Novo produto
-    </v-btn>
+            <template v-slot:item.url="{ item }">
+              <router-link
+                :to="`/admin/produtos/editar/${item.url}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+      
+      <v-row class="float-right">
+        <v-btn color="success" to="/admin/produtos/novo">
+          Novo produto
+        </v-btn>
+      </v-row>
+    </v-container>
   </v-main>
 </template>
 
@@ -68,5 +74,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

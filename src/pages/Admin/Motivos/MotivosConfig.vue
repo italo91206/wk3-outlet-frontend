@@ -1,5 +1,44 @@
 <template>
-  <main id="motivos">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por motivo"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="motivos"
+            :loading="motivos.length == 0"
+            loading-text="Carregando motivos... aguarde"
+          >
+            <template v-slot:item.motivo_id="{ item }">
+              <router-link
+                :to="`/admin/motivos/editar/${item.motivo_id}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn color="success" to="/admin/motivos/novo">
+          Novo Motivo
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="motivos">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -33,7 +72,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -44,7 +83,11 @@ export default {
   data(){
     return {
       motivos: [],
-      motivoToPost: {}
+      termoBusca: '',
+      headers: [ 
+        { text: 'Motivo', value: 'motivo'},
+        { text: 'Ações', value: 'motivo_id'},
+      ]
     }
   },
   methods: {
@@ -63,5 +106,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

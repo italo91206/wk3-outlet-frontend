@@ -1,5 +1,44 @@
 <template>
-  <main id="modelos">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por modelo"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="modelos"
+            :loading="modelos.length == 0"
+            loading-text="Carregando modelos... aguarde"
+          >
+            <template v-slot:item.modelo_id="{ item }">
+              <router-link
+                :to="`/admin/modelos/editar/${item.modelo_id}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-rigth">
+        <v-btn color="success" to="/admin/modelos/novo">
+          Novo modelo
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="modelos">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -37,7 +76,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -48,10 +87,11 @@ export default {
   data() {
     return {
       modelos: [],
-      modeloInput: "",
-      modeloIdToEdit: null,
-      tipoAcao: "Adicionar novo",
-      disabled: false,
+      termoBusca: '',
+      headers: [
+        { text: 'Modelo', value:'modelo' },
+        { text: 'Ações', value: 'modelo_id' }
+      ]
     };
   },
   methods: {
@@ -69,5 +109,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

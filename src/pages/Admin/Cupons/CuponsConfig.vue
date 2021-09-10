@@ -1,5 +1,44 @@
 <template>
-  <main id="cupons">
+  <v-main>
+    <v-container>
+      <v-row>
+        <v-card>
+          <v-card-title>
+            <v-text-field
+              v-model="termoBusca"
+              append-icon="mdi-magnify"
+              label="Buscar por nome de cupom"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :search="termoBusca"
+            :items="cupons"
+            :loading="cupons.length == 0"
+            loading-text="Carregando cupons... aguarde"
+          >
+            <template v-slot:item.cupom_id="{ item }">
+              <router-link
+                :to="`/admin/cupons/editar/${item.cupom_id}`"
+              >
+                Editar
+              </router-link>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-row>
+      
+      <v-row class="float-right">
+        <v-btn color="success" to="/admin/cupons/novo">
+          Novo cupom
+        </v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="cupons">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -45,7 +84,7 @@
         </router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -55,7 +94,16 @@ export default {
   name: 'CuponsConfig',
   data(){
     return {
-      cupons: []
+      cupons: [],
+      termoBusca: '',
+      headers: [ 
+        { text: 'Código', value: 'codigo' },
+        { text: 'Status', value: 'status' },
+        { text: 'Nome', value: 'nome' },
+        { text: 'Valor', value: 'valor' },
+        { text: 'Validade', value: 'validade' },
+        { text: 'Ações', value: 'cupom_id' },
+      ]
     }
   },
   methods: {
@@ -111,6 +159,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>
