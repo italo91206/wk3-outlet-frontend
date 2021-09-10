@@ -1,10 +1,18 @@
 <template>
-    <v-card>
+  <main id="login-page">
+    <v-card id="login-card">
+      <v-card-title class="login-card--title">
+        <div>
+          <img src="/logotipo-redondo.svg" alt="" id="login-logo">
+        </div>
+        <h4>Acesso administrativo</h4>
+      </v-card-title>
+      
       <v-form>
         <v-container>
           <v-row>
             <v-col cols="12" md="12">
-              <v-text-field v-model="userInput"></v-text-field>
+              <v-text-field v-model="userInput" label="Email"></v-text-field>
             </v-col>
           </v-row>
 
@@ -15,13 +23,14 @@
                 :type="show ? 'text' : 'password'"
                 v-model="passwordInput"
                 @click:append="show = !show"
+                label="Senha"
               >
               </v-text-field>
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col cols="12" md="12">
+            <v-col cols="6" md="6">
               <v-btn
                 color="success"
                 class="mr-4"
@@ -30,10 +39,23 @@
                 Fazer Login
               </v-btn>
             </v-col>
+
+            <v-col cols="6" md="6" class="esquece-senha--col">
+              <a @click="senhaEsqueceu = !senhaEsqueceu">Esqueceu a senha ?</a>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" md="12" class="esquece-senha--aviso">              
+              <p v-if="senhaEsqueceu">
+                Por favor contate o administrador para a recuperação de senha.
+              </p>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
     </v-card>
+  </main>
 </template>
 
 <script>
@@ -48,6 +70,7 @@ export default {
       info: "",
       errorMsg: "",
       show: false,
+      senhaEsqueceu: false,
     };
   },
   methods: {
@@ -82,12 +105,56 @@ export default {
 }
 </script>
 
-<style>
-#admin-login {
+<style lang="css">
+.esquece-senha--aviso{
+  color: rgb(177, 6, 6);
+  text-align: center;
+}
+
+.esquece-senha--col{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(54, 137, 231);
+}
+
+.login-card--title{
+  display: block;
+  text-align: center;
+}
+
+.login-card--title h4{
+  margin-top: 20px;
+}
+
+#login-logo{
+  width: 85px;
+}
+
+#login-page {
+  display: flex;
   background-color: #373330;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  align-items: center;
+  height: 101%;
+  max-height: 100%;
+  min-width: 50rem;
+  min-height: 100vw;
+}
+
+#login-card {
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 5px 30px 0 #000;
+  width: 30rem;
+  height: 35rem;
+  min-width: 0;
+  padding: 40px 50px;
+  display: block;
+  float: none;
+  margin: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  z-index: 1;
 }
 
 #admin-login .login-form {
