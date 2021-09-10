@@ -37,49 +37,6 @@
       </v-row>
     </v-container>
   </v-main>
-
-  <!-- <main id="categorias">
-    <div class="row">
-      pra mostrar a árvore de categorias
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-response p-0">
-            <table class="table table-striped table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Categoria pai</th>
-                  <th>URL</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="categoria in categorias" :key="categoria.categoria_id">
-                  <td>{{categoria.nome}}</td>
-                  <td>{{categoria.categoria_pai}}</td>
-                  <td>{{categoria.url}}</td>
-                  <td>
-                    <router-link :to="`/admin/categorias/editar/${categoria.categoria_id}`">
-                      Editar
-                    </router-link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <router-link to="/admin/categorias/novo">
-          <button class="btn btn-success float-right">Nova Categoria</button>
-        </router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>

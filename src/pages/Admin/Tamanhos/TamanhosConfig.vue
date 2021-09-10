@@ -37,44 +37,6 @@
       </v-row>
     </v-container>
   </v-main>
-  
-  <!-- <main id="tamanhos">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-responsive p-0">
-            <table class="table table-stripe table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Tamanho</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="tamanho in tamanhos" v-bind:key="tamanho.tamanho_id">
-                  <td>{{ tamanho.tamanho }}</td>
-                  <td>
-                    <router-link :to="`/admin/tamanhos/editar/${tamanho.tamanho_id}`">
-                      Editar
-                    </router-link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <router-link to="/admin/tamanhos/novo" class="btn btn-success float-right">
-          Novo Tamanho
-        </router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>

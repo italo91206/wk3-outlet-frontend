@@ -37,46 +37,6 @@
       </v-row>
     </v-container>
   </v-main>
-  
-  <!-- <main id="marcas">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-responsive p-0">
-            <div class="table table-responsive p-0">
-              <table class="table table-stripe table-valign-middle">
-                <thead>
-                  <tr>
-                    <th>Marca</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr v-for="marca in marcas" :key="marca.marca_id">
-                    <td>{{marca.marca}}</td>
-                    <td>
-                      <router-link :to="`/admin/marcas/editar/${marca.marca_id}`">
-                        Editar
-                      </router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <router-link to="/admin/marcas/novo" class="btn btn-success float-right">
-          Nova marca
-        </router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>

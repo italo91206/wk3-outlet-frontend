@@ -24,38 +24,6 @@
       </v-row>
     </v-container>
   </v-main>
-  
-  <!-- <main id="acertos-config">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-response p-0">
-            <table class="table table-striped table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Data de alteração</th>
-                  <th>Produto</th>
-                  <th>Estoque (anterior)</th>
-                  <th>Motivo</th>
-                  <th>Usuario</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="acerto in acertos" :key="acerto.key">
-                  <td>{{ acerto.data }}</td>
-                  <td>{{ acerto.produto }}</td>
-                  <td>{{ acerto.valor_anterior }} ({{ acerto.valor_novo }})</td>
-                  <td>{{ acerto.motivo }}</td>
-                  <td>{{ acerto.usuario }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>

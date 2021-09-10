@@ -37,54 +37,6 @@
       </v-row>
     </v-container>
   </v-main>
-
-  <!-- <main id="cupons">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-responsive p-0">
-            <div class="table table-responsive p-0">
-              <table class="table table-stripe table-valign-middle">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Status</th>
-                    <th>Nome do Cupom</th>
-                    <th>Valor</th>
-                    <th>Validade</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr v-for="cupom in cupons" v-bind:key="cupom.cupom_id">
-                    <td>{{cupom.codigo}}</td>
-                    <td>{{cupom.status}}</td>
-                    <td>{{cupom.nome}}</td>
-                    <td>{{cupom.valor}}</td>
-                    <td>{{cupom.validade}}</td>
-                    <td>
-                      <router-link :to="`/admin/cupons/editar/${cupom.cupom_id}`">
-                        Editar
-                      </router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <router-link to="/admin/cupons/novo" class="btn btn-success float-right">
-          Novo Cupom
-        </router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>

@@ -37,42 +37,6 @@
       </v-row>
     </v-container>
   </v-main>
-
-  <!-- <main id="motivos">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body table-responsive p-0">
-            <table class="table table-stripe table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Motivo</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="motivo in motivos" v-bind:key="motivo.motivo_id">
-                  <td>{{ motivo.motivo }}</td>
-                  <td>
-                    <router-link :to="`/admin/motivos/editar/${motivo.motivo_id}`">Editar</router-link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <router-link to="/admin/motivos/novo" class="btn btn-success float-right">
-          Novo Motivo
-        </router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
