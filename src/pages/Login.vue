@@ -138,12 +138,12 @@ export default {
   height: 101%;
   max-height: 100%;
   min-width: 50rem;
-  min-height: 100vw;
+  padding: 80px 0;
 }
 
 #login-card {
   background-color: #fff;
-  border: 1px solid #e3e3e3;
+  border: 1px solid #222020;
   box-shadow: 0 5px 30px 0 #000;
   width: 30rem;
   height: 35rem;
