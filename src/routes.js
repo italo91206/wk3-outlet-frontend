@@ -1,7 +1,6 @@
 import Login from '@/pages/Login.vue'
 import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
-import AtributosConfig from '@/pages/AtributosConfig.vue'
 import CoresConfig from '@/pages/Admin/Cores/CoresConfig.vue'
 import CoresEditar from '@/pages/Admin/Cores/CoresEditar.vue'
 import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
@@ -49,16 +48,6 @@ const routes = [
     name: 'Dashboard',
     meta: {
       title: 'WK3 | Dashboard',
-      layout: 'AppLayoutAdmin',
-      is_public: false
-    }
-  },
-  {
-    path: '/admin/atributos',
-    component: AtributosConfig,
-    name: 'Todos os atributos',
-    meta: {
-      title: 'WK3 Admin | Atributos',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
