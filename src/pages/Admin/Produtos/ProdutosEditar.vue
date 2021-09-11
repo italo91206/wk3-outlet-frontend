@@ -1,205 +1,197 @@
 <template>
-  <v-card>
-    <v-form>
+  <v-main class="pa-12">
+    <v-container>
       <v-row>
-        <v-file-input
-          label="Enviar arquivos"
-          outlined
-          dense
-        >
-        </v-file-input>
+        <v-card class="pa-12 w100" levation="10">
+          <v-form>
+            <v-row>
+              <v-file-input
+                label="Enviar arquivos"
+                outlined
+                dense
+              >
+              </v-file-input>
+            </v-row>
+
+            <!-- Nome do produto -->
+            <v-row>
+              <v-col cols="12">
+                <v-text-field 
+                  label="Nome do produto" 
+                  v-model="produtoToPost.nome"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!-- SKU do produto -->
+            <v-row>
+              <v-col cols="12">
+                <v-text-field 
+                  label="SKU" 
+                  v-model="produtoToPost.sku"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!-- Preço e custo do produto -->
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Preço" 
+                  v-model="produtoToPost.preco"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+
+              <v-col>
+                <v-text-field 
+                  label="Custo" 
+                  v-model="produtoToPost.custo"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <hr/>
+
+            <!-- Estoque e peso-->
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Estoque" 
+                  v-model="produtoToPost.estoque"
+                  type="number"
+                  @change="mudouEstoque"
+                ></v-text-field>
+              </v-col>
+
+              <v-col>
+                <v-text-field 
+                  label="Peso (gramas)" 
+                  v-model="produtoToPost.peso"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            
+            <!-- Categoria -->
+            <v-row>
+              <v-col cols="6">
+                <v-select
+                  v-model="categoriaSelecionado"
+                  :items="novasCategorias"
+                  item-text="nome"
+                  item-value="id"
+                  label="Categorias do produto"
+                ></v-select>
+              </v-col>
+
+              <!--
+                Quando houver uma mudança de estoque
+                é obrigatório escolher um motivo
+              -->
+              <v-col cols="6" v-if="estoque_changed">
+                <v-select
+                  v-model="motivo"
+                  :items="motivos"
+                  item-text="motivo"
+                  item-value="motivo_id"
+                  label="Selecione um motivo"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <!-- Modelo e Marca-->
+            <v-row>
+              <v-col cols="6">
+                <v-select
+                  v-model="modeloSelecionado"
+                  :items="modelos"
+                  item-text="modelo"
+                  item-value="modelo_id"
+                  label="Modelo"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="6">
+                <v-select
+                  v-model="marcaSelecionado"
+                  :items="marcas"
+                  item-text="marca"
+                  item-value="marca_id"
+                  label="Marca"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <!-- Descrição -->
+            <v-row>
+              <v-col>
+                <v-textarea
+                  label="Descrição do produto" 
+                  v-model="produtoToPost.descricao"
+                  type="number"
+                  rows="5"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+
+            <hr/>
+            <h4>Variações de produto</h4>
+
+            <!-- Cor e tamanho -->
+            <v-row>
+              <v-col cols="5">
+                <v-select
+                  v-model="variacao_corSelecionado"
+                  :items="cores"
+                  item-text="cor"
+                  item-value="cor_id"
+                  label="Cor"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="5">
+                <v-select
+                  v-model="variacao_tamanhoSelecionado"
+                  :items="tamanhos"
+                  item-text="tamanho"
+                  item-value="tamanho_id"
+                  label="Tamanho"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="2">
+                <v-btn @click="adicionarVariacao">
+                  Adicionar
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <v-data-table
+              :headers="headersVariacoes"
+              :items="variacoes"
+              hide-default-footer
+              no-data-text="Este produto não possui variações"
+              disable-sort="true"
+            >
+              <template v-slot:item.acao="{item}">
+                <a class="link" @click="removerVariacao(item.nome)">
+                  Remover
+                </a>
+              </template>
+            </v-data-table>
+          </v-form>
+        </v-card>
       </v-row>
 
-      <!-- Nome do produto -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="Nome do produto" 
-            v-model="produtoToPost.nome"
-          ></v-text-field>
-        </v-col>
+      <v-row class="float-right">
+        <v-btn to="/admin/produtos" class="mr-2">Voltar</v-btn>
+        <v-btn @click="deletarConfirm" color="error" class="mr-2">Deletar produto</v-btn>
+        <v-btn @click="salvarProduto" color="success">Salvar produto</v-btn>
       </v-row>
-
-      <!-- SKU do produto -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="SKU" 
-            v-model="produtoToPost.sku"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <!-- Preço do produto -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="Preço" 
-            v-model="produtoToPost.preco"
-            type="number"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <hr/>
-
-      <!-- Custo do produto -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="Custo" 
-            v-model="produtoToPost.custo"
-            type="number"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <!-- Estoque -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="Estoque" 
-            v-model="produtoToPost.estoque"
-            type="number"
-            @change="mudouEstoque"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <!--
-        Quando houver uma mudança de estoque
-        é obrigatório escolher um motivo
-      -->
-      <v-row v-if="estoque_changed">
-        <v-col cols="12">
-          <v-select
-            v-model="motivo"
-            :items="motivos"
-            item-text="motivo"
-            item-value="motivo_id"
-            label="Selecione um motivo"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <!-- Peso -->
-      <v-row>
-        <v-col cols="12">
-          <v-text-field 
-            label="Peso (gramas)" 
-            v-model="produtoToPost.peso"
-            type="number"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <!-- Descrição -->
-      <v-row>
-        <v-col cols="12">
-          <v-textarea
-            label="Descrição do produto" 
-            v-model="produtoToPost.descricao"
-            type="number"
-            rows="3"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-
-      <!-- Categoria -->
-      <v-row>
-        <v-col cols="12">
-          <v-select
-            v-model="categoriaSelecionado"
-            :items="novasCategorias"
-            item-text="nome"
-            item-value="id"
-            label="Categorias do produto"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <!-- Modelo e Marca-->
-      <v-row>
-        <v-col cols="6">
-          <v-select
-            v-model="modeloSelecionado"
-            :items="modelos"
-            item-text="modelo"
-            item-value="modelo_id"
-            label="Modelo"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="6">
-          <v-select
-            v-model="marcaSelecionado"
-            :items="marcas"
-            item-text="marca"
-            item-value="marca_id"
-            label="Marca"
-          ></v-select>
-        </v-col>
-      </v-row>
-
-      <hr/>
-      <h4>Variações de produto</h4>
-
-      <!-- Cor e tamanho -->
-      <v-row>
-        <v-col cols="5">
-          <v-select
-            v-model="modeloSelecionado"
-            :items="cores"
-            item-text="cor"
-            item-value="cor_id"
-            label="Cor"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="5">
-          <v-select
-            v-model="marcaSelecionado"
-            :items="tamanhos"
-            item-text="tamanho"
-            item-value="tamanho_id"
-            label="Tamanho"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="2">
-          <v-btn @click="adicionarVariacao">
-            Adicionar
-          </v-btn>
-        </v-col>
-      </v-row>
-
-
-      <v-data-table
-        :headers="headersVariacoes"
-        :items="variacoes"
-        hide-default-footer
-      >
-        <template v-slot:item.acao="{item}">
-          <a class="link" @click="removerVariacao(item.nome)">
-            Remover
-          </a>
-        </template>
-      </v-data-table>
-
-      <v-row>
-        <v-col cols="12">
-          <v-btn @click="salvarProduto">Salvar produto</v-btn>
-          <v-btn @click="deletarConfirm">Deletar produto</v-btn>
-          <v-btn>
-            <router-link to="/admin/produtos">
-              Voltar
-            </router-link>
-          </v-btn>
-        </v-col>
-      </v-row>
-
-    </v-form>
-  </v-card>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -255,6 +247,7 @@ export default {
       categoriaSelecionado: '',
       imagens: [],
       link_pai: null,
+      variacaoIndex: 0,
       variacao_corSelecionado: 0,
       variacao_tamanhoSelecionado: 0,
     }
@@ -512,7 +505,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
 .imagem-place-holder {
   height: 80px;
   width: 80px;
@@ -563,4 +556,9 @@ export default {
 input.color-checkbox[type="checkbox"]:checked + label {
   border-color: #626262;
 }
+
+.row+.row {
+  margin-top: 24px;
+}
+
 </style>
