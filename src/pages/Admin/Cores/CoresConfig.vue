@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pa-12">
     <v-container>
       <v-row>
         <v-card>
@@ -37,7 +37,7 @@
         </v-card>
       </v-row>
       
-      <v-row class="float-rigth">
+      <v-row class="float-right">
         <v-btn color="success" to="/admin/cores/novo">
           Nova cor
         </v-btn>
