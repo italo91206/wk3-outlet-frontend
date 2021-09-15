@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pa-12">
     <v-container>
       <v-row>
         <v-card>

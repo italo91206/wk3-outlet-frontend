@@ -2,7 +2,7 @@
   <v-main class="pa-12">
     <v-container>
       <v-row>
-        <v-card class="pa-12 w100" levation="10">
+        <v-card class="pa-12 w100" elevation="10">
           <v-form>
             <!-- Renderizar as imagens do produto -->
             <v-row>

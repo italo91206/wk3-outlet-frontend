@@ -1,5 +1,41 @@
 <template>
-  <main id="categorias-novo">
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="pa-12 w100" elevation="10">
+          <v-form>
+            <!-- Nome da categoria -->
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Nome da categoria"
+                  v-model="categoriaToPost.nome"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <v-select
+                  v-model="categoriaSelecionado"
+                  :items="categorias"
+                  item-text="nome"
+                  item-value="categoria_id"
+                  label="Categoria pai"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/admin/categorias" class="mr-2">Voltar</v-btn>
+        <v-btn @click="salvarCategoria" :disabled="isChanged" color="success">Salvar categoria</v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+  <!-- <main id="categorias-novo">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -30,7 +66,7 @@
         <router-link to="/admin/categorias" class="btn btn-default float-right">Voltar</router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -113,6 +149,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>
