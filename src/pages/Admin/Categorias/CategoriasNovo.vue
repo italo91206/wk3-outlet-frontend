@@ -35,38 +35,6 @@
       </v-row>
     </v-container>
   </v-main>
-  <!-- <main id="categorias-novo">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="form">
-              <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Nome da categoria</label>
-                <input type="text" class="col-sm-8 form-control" @change="validarNome" v-model="categoriaToPost.nome">
-                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
-              </div>
-
-              <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Categoria Pai</label>
-                <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
-                  <option value="0" disabled selected>-- Escolher uma categoria --</option>
-                  <option v-for="categoria in novo" v-bind:key="categoria.id" :value="categoria.id">{{categoria.nome}}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <button @click="salvarCategoria" class="btn btn-success float-right">Salvar categoria</button>
-        <router-link to="/admin/categorias" class="btn btn-default float-right">Voltar</router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
