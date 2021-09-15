@@ -1,5 +1,30 @@
 <template>
-  <main id="marca-editar">
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="pa-12 w100" elevation="10">
+          <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Nome da marca"
+                  v-model="marcaToPost.marca"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/admin/marcas" class="mr-2">Voltar</v-btn>
+        <v-btn @click="deletar" color="error" class="mr-2">Deletar marca</v-btn>
+        <v-btn @click="salvarMarca" color="success">Salvar marca</v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="marca-editar">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -23,7 +48,7 @@
         <router-link class="btn btn-default float-right" to="/admin/marcas">Voltar</router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -93,5 +118,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
 </style>

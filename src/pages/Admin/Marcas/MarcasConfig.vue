@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="pa-12">
     <v-container>
       <v-row>
         <v-card>
@@ -19,9 +19,9 @@
             :loading="marcas.length == 0"
             loading-text="Carregando marcas... aguarde"
           >
-            <template v-slot:item.url="{ item }">
+            <template v-slot:item.marca_id="{ item }">
               <router-link
-                :to="`/admin/marca/editar/${item.url}`"
+                :to="`/admin/marcas/editar/${item.marca_id}`"
               >
                 Editar
               </router-link>
