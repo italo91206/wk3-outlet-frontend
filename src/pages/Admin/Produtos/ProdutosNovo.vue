@@ -1,10 +1,210 @@
 <template>
-  <div class="row">
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="pa-12 w100" levation="10">
+          <v-form>
+            <!-- Renderizar as imagens do produto -->
+            <v-row id="imagesRow">
+              <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
+                <v-img :src="imagem" max-height="500" max-width="300"></v-img>
+              </v-col>
+            </v-row>
+
+            <!-- Input de imagens do produto -->
+            <v-row>
+              <v-file-input
+                @input="imagemInput"
+                v-model="imagensRaw"
+                label="Enviar arquivos"
+                multiple
+                outlined
+                dense
+              >
+              </v-file-input>
+            </v-row>
+
+            <!-- Nome do produto -->
+            <v-row>
+              <v-col cols="12">
+                <v-text-field 
+                  label="Nome do produto" 
+                  v-model="produtoToPost.nome"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!-- SKU do produto -->
+            <v-row>
+              <v-col cols="12">
+                <v-text-field 
+                  label="SKU" 
+                  v-model="produtoToPost.sku"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!-- Preço e custo do produto -->
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Preço" 
+                  v-model="produtoToPost.preco"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+
+              <v-col>
+                <v-text-field 
+                  label="Custo" 
+                  v-model="produtoToPost.custo"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <hr/>
+
+            <!-- Estoque e peso-->
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Estoque" 
+                  v-model="produtoToPost.estoque"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+
+              <v-col>
+                <v-text-field 
+                  label="Peso (gramas)" 
+                  v-model="produtoToPost.peso"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            
+            <!-- Categoria -->
+            <v-row>
+              <v-col cols="6">
+                <v-select
+                  v-model="categoriaSelecionado"
+                  :items="novasCategorias"
+                  item-text="nome"
+                  item-value="id"
+                  label="Categorias do produto"
+                ></v-select>
+              </v-col>
+
+              <!--
+                Quando houver uma mudança de estoque
+                é obrigatório escolher um motivo
+              -->
+              <v-col cols="6" v-if="estoque_changed">
+                <v-select
+                  item-text="motivo"
+                  label="Selecione um motivo"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <!-- Modelo e Marca-->
+            <v-row>
+              <v-col cols="6">
+                <v-select
+                  v-model="modeloSelecionado"
+                  :items="modelos"
+                  item-text="modelo"
+                  item-value="modelo_id"
+                  label="Modelo"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="6">
+                <v-select
+                  v-model="marcaSelecionado"
+                  :items="marcas"
+                  item-text="marca"
+                  item-value="marca_id"
+                  label="Marca"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <!-- Descrição -->
+            <v-row>
+              <v-col>
+                <v-textarea
+                  label="Descrição do produto" 
+                  v-model="produtoToPost.descricao"
+                  type="number"
+                  rows="5"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+
+            <hr/>
+            <h4>Variações de produto</h4>
+
+            <!-- Cor e tamanho -->
+            <v-row>
+              <v-col cols="5">
+                <v-select
+                  v-model="variacao_corSelecionado"
+                  :items="cores"
+                  item-text="cor"
+                  item-value="cor_id"
+                  label="Cor"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="5">
+                <v-select
+                  v-model="variacao_tamanhoSelecionado"
+                  :items="tamanhos"
+                  item-text="tamanho"
+                  item-value="tamanho_id"
+                  label="Tamanho"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="2" class="flex align-center">
+                <v-btn @click="adicionarVariacao">
+                  Adicionar
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <v-data-table
+              :headers="headersVariacoes"
+              :items="variacoes"
+              hide-default-footer
+              no-data-text="Este produto não possui variações"
+              :disable-sort="true"
+            >
+              <template v-slot:item.acao="{item}">
+                <a class="link" @click="removerVariacao(item.nome)">
+                  Remover
+                </a>
+              </template>
+            </v-data-table>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/admin/produtos" class="mr-2">Voltar</v-btn>
+        <v-btn @click="salvarProduto" color="success">Salvar produto</v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
           <div class="form">
-            <!-- Renderização das imagens do produto -->
+            Renderização das imagens do produto
             <div class="form-group row">
               <div class="col-sm-2" style="opacity: 0">
                 <span>hidden</span>
@@ -21,7 +221,7 @@
               </div>
             </div>
 
-            <!-- Input de imagens do produto -->
+            Input de imagens do produto
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Imagens do produto</label>
 
@@ -31,20 +231,20 @@
               </div>
             </div>
 
-            <!-- Nome do produto -->
+            Nome do produto
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Nome do produto</label>
               <input type="text" class="col-sm-8 form-control" @change="validarNome" v-model="produtoToPost.nome"/>
               <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
             </div>
 
-            <!-- SKU do produto -->
+            SKU do produto
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">SKU</label>
               <input type="text" class="col-sm-8 form-control" v-model="produtoToPost.sku"/>
             </div>
 
-            <!-- Preço do produto -->
+            Preço do produto
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Preço</label>
               <input type="number" class="col-sm-8 form-control" @change="validarPreco" v-model="produtoToPost.preco">
@@ -53,34 +253,34 @@
 
             <hr/>
 
-            <!-- Custo do produto -->
+            Custo do produto
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Custo</label>
               <input type="number" class="col-sm-8 form-control" @change="validarCusto" v-model="produtoToPost.custo">
               <span class="col-sm-8 text-danger" v-if="erro_custo" style="margin: 0 auto">{{erro_custo}}</span>
             </div>
 
-            <!-- Estoque -->
+            Estoque
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Estoque</label>
               <input type="number" class="col-sm-8 form-control" @change="validarEstoque" v-model="produtoToPost.estoque">
               <span class="col-sm-8 text-danger" v-if="erro_estoque" style="margin: 0 auto">{{erro_estoque}}</span>
             </div>
 
-            <!-- Peso (gramas) -->
+            Peso (gramas)
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Peso (gramas)</label>
               <input type="number" class="col-sm-8 form-control" @change="validarPeso" v-model="produtoToPost.peso">
               <span class="col-sm-8 text-danger" v-if="erro_peso" style="margin: 0 auto">{{erro_peso}}</span>
             </div>
 
-            <!-- Descrição -->
+            Descrição
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Descrição do produto</label>
               <textarea type="text" rows="3" class="col-sm-8 form-control" v-model="produtoToPost.descricao"></textarea>
             </div>
 
-            <!-- Categoria -->
+            Categoria
             <div class="form-group row disabled">
               <label for="" class="col-sm-2 col-form-label">Categoria</label>
               <select name="" id="" class="col-sm-8 form-control" v-model="categoriaSelecionado">
@@ -89,7 +289,7 @@
               </select>
             </div>
 
-            <!-- Modelo -->
+            Modelo
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Modelo</label>
               <select name="" id="" class="col-sm-8 form-control" v-model="modeloSelecionado">
@@ -98,7 +298,7 @@
               </select>
             </div>
 
-            <!-- Marca -->
+            Marca
             <div class="form-group row">
               <label for="" class="col-sm-2 col-form-label">Marca</label>
               <select name="" id="" v-model="marcaSelecionado" class="col-sm-8 form-control">
@@ -111,7 +311,7 @@
             <h4>Variações de produto</h4>
 
             <div class="form-group row">
-              <!-- Cores -->
+              Cores
               <div class="form-group row col-sm-5">            
                 <label for="" class="col-sm-5 col-form-label">Cor</label>
                 
@@ -121,7 +321,7 @@
                 </select>
               </div>
 
-              <!-- Cores -->
+              Cores
               <div class="form-group row col-sm-5">
                 <label for="" class="col-sm-5 col-form-label">Tamanho</label>
 
@@ -160,7 +360,7 @@
               </table>
             </div>
 
-            <!-- Botões de salvar / voltar -->
+            Botões de salvar / voltar
             <div class="row">
               <div class="col-sm-10">
                 <button class="btn btn-success float-right" @click="salvarProduto">
@@ -176,7 +376,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -204,6 +404,13 @@ export default {
         categoria_id: null,
         tipo_produto: 'simples',
       },
+      headersVariacoes: [
+        { text: 'Nome', value: 'nome' },
+        { text: 'SKU', value: 'sku' },
+        { text: 'Cor', value: 'cor' },
+        { text: 'Tamanho', value: 'tamanho' },
+        { text: 'Ação', value: 'acao' },
+      ],
       modeloSelecionado: '',
       marcaSelecionado: '',
       variacao_corSelecionado: 0,
@@ -223,6 +430,8 @@ export default {
       imagens: [],
       variacoes: [],
       variacaoIndex: 0,
+      estoque_changed: false,
+      imagensRaw: null,
     }
   },
   methods: {
@@ -303,6 +512,7 @@ export default {
         this.$toast.error(response.data.message);
     },
     imagemInput(e){
+      console.log('Input de imagens');
       let input = e.target.files;
       let caminhos = [];
 
@@ -422,12 +632,23 @@ export default {
     },
     variacoes: function(){
       this.produtoToPost.tipo_produto = this.variacoes.length > 0 ? 'configuravel' : 'simples';
+    },
+    imagensRaw: function(){
+      let caminhos = [];
+      this.imagensRaw.forEach((imagem) => {
+        caminhos.push(URL.createObjectURL(imagem));
+      })
+      this.imagens = caminhos;
     }
   }
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row+.row {
+  margin-top: 24px;
+}
+
 .imagem-place-holder img{
   width: 100%;
   height: 100%;

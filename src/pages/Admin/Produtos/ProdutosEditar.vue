@@ -4,6 +4,14 @@
       <v-row>
         <v-card class="pa-12 w100" levation="10">
           <v-form>
+            <!-- Renderizar as imagens do produto -->
+            <v-row>
+              <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
+                <v-img :src="imagem"></v-img>
+              </v-col>
+            </v-row>
+            
+            <!-- Input de imagens do produto -->
             <v-row>
               <v-file-input
                 label="Enviar arquivos"
@@ -161,7 +169,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="2">
+              <v-col cols="2" class="flex align-center">
                 <v-btn @click="adicionarVariacao">
                   Adicionar
                 </v-btn>
