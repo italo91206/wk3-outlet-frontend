@@ -22,31 +22,6 @@
       </v-row>
     </v-container>
   </v-main>
-  
-  <!-- <main id="motivos-novo">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="form">
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label" for="">Descrição motivo</label>
-                <input class="col-sm-8 form-control" @change="validarNome" v-model="motivoToPost.motivo" type="text">
-                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-10">
-        <button class="btn btn-success float-right" @click="novoMotivo">Salvar Motivo</button>
-        <router-link class="btn btn-default float-right" to="/admin/motivos">Voltar</router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
