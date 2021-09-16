@@ -22,31 +22,6 @@
       </v-row>
     </v-container>
   </v-main>
-
-  <!-- <main id="modelo-novo">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="form" @change="mudou">
-              <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Modelo</label>
-                <input class="col-sm-8 form-control" @change="validarNome" type="text" v-model="modeloToPost.modelo">
-                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-10">
-        <button @click="novoModelo" class="btn btn-success float-right" :disabled="isChanged">Salvar Modelo</button>
-        <router-link class="btn btn-default float-right" to="/admin/modelos">Voltar</router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
