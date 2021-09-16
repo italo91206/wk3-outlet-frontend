@@ -22,31 +22,6 @@
       </v-row>
     </v-container>
   </v-main>
-
-  <!-- <main id="tamanhos-editar">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="form">
-              <div class="form-group row">
-                <label for="" class="col-sm-2 col-form-label">Nome do tamanho</label>
-                <input type="text" @change="validarNome" v-model="tamanhoToPost.tamanho" class="col-sm-8 form-control">
-                <span class="col-sm-8 text-danger" v-if="erro_nome" style="margin: 0 auto">{{erro_nome}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-10">
-        <button class="btn btn-success float-right" @click="novo">Salvar Tamanho</button>
-        <router-link class="btn btn-default float-right" to="/admin/tamanhos">Voltar</router-link>
-      </div>
-    </div>
-  </main> -->
 </template>
 
 <script>
