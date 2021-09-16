@@ -303,7 +303,7 @@ const routes = [
     }
   },
   {
-    path: '/404',
+    path: '/*',
     component: NaoEncontrado,
     name: 'Não encontrado',
     meta: {
