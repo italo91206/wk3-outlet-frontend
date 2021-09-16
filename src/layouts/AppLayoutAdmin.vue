@@ -1,5 +1,5 @@
 <template>
-  <v-app class="mx-auto overflow-hidden">
+  <v-app class="mx-auto w100 overflow-hidden">
     <v-app-bar color="#333333" dark app>
       <v-app-bar-nav-icon @click="drawer = !drawer">
       </v-app-bar-nav-icon>

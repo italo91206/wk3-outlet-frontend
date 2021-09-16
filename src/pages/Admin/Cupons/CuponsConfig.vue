@@ -2,7 +2,7 @@
   <v-main>
     <v-container>
       <v-row>
-        <v-card>
+        <v-card class="w100">
           <v-card-title>
             <v-text-field
               v-model="termoBusca"
