@@ -303,16 +303,6 @@ const routes = [
     }
   },
   {
-    path: '/*',
-    component: NaoEncontrado,
-    name: 'Não encontrado',
-    meta: {
-      title: 'WK3 Outlet - Nada foi encontrado',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
-  {
     path: '/admin/categorias',
     component: CategoriasConfig,
     name: 'Categorias',
@@ -361,7 +351,17 @@ const routes = [
       layout: 'AppLayoutDefault',
       is_public: true
     }
-  }
+  },
+  {
+    path: '*',
+    component: NaoEncontrado,
+    name: 'Não encontrado',
+    meta: {
+      title: 'WK3 Outlet - Nada foi encontrado',
+      layout: 'AppLayoutDefault',
+      is_public: true
+    }
+  },
 ]
 
 export default routes;
