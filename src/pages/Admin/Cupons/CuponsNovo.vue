@@ -9,6 +9,9 @@
                 <v-text-field
                   label="Código do cupom"
                   v-model="cupomToPost.codigo"
+                  :rules="[rules.required, rules.counter]"
+                  counter
+                  maxlength="20"
                 ></v-text-field>
               </v-col>
 
@@ -43,7 +46,7 @@
               <v-col>
                 <input 
                   type="datetime-local" 
-                  @change="validarData"  
+                  
                   v-model="cupomToPost.validade"
                 />
               </v-col>
@@ -62,24 +65,16 @@
 
 <script>
 import service from '@/services/cupons/cupons-service.js'
-import validar from '@/utils/validacoes.js'
+import rules from '@/utils/rules.js'
 
 export default {
   name: 'CuponsNovo',
   data() {
     return {
-      cupomToPost: {
-        codigo: '',
-        nome: '',
-        validade: '',
-        valor: '',
-        is_percent: false,
-        is_fixed: false,
-      },
+      cupomToPost: {},
       tipoCupom: '',
-      erro_valor: null,
-      erro_data: null,
-      erro_tipo: null,
+      radioGroup: '',
+      rules: rules,
     }
   },
   methods: {
@@ -98,23 +93,6 @@ export default {
           this.$toast.error(response.data.message);
       }
     },
-    validarValor(e){
-      this.erro_valor = validar.validarNumeroFlutuante(e.target.value);
-    },
-    validarData(e){
-      var data = new Date(e.target.value);
-      this.erro_data = validar.validarDataCupom(data);
-    },
-    validarTipo(){
-      if( this.cupomToPost.is_percent == false && this.cupomToPost.is_fixed == false){
-        this.erro_tipo = 'Selecione um tipo';
-        return true;
-      }
-      else{
-        this.erro_tipo = null;
-        return false;
-      }      
-    }
   },
   watch: {
     tipoCupom: function(){
