@@ -31,7 +31,7 @@
       </v-row>
       
       <v-row class="float-right">
-        <v-btn color="success" to="/admin/usuario/novo">
+        <v-btn color="success" to="/admin/usuarios/novo">
           Novo usuário
         </v-btn>
       </v-row>

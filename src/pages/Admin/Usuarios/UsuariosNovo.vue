@@ -1,7 +1,57 @@
 <template>
-  <main id="usuarios-novo-page">
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="w100 pa-12" elevation="5">
+          <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Nome"
+                  v-model="usuarioToPost.nome"
+                ></v-text-field>
+
+                <v-text-field
+                  label="Sobrenome"
+                  v-model="usuarioToPost.sobrenome"
+                ></v-text-field>
+
+                <v-select
+                  v-model="tipoPermissoes"
+                  :items="permissoes"
+                  item-text="nome"
+                  item-value="key"
+                  label="Tipo de permissão"
+                ></v-select>
+
+                <v-text-field
+                  label="Email"
+                  v-model="usuarioToPost.email"
+                ></v-text-field>
+
+                <v-text-field 
+                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="show ? 'text' : 'password'"
+                  v-model="usuarioToPost.password"
+                  @click:append="show = !show"
+                  label="Senha"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/admin/usuarios" class="mr-2">Voltar</v-btn>
+        <v-btn @click="salvarUsuario" color="success">Salvar usuário</v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="usuarios-novo-page">
     <div class="row">
-      <!-- Informações básicas -->
+      
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
@@ -83,7 +133,7 @@
         >
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -102,6 +152,7 @@ export default {
         isAdmin: false,
         isCompany: false
       },
+      show: 'password',
       isChanged: true,
       erro_nome: null,
       erro_sobrenome: null,
@@ -109,6 +160,12 @@ export default {
       erro_senha: null,
       erro_cargo: null,
       tipoCargo: 0,
+      tipoPermissoes: null,
+      permissoes: [
+        { nome: 'Cliente', key: '0'},
+        { nome: 'Funcionário', key: '1'},
+        { nome: 'Administrador', key: '2'},
+      ],
     };
   },
   methods:{
@@ -174,5 +231,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="css" scoped>
+.row + .row {
+  margin-top: 24px;
+}
 </style>
