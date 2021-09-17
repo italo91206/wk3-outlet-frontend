@@ -1,5 +1,65 @@
 <template>
-  <main id="cupons-novo">
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="w100 pa-12" elevation="10">
+          <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  label="Código do cupom"
+                  v-model="cupomToPost.codigo"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  label="Nome do cupom"
+                  v-model="cupomToPost.nome"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  label="Valor do cupom"
+                  v-model="cupomToPost.valor"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-radio-group v-model="radioGroup">
+                  <v-radio
+                    label="Percentual"
+                    value="percentual"
+                  ></v-radio>
+
+                  <v-radio
+                    label="Valor Fixo"
+                    value="fixo"
+                  ></v-radio>
+                </v-radio-group>
+              </v-col>
+
+              <v-col>
+                <input 
+                  type="datetime-local" 
+                  @change="validarData"  
+                  v-model="cupomToPost.validade"
+                />
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/admin/cupons" class="mr-2">Voltar</v-btn>
+        <v-btn @click="novoCupom" color="success">Salvar cupom</v-btn>
+      </v-row>
+    </v-container>
+  </v-main>
+
+  <!-- <main id="cupons-novo">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -54,7 +114,7 @@
         <router-link class="btn btn-default float-right" to="/admin/cupons">Voltar</router-link>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <script>
@@ -128,4 +188,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="css" scoped>
+.row + .row {
+  margin-top: 24px;
+}
+</style>
