@@ -34,7 +34,7 @@
               <v-btn
                 color="success"
                 class="mr-4"
-                @click="fazerLogin"
+                @click="fazerLogin2"
               >
                 Fazer Login
               </v-btn>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-// import service from '../services/login/login-service.js';
+import service from '@/services/login/login-service.js';
 
 export default {
   name: "Login",
@@ -82,24 +82,45 @@ export default {
       const res = await this.$store.dispatch('auth/login', user);
       if(res.data.success){
         const usuario = res.data.data.usuario;
+        // const token = res.data.data.token;
         // console.log(usuario);
+        console.log('oi');
         if(usuario.isEmployee || usuario.isAdmin){
           this.$store.dispatch('perfil/setPerfil', usuario);
-          this.$router.push('/dashboard');
-          // const nome = this.$store.state.perfil.perfil.nome;
-          // console.log(nome);
+          // this.$router.push('/dashboard');
           this.$toast.success(`Bem vindo de volta ${this.$store.state.perfil.perfil.nome}!`);
         }
-        else
-          this.$toast.error('Este perfil não possui permissões de acesso.');
+        else{
+          console.log('aqui');
+          this.$toast.error(res.data.message);
+        }
       }
       else{
-        this.$toast.error(res.data.message)
+        
+        this.$toast.error(res.data.message);
         // console.log(res);
         // console.log('login não existe: ' + res.data.message)
         // alert(res.data.message);
       }
 
+    },
+    async fazerLogin2() {
+      const usuario = {
+        email: this.userInput, 
+        senha: this.passwordInput,
+      }
+      const response = await service.fazerLogin(usuario);
+      if(response.data.success){
+        let usuario = response.data.data.usuario;
+        let token = response.data.data.token;
+
+        localStorage.setItem('user', token);
+        this.$store.dispatch('perfil/setPerfil', usuario);
+        this.$router.push('/dashboard');
+        this.$toast.success(`Bem vindo de volta ${this.$store.state.perfil.perfil.nome}!`);
+      }
+      else
+        this.$toast.error(response.data.message);
     }
   }
 }

@@ -108,22 +108,23 @@ export default {
         this.erro_email = 'Email inválido';
     },
     async salvarUsuario(){
-      if(this.tipoCargo == 0)
-        this.erro_cargo = 'Selecione um cargo.';
-      else
-        this.erro_cargo = null;
+      // if(this.tipoCargo == 0)
+      //   this.erro_cargo = 'Selecione um cargo.';
+      // else
+      //   this.erro_cargo = null;
       
-      if(this.erro_nome || this.erro_email || this.erro_senha || this.erro_sobrenome || this.erro_cargo)
-        this.$toast.error('Alguns campos estão inválidos');
-      else{
-        const response = await service.novoUsuario(this.usuarioToPost);
+      // if(this.erro_nome || this.erro_email || this.erro_senha || this.erro_sobrenome || this.erro_cargo)
+      //   this.$toast.error('Alguns campos estão inválidos');
+      // else{
+        
+      // }
+      const response = await service.novoUsuario(this.usuarioToPost);
         if(response.data.success){
           this.$toast.success('Usuário cadastrado com sucesso');
           this.$router.push('/admin/usuarios');
         }
         else
           this.$toast.error(response.data.message);
-      }
     },
   },
   watch: {

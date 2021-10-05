@@ -2,7 +2,9 @@
 
 export const perfil = {
   namespaced: true,
-  state: { perfil: {} },
+  state: { 
+    perfil: {}
+  },
   actions: {
     setPerfil({ commit }, perfil) {
       return commit('setPerfil', perfil);

@@ -5,6 +5,7 @@
       </v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ this.$route.meta.title }}</v-toolbar-title>
+
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app>
@@ -15,6 +16,10 @@
           class="brand-image"
         />
       </router-link>
+
+      <v-list-item>
+        <v-list-item-title>Olá, {{ nome }}</v-list-item-title>
+      </v-list-item>
       
       <v-list nav dense>
         <!-- Item de vendas -->
@@ -207,14 +212,14 @@
           </v-list-item>
         </v-list-group>
 
-        <!-- Item de atributos -->
+        <!-- Item de configurações -->
         <v-list-group :value="false">
           <template v-slot:activator>
             <v-list-item-icon>
               <v-icon small>fas fa-cog</v-icon>
             </v-list-item-icon>
             
-            <v-list-item-title>Atributos</v-list-item-title>
+            <v-list-item-title>Configurações</v-list-item-title>
           </template>
           
           <!-- Item de cores -->
@@ -363,6 +368,36 @@
               </v-list-item-title>
             </v-list-item>
           </v-list-group>
+
+          <!-- Item de usuários -->
+          <v-list-group :value="false" no-action sub-group>
+
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Usuários</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/admin/usuarios/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Novo
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/usuarios">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+              
+              <v-list-item-title>
+                Consultar
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
         </v-list-group>
 
         <!-- Item para sair -->
@@ -386,7 +421,8 @@ export default {
   data(){
     return {
       drawer: false,
-      group: null
+      group: null,
+      nome: '',
     }
   },
   methods: {
@@ -394,7 +430,10 @@ export default {
       localStorage.removeItem('user');
       this.$store.dispatch('auth/logout');
       this.$router.push('/admin');
-    }
+    },
+  },
+  mounted(){
+    this.nome = this.$store.state.perfil.perfil.nome;
   }
 };
 </script>
@@ -407,5 +446,8 @@ export default {
   width: 50%;
   margin: 15px auto;
   display: flex;
+}
+.w100{
+  width: 100%;
 }
 </style>

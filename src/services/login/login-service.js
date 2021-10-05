@@ -7,7 +7,7 @@ const LoginService = {
         email: usuario.email,
         password: usuario.senha
       });
-      localStorage.setItem('user', response.data.data.token);
+      // localStorage.setItem('user', response.data.data.token);
       return response;
     }
     catch (error) {

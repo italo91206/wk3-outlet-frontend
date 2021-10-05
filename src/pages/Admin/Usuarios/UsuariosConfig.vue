@@ -52,6 +52,7 @@ export default {
         { text: 'Nome', value: 'nomeCompleto' },
         { text: 'Email', value: 'email' },
         { text: 'Permissões', value: 'permissao' },
+        { text: 'Habilitado', value: 'is_enabled'},
         { text: 'Ações', value: 'id' },
       ]
     }
@@ -72,6 +73,7 @@ export default {
     usuarios: function() {
       this.usuarios.forEach((item) => {
         item.nomeCompleto = `${item.nome} ${item.sobrenome}`;
+        item.is_enabled = item.is_enabled == true ? 'Sim' : 'Não';
         if(item.isAdmin)
           item.permissao = 'Administrador';
         else if(item.isEmployee)

@@ -46,7 +46,7 @@ export default {
   name: "MotivosConfig",
   data(){
     return {
-      motivos: [],
+      motivos: null,
       termoBusca: '',
       headers: [ 
         { text: 'Motivo', value: 'motivo'},

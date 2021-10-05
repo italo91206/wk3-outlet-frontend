@@ -1,6 +1,6 @@
 <template>
   <v-main class="pa-12">
-    <v-container>
+    <v-container class="w100">
       <v-row>
         <v-card class="w100">
           <v-card-title>
@@ -18,6 +18,7 @@
             :items="categorias"
             :loading="categorias.length == 0"
             loading-text="Carregando categorias... aguarde"
+            class="w100"
           >
             <template v-slot:item.categoria_id="{ item }">
               <router-link

@@ -17,6 +17,13 @@
             <div class="w100" v-if="etapa == 1">
               <v-form>
                 <v-col cols="12">
+                  <v-checkbox
+                    v-model="usuario.is_enabled"
+                    label="Usuário habilitado"
+                  ></v-checkbox>
+                </v-col>
+
+                <v-col cols="12">
                   <v-text-field
                     label="Nome"
                     v-model="usuario.nome"
@@ -106,9 +113,9 @@ export default {
       radioGroup: null,
       tipoPermissoes: 0,
       permissoes: [
-        { nome: 'Cliente', key: '0'},
-        { nome: 'Funcionário', key: '1'},
-        { nome: 'Administrador', key: '2'},
+        { nome: 'Cliente', key: 0},
+        { nome: 'Funcionário', key: 1},
+        { nome: 'Administrador', key: 2},
       ],
     };
   },
@@ -123,13 +130,36 @@ export default {
       }
     },
     async deletarUsuario(id) {
-      const response = await service.deletarUsuario(id);
-      if (response.data.success) {
-        this.$toast.success("Usuário foi removido com sucesso!");
-        this.$router.push("/admin/usuarios");
-      } else this.$toast.error(response.data.message);
+      let admin = this.$store.state.perfil.isAdmin;
+      if(!admin && this.usuario.isAdmin){
+        this.$toast.error('Você não tem permissões para isso');
+      }
+      else{
+        const response = await service.deletarUsuario(id);
+        if (response.data.success) {
+          if(this.$store.state.perfil.perfil.id == this.usuario.id){
+            localStorage.removeItem('user');
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/admin');
+          }
+          else{
+            this.$toast.success("Usuário foi removido com sucesso!");
+            this.$router.push("/admin/usuarios");
+          }
+        }
+        else
+          this.$toast.error(response.data.message);
+      }
     },
     async atualizarUsuario() {
+      if(this.tipoPermissoes == 1){
+        this.usuario.isEmployee = true;
+        this.usuario.isAdmin = false;
+      }
+      else if(this.tipoPermissoes == 2){
+        this.usuario.isEmployee = false;
+        this.usuario.isAdmin = true;
+      }
       const response = await service.atualizarUsuario(this.usuario);
       if (response.data.success) {
         this.$toast.success("Usuário foi atualizado com sucesso!");
@@ -158,6 +188,7 @@ export default {
     }
   },
   mounted() {
+
     const id = this.$route.params.id;
     this.listarUsuario(id);
   },
@@ -165,6 +196,16 @@ export default {
     usuario: function() {
       this.isAdmin = this.usuario.isAdmin;
       this.isEmployee = this.usuario.isEmployee;
+
+      if(this.isEmployee){
+        this.tipoPermissoes = 1;
+      }
+      else if(this.isAdmin){
+        this.tipoPermissoes = 2;
+      }
+      else{
+        this.tipoPermissoes = 0;
+      }
     }
   }
 };

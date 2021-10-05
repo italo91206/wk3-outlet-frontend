@@ -52,6 +52,8 @@ export default {
         { text: 'Nome', value: 'nome' },
         { text: 'Preço', value: 'preco' },
         { text: 'Estoque', value: 'estoque' },
+        { text: 'SKU', value: 'sku' },
+        { text: 'URL', value: 'url_visual' },
         { text: 'Ações', value: 'url', filterable: false, },
       ]
     };
@@ -71,6 +73,13 @@ export default {
       return `R$ ${value.toFixed(2)}`;
     },
   },
+  watch: {
+    produtos: function(){
+      this.produtos.forEach((item) => {
+        item.url_visual = item.url;
+      })
+    }
+  }
 };
 </script>
 
