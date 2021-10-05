@@ -10,6 +10,7 @@
                 <v-text-field
                   label="Nome da categoria"
                   v-model="categoriaToPost.nome"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -40,6 +41,7 @@
 
 <script>
 import service from '@/services/categorias/categoria-service.js'
+import rules from '@/utils/rules.js'
 
 export default {
   name: 'CategoriasEditar',
@@ -51,6 +53,7 @@ export default {
       categoriaSelecionado: 0,
       erro_nome: null,
       isChanged: true,
+      rules: rules,
     }
   },
   methods:{

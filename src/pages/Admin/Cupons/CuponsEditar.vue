@@ -16,6 +16,7 @@
                 <v-text-field
                   label="Nome do cupom"
                   v-model="cupomToPost.nome"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
 
@@ -23,11 +24,13 @@
                 <v-text-field
                   label="Valor do cupom"
                   v-model="cupomToPost.valor"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12">
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" row mandatory>
                   <v-radio
                     label="Percentual"
                     value="percentual"
@@ -63,6 +66,7 @@
 
 <script>
 import service from '@/services/cupons/cupons-service.js'
+import rules from '@/utils/rules.js'
 
 export default {
   name: 'CuponsEditar',
@@ -73,7 +77,9 @@ export default {
       isChanged: true,
       erro_validade: '',
       erro_tipo: '',
-      erro_valor: ''
+      erro_valor: '',
+      rules: rules,
+      radioGroup: null, 
     }
   },
   methods: {

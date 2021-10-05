@@ -9,6 +9,7 @@
                 <v-text-field
                   label="Nome da cor"
                   v-model="corToPost.cor"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -36,17 +37,16 @@
 
 <script>
 import service from "@/services/cores/cor-service.js";
+import rules from '@/utils/rules.js'
 
 export default {
   name: "CoresNovo",
   data() {
     return {
-      corToPost: {
-        cor: "",
-        hexa: "",
-      },
+      corToPost: {},
       isChanged: true,
-      erro_nome: null
+      erro_nome: null,
+      rules: rules,
     };
   },
   methods: {

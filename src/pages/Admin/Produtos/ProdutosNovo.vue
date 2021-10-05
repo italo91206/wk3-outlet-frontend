@@ -63,8 +63,6 @@
               </v-col>
             </v-row>
 
-            <hr/>
-
             <!-- Estoque e peso-->
             <v-row>
               <v-col>

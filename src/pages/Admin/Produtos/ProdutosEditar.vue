@@ -27,6 +27,7 @@
                 <v-text-field 
                   label="Nome do produto" 
                   v-model="produtoToPost.nome"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -48,6 +49,7 @@
                   label="Preço" 
                   v-model="produtoToPost.preco"
                   type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -56,11 +58,10 @@
                   label="Custo" 
                   v-model="produtoToPost.custo"
                   type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
             </v-row>
-
-            <hr/>
 
             <!-- Estoque e peso-->
             <v-row>
@@ -70,6 +71,7 @@
                   v-model="produtoToPost.estoque"
                   type="number"
                   @change="mudouEstoque"
+                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -78,6 +80,7 @@
                   label="Peso (gramas)" 
                   v-model="produtoToPost.peso"
                   type="number"
+                  :rules="[rules.positiveNotNull]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -144,7 +147,6 @@
               </v-col>
             </v-row>
 
-            <hr/>
             <h4>Variações de produto</h4>
 
             <!-- Cor e tamanho -->
@@ -181,7 +183,7 @@
               :items="variacoes"
               hide-default-footer
               no-data-text="Este produto não possui variações"
-              disable-sort="true"
+              :disable-sort="true"
             >
               <template v-slot:item.acao="{item}">
                 <a class="link" @click="removerVariacao(item.nome)">
@@ -213,6 +215,7 @@ import categoriaService from '@/services/categorias/categoria-service.js'
 import imagemService from '@/services/imagens/imagem-service.js'
 import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
 import validar from '@/utils/validacoes.js'
+import rules from '@/utils/rules.js'
 
 export default {
   name: "ProdutosEditar",
@@ -258,6 +261,7 @@ export default {
       variacaoIndex: 0,
       variacao_corSelecionado: 0,
       variacao_tamanhoSelecionado: 0,
+      rules: rules,
     }
   },
   methods: {

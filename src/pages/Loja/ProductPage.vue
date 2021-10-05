@@ -318,7 +318,7 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 /* ================
     PAGE PRODUCT
 =================*/
@@ -648,8 +648,8 @@ button.se-button-consultar {
 }
 
 @media (max-width: 1025px) {
-    .se-product-description:not(.se-description--active) .seeMore  {
-	    display: none 
+    .se-product-description:not(.se-description--active) .seeMore {
+        display: none;
     }
 }
 a.se-link-tags {

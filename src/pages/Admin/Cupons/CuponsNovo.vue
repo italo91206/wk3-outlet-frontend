@@ -9,9 +9,7 @@
                 <v-text-field
                   label="Código do cupom"
                   v-model="cupomToPost.codigo"
-                  :rules="[rules.required, rules.counter]"
-                  counter
-                  maxlength="20"
+                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -19,6 +17,7 @@
                 <v-text-field
                   label="Nome do cupom"
                   v-model="cupomToPost.nome"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
 
@@ -26,11 +25,13 @@
                 <v-text-field
                   label="Valor do cupom"
                   v-model="cupomToPost.valor"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12">
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="radioGroup" row mandatory>
                   <v-radio
                     label="Percentual"
                     value="percentual"
@@ -46,8 +47,8 @@
               <v-col>
                 <input 
                   type="datetime-local" 
-                  
                   v-model="cupomToPost.validade"
+                  :rules="[rules.required]"
                 />
               </v-col>
             </v-row>
@@ -73,7 +74,7 @@ export default {
     return {
       cupomToPost: {},
       tipoCupom: '',
-      radioGroup: '',
+      radioGroup: null,
       rules: rules,
     }
   },
