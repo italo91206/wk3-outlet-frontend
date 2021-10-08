@@ -6,7 +6,7 @@ const rules = {
         return pattern.test(value) || 'E-mail inválido'
     },
     specialCharacters: (value) => { 
-        const pattern = /[^çÇ\s\w]/g;
+        const pattern = /[^çÇ-\s\w]/g;
         return !pattern.test(value) || 'Não é permitido caracteres especiais'
     },
     positiveNumber: (value) => {
