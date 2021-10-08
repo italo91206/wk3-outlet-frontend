@@ -30,13 +30,13 @@ export default {
   },
   data() {
     return{
-      maintenance: true
+      maintenance: false,
     }
   }
 }
 </script>
 
-<style>
+<style lang="css">
 #maintenance{
   background-color: #FF9900;
   position: fixed;
