@@ -9,9 +9,10 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "^0.4.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "jwt-decode": "^3.1.2",
+    "swiper": "^7.0.8",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
     "vue-toast-notification": "^0.6.2",
