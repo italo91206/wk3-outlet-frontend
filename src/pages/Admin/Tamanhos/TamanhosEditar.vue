@@ -9,6 +9,7 @@
                 <v-text-field
                   label="Nome do tamanho"
                   v-model="tamanhoToPost.tamanho"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -27,6 +28,7 @@
 
 <script>
 import service from "@/services/tamanhos/tamanhos-service.js";
+import rules from '@/utils/rules.js';
 
 export default {
   name: "TamanhosEditar",
@@ -35,6 +37,7 @@ export default {
       tamanhoToPost: {},
       isChange: true,
       erro_nome: null,
+      rules: rules,
     };
   },
   methods: {
@@ -73,13 +76,8 @@ export default {
       this.isChange = false;
     },
     deletar() {
-      const resposta = confirm(
-        "Deseja mesmo deletar este tamanho? Esta ação é irreversível"
-      );
-      if (resposta) {
-        const id = this.$route.params.id;
-        this.deletarTamanho(id);
-      }
+      const id = this.$route.params.id;
+      this.deletarTamanho(id);
     },
     validarNome(e){
       var string = e.target.value;

@@ -9,6 +9,7 @@
                 <v-text-field
                   label="Nome da marca"
                   v-model="marcaToPost.marca"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -26,7 +27,8 @@
 </template>
 
 <script>
-import service from '@/services/marcas/marcas-service'
+import service from '@/services/marcas/marcas-service';
+import rules from '@/utils/rules.js';
 
 export default {
   name: 'MarcasEditar',
@@ -35,6 +37,7 @@ export default {
       marcaToPost: {},
       isChanged: true,
       erro_nome: null,
+      rules: rules,
     }
   },
   methods:{

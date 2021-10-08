@@ -9,6 +9,7 @@
                 <v-text-field
                   label="Nome do modelo"
                   v-model="modeloToPost.modelo"
+                  :rules="[ rules.specialCharacters ]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -27,6 +28,7 @@
 
 <script>
 import service from '@/services/modelos/modelos-service.js'
+import rules from '@/utils/rules.js';
 
 export default {
   name: 'ModelosEditar',
@@ -35,6 +37,7 @@ export default {
       modeloToPost: {},
       isChanged: true,
       erro_nome: null,
+      rules: rules,
     }
   },
   methods: {
@@ -70,11 +73,8 @@ export default {
         this.$toast.error(response.data.message);
     },
     deletar(){
-      const response = confirm('Tem certeza que deseja remover? Esta ação é irreversível!');
-      if(response){
-        const id = this.$route.params.id;
-        this.deletarModelo(id)
-      }
+      const id = this.$route.params.id;
+      this.deletarModelo(id)
     },
     mudou(){
       this.isChanged = false;

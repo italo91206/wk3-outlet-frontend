@@ -9,6 +9,7 @@
                 <v-text-field
                   label="Nome do tamanho"
                   v-model="tamanhoToPost.tamanho"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -25,7 +26,8 @@
 </template>
 
 <script>
-import service from '@/services/tamanhos/tamanhos-service.js'
+import service from '@/services/tamanhos/tamanhos-service.js';
+import rules from '@/utils/rules.js';
 
 export default {
   name: 'TamanhosNovo',
@@ -35,6 +37,7 @@ export default {
         tamanho: ''
       },
       erro_nome: null,
+      rules: rules,
     }
   },
   methods:{
