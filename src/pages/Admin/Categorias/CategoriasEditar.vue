@@ -71,6 +71,7 @@ export default {
       const response = await service.verCategorias();
       if(response.data.success){
         this.categorias = response.data.data;
+        this.categorias.push({"categoria_id":0,"nome":"","url":"","categoria_pai":null,"is_enabled":true});
         // this.categorias.forEach((item) => { this.adicionar(item) })
       }
       else
@@ -116,16 +117,20 @@ export default {
         this.erro_nome = '';
     },
     async salvarCategoria(){
-      if(this.erro_nome)
-        this.$toast.error('Alguns campos estão inválidos');
+      if(this.categoriaToPost.categoria_pai == this.categoriaToPost.categoria_id)
+        this.$toast.error('Uma categoria não pode ser pai dela mesma.');
       else{
-        const response = await service.atualizarCategoria(this.categoriaToPost)
-        if(response.data.success){
-          this.$toast.success('Categoria foi atualizada com sucesso!');
-          this.$router.push('/admin/categorias');
+        if(this.erro_nome)
+          this.$toast.error('Alguns campos estão inválidos');
+        else{
+          const response = await service.atualizarCategoria(this.categoriaToPost)
+          if(response.data.success){
+            this.$toast.success('Categoria foi atualizada com sucesso!');
+            this.$router.push('/admin/categorias');
+          }
+          else
+            this.$toast.error(response.data.message);
         }
-        else
-          this.$toast.error(response.data.message);
       }
     },
     mudou(){
@@ -143,6 +148,10 @@ export default {
       if(this.categoriaToPost.categoria_pai != null)
         this.categoriaSelecionado = this.categoriaToPost.categoria_pai;
     },
+    categoriaSelecionado(){
+      this.categoriaToPost.categoria_pai = this.categoriaSelecionado;
+    }
+    
     // categoriaSelecionado(){
     //   if(this.categoriaSelecionado != 0)
     //     this.categoriaToPost.categoria_pai = this.categoriaSelecionado;

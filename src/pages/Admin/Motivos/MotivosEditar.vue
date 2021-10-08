@@ -70,11 +70,8 @@ export default {
       this.isChange = false;
     },
     deletar(){
-      const resposta = confirm('Deseja mesmo deletar este motivo? Esta ação é irreversível');
-      if(resposta){
-        const id = this.$route.params.id;
-        this.deletarMotivo(id);
-      }
+      const id = this.$route.params.id;
+      this.deletarMotivo(id);
     }
   },
   mounted(){

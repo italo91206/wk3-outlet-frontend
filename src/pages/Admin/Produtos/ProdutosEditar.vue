@@ -6,9 +6,11 @@
           <v-form>
             <!-- Renderizar as imagens do produto -->
             <v-row>
-              <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
-                <v-img :src="imagem"></v-img>
-              </v-col>
+              <section id="galeria-imagens">
+                <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
+                  <v-img :src="imagem"></v-img>
+                </v-col>
+              </section>
             </v-row>
             
             <!-- Input de imagens do produto -->
@@ -151,7 +153,7 @@
 
             <!-- Cor e tamanho -->
             <v-row>
-              <v-col cols="5">
+              <v-col cols="3">
                 <v-select
                   v-model="variacao_corSelecionado"
                   :items="cores"
@@ -161,7 +163,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="5">
+              <v-col cols="3">
                 <v-select
                   v-model="variacao_tamanhoSelecionado"
                   :items="tamanhos"
@@ -171,7 +173,15 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="2" class="flex align-center">
+              <v-col cols="3">
+                <v-text-field
+                  v-model="variacao_quantidade"
+                  label="Quantidade"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3" class="flex align-center">
                 <v-btn @click="adicionarVariacao">
                   Adicionar
                 </v-btn>
@@ -186,9 +196,32 @@
               :disable-sort="true"
             >
               <template v-slot:item.acao="{item}">
-                <a class="link" @click="removerVariacao(item.nome)">
+                <a class="link" @click="removerVariacao(item.variacao_id)">
                   Remover
                 </a>
+              </template>
+
+              <template v-slot:item.quantidade="{item}">
+                <v-edit-dialog
+                  :return-value.sync="item.quantidade"
+                  large
+                  persistent
+                >
+                  <div>{{ item.quantidade }}</div>
+                  <template v-slot:input>
+                    <div class="mt-4 text-h6">
+                      Atualizar quantidade
+                    </div>
+                    <v-text-field
+                      v-model="item.quantidade"
+                      :rules="[rules.positiveNotNull]"
+                      label="Quantidade"
+                      single-line
+                      counter
+                      autofocus
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
               </template>
             </v-data-table>
           </v-form>
@@ -233,9 +266,9 @@ export default {
       },
       headersVariacoes: [
         { text: 'Nome', value: 'nome' },
-        { text: 'SKU', value: 'sku' },
         { text: 'Cor', value: 'cor' },
         { text: 'Tamanho', value: 'tamanho' },
+        { text: 'Quantidade', value: 'quantidade' },
         { text: 'Ação', value: 'acao' },
       ],
       modeloSelecionado: '',
@@ -255,20 +288,26 @@ export default {
       tamanhos: [],
       variacoes: [],
       novasCategorias: [],
-      categoriaSelecionado: '',
+      categoriaSelecionado: null,
       imagens: [],
       link_pai: null,
       variacaoIndex: 0,
       variacao_corSelecionado: 0,
       variacao_tamanhoSelecionado: 0,
+      variacao_quantidade: null,
       rules: rules,
     }
   },
   methods: {
     async getMarcas() {
       const response = await marcasService.getMarcas()
-      if(response.data.success)
+      if(response.data.success){
         this.marcas = response.data.data;
+        this.marcas.push({
+          marca: 'Sem marca',
+          marca_id: null,
+        })
+      }
       else{
         this.$toast.error(response.data.message);
         this.$router.push('/admin/produtos');
@@ -276,8 +315,13 @@ export default {
     },
     async getModelos(){
       const response = await modelosService.verModelos();
-      if(response.data.success)
+      if(response.data.success){
         this.modelos = response.data.data;
+        this.modelos.push({
+          modelo: 'Sem modelo',
+          modelo_id: null,
+        })
+      }
       else
         this.$toast.error(response.data.message);
     },
@@ -303,7 +347,7 @@ export default {
       if(this.estoque_changed){
         if(this.motivo == ""){
           liberar = false;
-          alert('Por favor selecione um motivo');
+          this.$toast.error('Por favor selecione um motivo');
         }
         else{
           const perfil_id = this.$store.state.perfil.perfil.id
@@ -315,6 +359,7 @@ export default {
         }
       }
       if(liberar){
+        this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.atualizarProduto(this.produtoToPost);
         if(response.data.success){
           this.$toast.success('Produto foi atualizado com sucesso');
@@ -439,13 +484,14 @@ export default {
     },
     adicionarVariacao(){
 
-      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0){
+      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0)
         this.$toast.error('Selecione ao menos uma variação.');
-      }
+      else if(this.variacao_quantidade == null || this.variacao_quantidade < 0 )
+        this.$toast.error('A variação precisa de uma quantidade positiva.');
       else{
-        let variacao = { ...this.produtoToPost };
-        variacao.sku = `${variacao.sku}-${this.variacaoIndex++}`;
-        
+        let variacao = {};
+        variacao.nome = this.produtoToPost.nome;
+
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
@@ -458,24 +504,42 @@ export default {
           variacao.tamanho = tamanho[0].tamanho;
           variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
         }
-        
+        variacao.quantidade = this.variacao_quantidade;
         this.variacoes.push(variacao);
+
         this.variacao_tamanhoSelecionado = 0;
         this.variacao_corSelecionado = 0;
+        this.variacao_quantidade = null;
       }
     },
-    removerVariacao(to_delete){
-      let index = 0;
-      let achei;
-      
-      this.variacoes.forEach((variacao) => {
-        if(variacao.nome != to_delete)
+    async removerVariacao(to_delete){
+      console.log(to_delete);
+      const response = await produtoService.removerVariacao(to_delete);
+      if(response.data.success){
+        let index = 0;
+        let achei = null;
+        this.variacoes.forEach((variacao) => {
+          if(variacao.variacao_id == to_delete)
+            achei = index;
           index++;
-        else
-          achei = index;
-      })
+        })
+        this.variacoes.splice(achei, 1);
+      }
+      else{
+        this.$toast.error(response.data.message);
+      }
+        
+      // let index = 0;
+      // let achei;
+      
+      // this.variacoes.forEach((variacao) => {
+      //   if(variacao.nome != to_delete)
+      //     index++;
+      //   else
+      //     achei = index;
+      // })
 
-      this.variacoes.splice(achei, 1);
+      // this.variacoes.splice(achei, 1);
       // let encontrado = this.variacoes.filter( variacao => { return variacao === to_delete });
       // encontrado = encontrado[0];
       // let index = this.variacoes.findIndex(encontrado);
@@ -495,23 +559,40 @@ export default {
       if(this.produtoToPost.modelo_id) this.modeloSelecionado = this.produtoToPost.modelo_id;
       if(this.produtoToPost.marca_id) this.marcaSelecionado = this.produtoToPost.marca_id;
       if(this.produtoToPost.produto_pai) this.carregarUrlProdutoPai(this.produtoToPost.produto_pai);
-      if(this.produtoToPost.tipo_produto == 'configuravel') this.recuperarVariacoes();
+      if(this.produtoToPost.categoria_id) this.categoriaSelecionado = this.produtoToPost.categoria_id;
       this.recuperarImagens();
+      this.novasCategorias.push({
+        id: null,
+        nome: 'Nenhum'
+      })
     },
     estoque_changed: function(){
       this.carregarMotivos();
     },
     variacoes: function(){
       this.variacoes.forEach((variacao) => {
+        variacao.nome = this.produtoToPost.nome;
+
         if(variacao.cor_id){
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
           variacao.cor = cor[0].cor;
+          variacao.nome = `${variacao.nome} ${variacao.cor}`;
         }
         if(variacao.tamanho_id){
           const tamanho = this.tamanhos.filter(tamanho => { return tamanho.tamanho_id === variacao.tamanho_id });
           variacao.tamanho = tamanho[0].tamanho;
+          variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
         }
       })
+    },
+    categoriaSelecionado: function(){
+      this.produtoToPost.categoria_id = this.categoriaSelecionado;
+    },
+    modeloSelecionado: function(){
+      this.produtoToPost.modelo_id = this.modeloSelecionado;
+    },
+    marcaSelecionado: function(){
+      this.produtoToPost.marca_id = this.marcaSelecionado;
     }
   }
 };

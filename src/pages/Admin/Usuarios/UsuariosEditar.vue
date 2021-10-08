@@ -17,13 +17,6 @@
             <div class="w100" v-if="etapa == 1">
               <v-form>
                 <v-col cols="12">
-                  <v-checkbox
-                    v-model="usuario.is_enabled"
-                    label="Usuário habilitado"
-                  ></v-checkbox>
-                </v-col>
-
-                <v-col cols="12">
                   <v-text-field
                     label="Nome"
                     v-model="usuario.nome"
@@ -53,7 +46,13 @@
                     item-value="key"
                     label="Tipo de permissão"
                   ></v-select>
+                </v-col>
+              </v-form>
+            </div>
 
+            <div class="w100" v-if="etapa == 2">
+              <v-form>
+                <v-col cols="12">
                   <v-text-field
                     label="RG"
                     v-model="usuario.rg"
@@ -63,12 +62,28 @@
                     label="CPF"
                     v-model="usuario.cpf"
                   ></v-text-field>
+
+                  <v-text-field
+                    label="E-mail"
+                    v-model="usuario.email"
+                  ></v-text-field>
+
+                  <v-text-field 
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show ? 'text' : 'password'"
+                    v-model="usuario.password"
+                    @click:append="show = !show"
+                    label="Senha"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col cols="12">
+                  <v-checkbox
+                    v-model="usuario.is_enabled"
+                    label="Usuário habilitado"
+                  ></v-checkbox>
                 </v-col>
               </v-form>
-            </div>
-
-            <div class="w100" v-if="etapa == 2">
-              <h3>Informações avançadas. Ainda não está pronto</h3>
             </div>
 
             <div class="w100" v-if="etapa == 3">
@@ -76,7 +91,23 @@
             </div>
 
             <div class="w100" v-if="etapa == 4">
-              <h3>Acertos de estoque efetuadas pelo usuário. Ainda não está pronto</h3>
+              <v-card-title>
+                <v-text-field
+                  v-model="termoBusca"
+                  append-icon="mdi-magnify"
+                  label="Buscar por acerto"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="headers"
+                :search="termoBusca"
+                :items="acertos"
+                :loading="acertos.length == 0"
+                loading-text="Carregando acertos... aguarde"
+              >
+              </v-data-table>
             </div>
 
             <div class="w100" v-if="etapa == 5">
@@ -97,6 +128,7 @@
 
 <script>
 import service from "@/services/usuarios/usuario-service.js";
+import acertosService from "@/services/acerto-estoque/acerto-estoque-service.js";
 import validar from "@/utils/validacoes.js";
 
 export default {
@@ -112,11 +144,19 @@ export default {
       erro_sobrenome: null,
       radioGroup: null,
       tipoPermissoes: 0,
+      acertos: null,
+      show: 'text',
       permissoes: [
         { nome: 'Cliente', key: 0},
         { nome: 'Funcionário', key: 1},
         { nome: 'Administrador', key: 2},
       ],
+      headers: [
+        { text: 'Data alteração', value: 'data' },
+        { text: 'Produto', value: 'produto' },
+        { text: 'Estoque (anterior)', value: 'valor' },
+        { text: 'Motivo', value: 'motivo' },
+      ]
     };
   },
   methods: {
@@ -166,6 +206,12 @@ export default {
         this.$router.push("/admin/usuarios");
       } else this.$toast.error(response.data.message);
     },
+    async carregarAcertos(id) {
+      const response = await acertosService.listarAcertosPorUsuario(id);
+      if(response.data.success){
+        this.acertos = response.data.data;
+      }
+    },
     mudarPessoa(tipo) {
       if (tipo == "pj") this.usuario.isCompany = true;
       else if (tipo == "pf") this.usuario.isCompany = false;
@@ -180,6 +226,11 @@ export default {
       let id = this.$route.params.id;
       this.deletarUsuario(id);
     },
+    pad(num, size) {
+      num = num.toString();
+      while (num.length < size) num = "0" + num;
+      return num;
+    },
     validar_nome(e) {
       this.erro_nome = validar.validarNome(e.target.value);
     },
@@ -188,7 +239,6 @@ export default {
     }
   },
   mounted() {
-
     const id = this.$route.params.id;
     this.listarUsuario(id);
   },
@@ -206,6 +256,31 @@ export default {
       else{
         this.tipoPermissoes = 0;
       }
+    },
+    etapa: function() {
+      if(this.etapa == 4){
+        let id = this.usuario.id;
+        this.carregarAcertos(id)
+      }
+    },
+    acertos: function(){
+      this.acertos.forEach( (item) => {
+        let data = new Date(item.data);
+        let dia = data.getDate();
+        let mes = data.getMonth() + 1;
+        let ano = data.getFullYear();
+
+        dia = this.pad(dia, 2);
+        mes = this.pad(mes, 2);
+
+        item.data = `${dia}/${mes}/${ano}`;
+
+        let valor = Math.abs(item.valor_anterior - item.valor_novo);
+        if(valor > 0)
+          item.valor = `+ ${valor}`;
+        else
+          item.valor = `- ${valor}`
+      })
     }
   }
 };

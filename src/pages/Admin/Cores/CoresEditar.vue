@@ -86,9 +86,7 @@ export default {
         this.isChanged = false
       },
       deletar(){
-        let resposta = confirm('Tem certeza que deseja excluir ? Não há volta.')
-        if(resposta)
-          this.deletarCor(this.corToPost.cor_id);
+        this.deletarCor(this.corToPost.cor_id);
       },
       validarNome(e){
         var string = e.target.value;

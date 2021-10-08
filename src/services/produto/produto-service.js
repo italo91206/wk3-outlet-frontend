@@ -50,6 +50,19 @@ const ProdutoService = {
         catch(err){
             console.log(err);
         }
+    },
+
+    removerVariacao: async(id) => {
+        let response;
+        try {
+            response = await api.delete('produto/removerVariacao', {
+                params: { id: id }
+            });
+            return response;
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 }
 

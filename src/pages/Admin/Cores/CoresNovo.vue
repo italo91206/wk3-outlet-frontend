@@ -19,7 +19,7 @@
                 <v-color-picker
                   dot-size="18"
                   swatches-max-height="200"
-                  v-model="corToPost.hexa"
+                  v-model="colorPicker"
                 ></v-color-picker>
               </v-col>
             </v-row>
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       corToPost: {},
+      colorPicker: {},
       isChanged: true,
       erro_nome: null,
       rules: rules,
@@ -74,6 +75,11 @@ export default {
       this.isChanged = false;
     },
   },
+  watch: {
+    colorPicker: function(){
+      this.corToPost.hexa = this.colorPicker.hex;
+    }
+  }
 };
 </script>
 

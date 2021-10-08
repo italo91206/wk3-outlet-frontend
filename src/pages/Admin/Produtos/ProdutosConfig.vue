@@ -16,7 +16,7 @@
             :headers="headers"
             :search="termoBusca"
             :items="produtos"
-            :loading="produtos.length == 0"
+            :loading="loading"
             loading-text="Carregando produtos... aguarde"
           >
             <template v-slot:item.url="{ item }">
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       produtos: [],
+      loading: true,
       termoBusca: '',
       headers: [
         { text: 'Nome', value: 'nome' },
@@ -61,8 +62,12 @@ export default {
   methods: {
     async listarProdutos() {
       const response = await service.listarProdutos();
-      if (response.data.success) this.produtos = response.data.data;
-      else console.error(response.data.message);
+      if (response.data.success){
+        this.loading = false;
+        this.produtos = response.data.data;
+      }
+      else
+        console.error(response.data.message);
     },
   },
   mounted() {

@@ -165,8 +165,8 @@ export default {
     this.listarCupom(id);
   },
   watch: {
-    tipoCupom: function(){
-      if(this.tipoCupom == 'percentual'){
+    radioGroup: function(){
+      if(this.radioGroup == 'percentual'){
         this.cupomToPost.is_fixed = false;
         this.cupomToPost.is_percent = true;
       }

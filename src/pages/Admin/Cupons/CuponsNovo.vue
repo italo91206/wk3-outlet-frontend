@@ -80,9 +80,7 @@ export default {
   },
   methods: {
     async novoCupom(){
-      var falta_tipo = this.validarTipo();
-
-      if(falta_tipo || this.cupomToPost.validade == '' || this.erro_data || this.erro_valor)
+      if(this.cupomToPost.validade == '')
         this.$toast.error('Alguns campos não estão válidos');
       else{      
         const response = await service.novoCupom(this.cupomToPost);
@@ -96,8 +94,8 @@ export default {
     },
   },
   watch: {
-    tipoCupom: function(){
-      if(this.tipoCupom == 'percentual'){
+    radioGroup: function(){
+      if(this.radioGroup == 'percentual'){
         this.cupomToPost.is_fixed = false;
         this.cupomToPost.is_percent = true;
       }

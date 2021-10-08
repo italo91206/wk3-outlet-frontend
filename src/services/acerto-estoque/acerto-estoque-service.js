@@ -24,7 +24,19 @@ const AcertoEstoqueService = {
     catch(err){
       console.log(err.message);
     }
-  }
+  },
+  listarAcertosPorUsuario: async(id) => {
+    let response;
+    try { 
+      response = api.get('/acerto-de-estoque/acertosPorUsuario', {
+        params: { id: id } 
+      });
+      return response;
+    }
+    catch(err){
+      console.log(err.message);
+    }
+  },
 }
 
 export default AcertoEstoqueService;

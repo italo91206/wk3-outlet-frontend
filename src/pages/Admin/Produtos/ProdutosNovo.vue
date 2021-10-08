@@ -30,6 +30,7 @@
                 <v-text-field 
                   label="Nome do produto" 
                   v-model="produtoToPost.nome"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -40,6 +41,7 @@
                 <v-text-field 
                   label="SKU" 
                   v-model="produtoToPost.sku"
+                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -51,6 +53,7 @@
                   label="Preço" 
                   v-model="produtoToPost.preco"
                   type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -70,6 +73,7 @@
                   label="Estoque" 
                   v-model="produtoToPost.estoque"
                   type="number"
+                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -78,6 +82,7 @@
                   label="Peso (gramas)" 
                   v-model="produtoToPost.peso"
                   type="number"
+                  :rules="[rules.positiveNotNull]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -141,12 +146,11 @@
               </v-col>
             </v-row>
 
-            <hr/>
             <h4>Variações de produto</h4>
 
             <!-- Cor e tamanho -->
             <v-row>
-              <v-col cols="5">
+              <v-col cols="3">
                 <v-select
                   v-model="variacao_corSelecionado"
                   :items="cores"
@@ -156,7 +160,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="5">
+              <v-col cols="3">
                 <v-select
                   v-model="variacao_tamanhoSelecionado"
                   :items="tamanhos"
@@ -166,7 +170,15 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="2" class="flex align-center">
+              <v-col cols="3">
+                <v-text-field
+                  v-model="variacao_quantidade"
+                  label="Quantidade"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3" class="flex align-center">
                 <v-btn @click="adicionarVariacao">
                   Adicionar
                 </v-btn>
@@ -184,6 +196,29 @@
                 <a class="link" @click="removerVariacao(item.nome)">
                   Remover
                 </a>
+              </template>
+
+              <template v-slot:item.quantidade="{item}">
+                <v-edit-dialog
+                  :return-value.sync="item.quantidade"
+                  large
+                  persistent
+                >
+                  <div>{{ item.quantidade }}</div>
+                  <template v-slot:input>
+                    <div class="mt-4 text-h6">
+                      Atualizar quantidade
+                    </div>
+                    <v-text-field
+                      v-model="item.quantidade"
+                      :rules="[rules.positiveNotNull]"
+                      label="Quantidade"
+                      single-line
+                      counter
+                      autofocus
+                    ></v-text-field>
+                  </template>
+                </v-edit-dialog>
               </template>
             </v-data-table>
           </v-form>
@@ -206,6 +241,7 @@ import produtoService from '@/services/produto/produto-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
 import imagemService from '@/services/imagens/imagem-service.js'
 import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
+import rules from '@/utils/rules.js'
 
 export default {
   name: "ProdutosNovo",
@@ -221,19 +257,19 @@ export default {
         marca_id: null,
         modelo_id: null,
         categoria_id: null,
-        tipo_produto: 'simples',
       },
       headersVariacoes: [
         { text: 'Nome', value: 'nome' },
-        { text: 'SKU', value: 'sku' },
         { text: 'Cor', value: 'cor' },
         { text: 'Tamanho', value: 'tamanho' },
+        { text: 'Quantidade', value: 'quantidade' },
         { text: 'Ação', value: 'acao' },
       ],
       modeloSelecionado: '',
       marcaSelecionado: '',
       variacao_corSelecionado: 0,
       variacao_tamanhoSelecionado: 0,
+      variacao_quantidade: null,
       modelos: [],
       marcas: [],
       cores: [],
@@ -246,6 +282,7 @@ export default {
       erro_preco: null,
       erro_estoque: null,
       erro_peso: null,
+      rules: rules,
       imagens: [],
       variacoes: [],
       variacaoIndex: 0,
@@ -291,9 +328,33 @@ export default {
       if(response.data.success){
         this.categorias = response.data.data;
         // this.categorias.forEach((item) => { this.adicionar(item) })
+        this.categorias.push({
+          id: null,
+          nome: 'Nenhum'
+        })
+        this.categorias.forEach((item) => { this.adicionar(item) })
       }
       else
         this.$toast.error(response.data.message);
+    },
+    adicionar(item) {
+      if (item.categoria_pai == null)
+        this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
+      else {
+        var string = `${item.nome}`;
+        var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
+        var pai = this.categorias[index];
+        string = `${pai.nome} / ${string}`; 
+
+        while(pai.categoria_pai != null){
+          index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
+          pai = this.categorias[index];
+          string = `${this.categorias[index].nome} / ${string}`;
+        }
+
+        //console.log(string);
+        this.novasCategorias.push({ nome: string, id: item.categoria_id });
+      }
     },
     async salvarProduto(){
       if(this.produtoToPost.nome.length < 6)
@@ -389,13 +450,14 @@ export default {
     },
     adicionarVariacao(){
 
-      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0){
+      if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0)
         this.$toast.error('Selecione ao menos uma variação.');
-      }
+      else if(this.variacao_quantidade == null || this.variacao_quantidade < 0 )
+        this.$toast.error('A variação precisa de uma quantidade positiva.');
       else{
-        let variacao = { ...this.produtoToPost };
-        variacao.sku = `${variacao.sku}-${this.variacaoIndex++}`;
-        
+        let variacao = {};
+        variacao.nome = this.produtoToPost.nome;
+
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
@@ -408,10 +470,12 @@ export default {
           variacao.tamanho = tamanho[0].tamanho;
           variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
         }
-        
+        variacao.quantidade = this.variacao_quantidade;
         this.variacoes.push(variacao);
+
         this.variacao_tamanhoSelecionado = 0;
         this.variacao_corSelecionado = 0;
+        this.variacao_quantidade = null;
       }
     },
     removerVariacao(to_delete){
@@ -449,16 +513,13 @@ export default {
     categoriaSelecionado: function(){
       this.produtoToPost.categoria_id = this.categoriaSelecionado;
     },
-    variacoes: function(){
-      this.produtoToPost.tipo_produto = this.variacoes.length > 0 ? 'configuravel' : 'simples';
-    },
     imagensRaw: function(){
       let caminhos = [];
       this.imagensRaw.forEach((imagem) => {
         caminhos.push(URL.createObjectURL(imagem));
       })
       this.imagens = caminhos;
-    }
+    },
   }
 };
 </script>

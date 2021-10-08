@@ -1,5 +1,3 @@
-
-
 export const perfil = {
   namespaced: true,
   state: { 
