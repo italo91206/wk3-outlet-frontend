@@ -435,11 +435,6 @@ export default {
       else
         console.error(response.data.message);
     },
-    async recuperarVariacoes(){
-      const response = await produtoService.recuperarVariacoes(this.produtoToPost.produto_id);
-      if(response.data.success)
-        this.variacoes = response.data.data;
-    },
     adicionar(item) {
       if (item.categoria_pai == null)
         this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
@@ -528,31 +523,15 @@ export default {
       else{
         this.$toast.error(response.data.message);
       }
-        
-      // let index = 0;
-      // let achei;
-      
-      // this.variacoes.forEach((variacao) => {
-      //   if(variacao.nome != to_delete)
-      //     index++;
-      //   else
-      //     achei = index;
-      // })
-
-      // this.variacoes.splice(achei, 1);
-      // let encontrado = this.variacoes.filter( variacao => { return variacao === to_delete });
-      // encontrado = encontrado[0];
-      // let index = this.variacoes.findIndex(encontrado);
-      // console.log(index);
     },
   },
   mounted(){
     this.getMarcas();
     this.getModelos();
     this.getCores();
+    this.getTamanhos();
     this.getProduto();
     this.getCategorias();
-    this.getTamanhos();
   },
   watch: {
     produtoToPost: function(){
@@ -564,21 +543,27 @@ export default {
       this.novasCategorias.push({
         id: null,
         nome: 'Nenhum'
-      })
+      }),
+      this.variacoes = this.produtoToPost.variacoes;
     },
     estoque_changed: function(){
       this.carregarMotivos();
     },
     variacoes: function(){
       this.variacoes.forEach((variacao) => {
+        // console.log(variacao);
         variacao.nome = this.produtoToPost.nome;
 
         if(variacao.cor_id){
+          //console.log(variacao.cor_id)
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
           variacao.cor = cor[0].cor;
           variacao.nome = `${variacao.nome} ${variacao.cor}`;
         }
         if(variacao.tamanho_id){
+          //console.log(variacao.tamanho_id)
+          // console.log(this.tamanhos);
+          // console.log(variacao.tamanho_id);
           const tamanho = this.tamanhos.filter(tamanho => { return tamanho.tamanho_id === variacao.tamanho_id });
           variacao.tamanho = tamanho[0].tamanho;
           variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
