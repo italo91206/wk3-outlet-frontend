@@ -402,52 +402,6 @@ export default {
 
       this.imagens = caminhos;
     },
-    validarCusto(e){
-      let valor = e.target.value;
-      valor = parseFloat(valor);
-      if(isNaN(valor))
-        this.erro_custo = null;
-      else if(valor < 0)
-        this.erro_custo = 'Custo não pode ser menor que 0';
-      else
-        this.erro_custo = null;
-    },
-    validarNome(e){
-      var string = e.target.value;
-      if(/[^A-z\s\d][\\^]?/.test(string))
-        this.erro_nome = "Não é possível inserir caracteres especiais";
-      else
-        this.erro_nome = '';
-    },
-    validarEstoque(e){
-      var valor = e.target.value;
-      if(isNaN(valor))
-        this.erro_estoque = null
-      else if(valor < 0)
-        this.erro_estoque = 'Estoque não pode ser menor que 0.'
-      else
-        this.erro_estoque = null;
-    },
-    validarPreco(e){
-      let valor = e.target.value;
-      valor = parseFloat(valor);
-      if(isNaN(valor))
-        this.erro_preco = null;
-      else if(valor <= 0)
-        this.erro_preco = 'Precisa ser maior que 0';
-      else
-        this.erro_preco = null;
-    },
-    validarPeso(e){
-      let valor = e.target.value;
-      valor = parseFloat(valor);
-      if(isNaN(valor))
-        this.erro_peso = null;
-      else if(valor < 0)
-        this.erro_peso = 'Peso não pode ser menor que 0';
-      else
-        this.erro_peso = null;
-    },
     adicionarVariacao(){
 
       if(this.variacao_corSelecionado == 0 && this.variacao_tamanhoSelecionado == 0)
@@ -490,10 +444,6 @@ export default {
       })
 
       this.variacoes.splice(achei, 1);
-      // let encontrado = this.variacoes.filter( variacao => { return variacao === to_delete });
-      // encontrado = encontrado[0];
-      // let index = this.variacoes.findIndex(encontrado);
-      // console.log(index);
     }
   },
   mounted(){
