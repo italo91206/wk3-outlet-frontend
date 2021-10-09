@@ -9,9 +9,9 @@
       <p><b>Preço do produto:</b> {{produto.preco | preco}}</p>
       <p><b>Descrição do produto:</b></p>
       <p>{{produto.descricao}}</p>
-      <p><b>Modelo:</b> {{produto.modelo_id}}</p>
-      <p><b>Marca:</b> {{produto.marca_id}}</p>
-      <p><b>Categoria:</b> {{produto.categoria_id}}</p>
+      <p><b>Modelo:</b> {{produto.modelo}}</p>
+      <p><b>Marca:</b> {{produto.marca}}</p>
+      <p><b>Categoria:</b> {{produto.categoria}}</p>
 
       <produto-variation :data="produto.variacoes">
       </produto-variation>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import service from "@/services/produto/produto-service.js";
+import service from "@/services/catalogo/catalogo-service.js";
 import ProdutoVariation from '@/components/Loja/ProdutoVariation';
 
 export default {
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     async recuperarProduto(url) {
-      const response = await service.recuperarProduto(url);
+      const response = await service.getProduto(url);
       if(response.data.success){
         this.produto = response.data.data;
         this.loading = false;
@@ -53,12 +53,22 @@ export default {
       }
     },
     addToCart(){
-      if(this.produtoSelecionado == null && this.produto.variacoes != null){
-        this.$toast.error('Selecione uma variação');
+      let possui_variacoes = this.verificaVariacao();
+
+      if(possui_variacoes){
+        if(this.produtoSelecionado == null)
+          this.$toast.error('Selecione uma variação');
       }
       else{
+        this.produtoSelecionado = this.produto;
         this.$store.dispatch('carrinho/adicionarProduto', this.produto);
       }
+    },
+    verificaVariacao(){
+      if(this.produto.variacoes.length == 0)
+        return false;
+      else
+        return true;
     }
   },
   filters: {
