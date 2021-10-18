@@ -7,6 +7,9 @@
         <a @click="removerProduto(produto)">remover</a>
       </li>
     </ul>
+    <v-btn to="/checkout">
+      Checkout
+    </v-btn>
   </aside>
 </template>
 

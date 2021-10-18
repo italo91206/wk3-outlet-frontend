@@ -7,8 +7,8 @@ export const carrinho = {
     getCarrinho({commit}){
       return commit('getCarrinho');
     },
-    adicionarProduto({commit}, produto){
-      return commit('adicionarProduto', produto);
+    adicionarProduto({commit}, payload){
+      return commit('adicionarProduto', payload);
     },
     removerProduto({commit}, produto){
       return commit('removerProduto', produto);
@@ -18,7 +18,9 @@ export const carrinho = {
     getCarrinho(state){
       return state.carrinho;
     },
-    adicionarProduto(state, produto){
+    adicionarProduto(state, payload){
+      let produto = { ...payload };
+      delete produto.variacoes;
       state.carrinho.push(produto);
     },
     removerProduto(state, produto){

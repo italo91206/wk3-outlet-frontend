@@ -8,7 +8,6 @@ import jwt_decode from "jwt-decode";
 import store from './store';
 import vuetify from '@/plugins/vuetify';
 
-
 Vue.config.productionTip = false
 
 import routes from './routes.js'
@@ -91,5 +90,5 @@ new Vue({
   vuetify,
   VueToast,
   store,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

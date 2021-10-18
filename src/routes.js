@@ -1,6 +1,7 @@
 import Login from '@/pages/Login.vue'
 import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
+import Checkout from '@/pages/Loja/Checkout.vue'
 import CoresConfig from '@/pages/Admin/Cores/CoresConfig.vue'
 import CoresEditar from '@/pages/Admin/Cores/CoresEditar.vue'
 import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
@@ -31,6 +32,7 @@ import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
 import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
 import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
 import CategoriasEditar from '@/pages/Admin/Categorias/CategoriasEditar.vue'
+import VendasConfig from '@/pages/Admin/Vendas/VendasConfig.vue'
 
 const routes = [
   {
@@ -49,6 +51,15 @@ const routes = [
     meta: {
       title: 'WK3 | Dashboard',
       layout: 'AppLayoutAdmin',
+      is_public: false
+    }
+  },
+  {
+    path: '/checkout',
+    component: Checkout,
+    name: 'Checkout',
+    meta: {
+      title: 'WK3 | Checkout',
       is_public: false
     }
   },
@@ -278,6 +289,16 @@ const routes = [
     name: 'Todos os produtos',
     meta: {
       title: 'Wk3 Admin | Produtos',
+      layout: 'AppLayoutAdmin',
+      is_public: false
+    }
+  },
+  {
+    path: '/admin/vendas',
+    component: VendasConfig,
+    name: 'Todos as vendas',
+    meta: {
+      title: 'Wk3 Admin | Vendas',
       layout: 'AppLayoutAdmin',
       is_public: false
     }

@@ -13,14 +13,16 @@
       <p><b>Marca:</b> {{produto.marca}}</p>
       <p><b>Categoria:</b> {{produto.categoria}}</p>
 
-      <produto-variation :data="produto.variacoes">
+      <produto-variation 
+        :data="produto.variacoes"
+        v-on:selecionarVariacao="selecionarVariacao"
+      >
       </produto-variation>
 
-      <button @click="addToCart">
+      <v-btn @click="addToCart" color="success">
         Adicionar ao carrinho
-      </button>
+      </v-btn>
     </section>
-    
   </main>
 </template>
 
@@ -36,7 +38,7 @@ export default {
   data() {
     return {
       produto: null,
-      produtoSelecionado: null,
+      variacaoSelecionada: null,
       loading: true,
     };
   },
@@ -56,11 +58,15 @@ export default {
       let possui_variacoes = this.verificaVariacao();
 
       if(possui_variacoes){
-        if(this.produtoSelecionado == null)
+        if(this.variacaoSelecionada == null)
           this.$toast.error('Selecione uma variação');
+        else{
+          this.produto.variacao = this.variacaoSelecionada;
+          this.$store.dispatch('carrinho/adicionarProduto', this.produto);
+        }
       }
       else{
-        this.produtoSelecionado = this.produto;
+        this.variacaoSelecionada = this.produto;
         this.$store.dispatch('carrinho/adicionarProduto', this.produto);
       }
     },
@@ -69,6 +75,13 @@ export default {
         return false;
       else
         return true;
+    },
+    selecionarVariacao(id){
+      // console.log(this.produto.variacoes)
+      // console.log(id);
+      // this.variacaoSelecionada = id;
+      let variacao = this.produto.variacoes.filter((item) => { return item.variacao_id === id});
+      this.variacaoSelecionada = variacao[0];    
     }
   },
   filters: {
