@@ -5,7 +5,8 @@
       </v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ this.$route.meta.title }}</v-toolbar-title>
-
+      
+      <v-btn to="/" class="botao-visitar-loja">Visitar loja</v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app>
@@ -449,5 +450,8 @@ export default {
 }
 .w100{
   width: 100%;
+}
+.botao-visitar-loja {
+    margin-left: 20px;
 }
 </style>

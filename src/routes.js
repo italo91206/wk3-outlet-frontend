@@ -33,6 +33,7 @@ import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
 import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
 import CategoriasEditar from '@/pages/Admin/Categorias/CategoriasEditar.vue'
 import VendasConfig from '@/pages/Admin/Vendas/VendasConfig.vue'
+import VendasEditar from '@/pages/Admin/Vendas/VendasEditar.vue'
 
 const routes = [
   {
@@ -299,6 +300,16 @@ const routes = [
     name: 'Todos as vendas',
     meta: {
       title: 'Wk3 Admin | Vendas',
+      layout: 'AppLayoutAdmin',
+      is_public: false
+    }
+  },
+  {
+    path: '/admin/vendas/:venda_id',
+    component: VendasEditar,
+    name: 'Informações da Venda',
+    meta: {
+      title: 'Wk3 Admin | Venda',
       layout: 'AppLayoutAdmin',
       is_public: false
     }

@@ -19,9 +19,13 @@
             :loading="loading"
             loading-text="Carregando vendas... aguarde"
           >
+            <template v-slot:item.endereco_id="{ item }">
+              {{ item.endereco_id == null ? 'Não' : 'Sim'}}
+            </template>
+
             <template v-slot:item.venda_id="{ item }">
               <router-link
-                :to="`/admin/vendas/venda/${item.venda_id}`"
+                :to="`/admin/vendas/${item.venda_id}`"
               >
                 Ver mais
               </router-link>
@@ -47,6 +51,8 @@ export default {
         { text: 'Data da venda', value: 'data_venda' },
         { text: 'Valor da venda', value: 'total' },
         { text: 'Cliente', value: 'cliente' },
+        { text: 'Possui entrega', value: 'endereco_id'},
+        { text: 'Status', value: 'status' },
         { text: 'Ações', value: 'venda_id' },
       ]
     }
@@ -62,10 +68,33 @@ export default {
         this.loading = false;
         console.error(response.data.message);
       }
+    },
+    pad(num, size) {
+      num = num.toString();
+      while (num.length < size) num = "0" + num;
+      return num;
     }
   },
   mounted(){
     this.listarVendas();
+  },
+  watch: {
+    vendas: function(){
+      this.vendas.forEach((item) => {
+        let data = new Date(item.data_venda);
+        
+        let dia = data.getDate();
+        let mes = data.getMonth() + 1;
+        let ano = data.getFullYear();
+
+        dia = this.pad(dia, 2);
+        mes = this.pad(mes, 2);
+
+        item.data_venda = `${dia}/${mes}/${ano}`;
+
+        item.total = `R$ ${item.total.toFixed(2)}`
+      })
+    }
   }
 };
 </script>
