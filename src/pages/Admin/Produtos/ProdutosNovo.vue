@@ -20,6 +20,7 @@
                 multiple
                 outlined
                 dense
+                id="custom-file-input"
               >
               </v-file-input>
             </v-row>
