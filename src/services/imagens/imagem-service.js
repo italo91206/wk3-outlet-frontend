@@ -24,7 +24,18 @@ const ImagemService = {
 		catch(error){
 			console.log(error);
 		}
-	}
+  },
+  removerImagem: async(id) => {
+    try {
+      const response = await api.delete('/imagens/remover', { 
+        params: { id: id }
+      });
+      return response;
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
 }
 
 export default ImagemService;
