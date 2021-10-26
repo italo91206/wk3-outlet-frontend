@@ -36,14 +36,24 @@
         </v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        É exibido a listagem de usuários cadastrados no sistema. As colunas informam alguns dados básicos como: nome do funcionário, email, tipo de permissão e caso o usuário esteja habilitado.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o usuário em questão.<br/>Ao apertar em "novo usuário", o usuário é redirecionado para inserir um novo usuário.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from "@/services/usuarios/usuario-service.js"
 
 export default {
   name: "UsuariosConfig",
+  components: {
+    Helper
+  },
   data() {
     return {
       usuarios: [],

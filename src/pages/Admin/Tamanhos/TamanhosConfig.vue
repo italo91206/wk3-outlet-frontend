@@ -36,14 +36,24 @@
         </v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        É exibido a listagem de tamanhos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o tamanho em questão.<br/>Ao apertar em "novo tamanho", o usuário é redirecionado para inserir um novo tamanho.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/tamanhos/tamanhos-service.js'
 
 export default {
   name: 'TamanhosConfig',
+  components: {
+    Helper
+  },
   data(){
     return {
       tamanhos: [],

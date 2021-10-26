@@ -241,6 +241,13 @@
         <v-btn @click="salvarProduto" color="success">Salvar produto</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        O referente setor traz a edição de um produto já existente, possibilitando ao administrador editar os seguintes itens: as imagens do produto; nome do produto; o SKU; o preço; custo; a possibilidade em estoque; peso em gramas; a categoria do produto aderido ao setor e construído pelo administrador; o modelo e a marca constatados em seleções construídas pelo gestor.<br/><br/>O produto também pode constar com uma descrição oferecida pelo gestor, que pode oferecer variações da mercadoria em relevância, adicionando cor, tamanho e quantidade.<br/>Ao final, o administrador tem a possibilidade de salvar o material para integrá-lo ou voltar a páginas de consultas. 
+      </p>
+    </Helper>
+
   </v-main>
 </template>
 
@@ -256,9 +263,13 @@ import imagemService from '@/services/imagens/imagem-service.js'
 import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
 import validar from '@/utils/validacoes.js'
 import rules from '@/utils/rules.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: "ProdutosEditar",
+  components: {
+    Helper
+  },
   data(){
     return {
       produtoToPost: {

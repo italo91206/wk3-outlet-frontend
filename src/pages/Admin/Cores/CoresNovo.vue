@@ -32,15 +32,25 @@
         <v-btn @click="salvar" color="success">Salvar cor</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Local na qual o usuário pode inserir o nome de uma nova cor, escolhendo a integração da imagem pela paleta de cores disponibilizada pelo site.<br/>Ao final é constatada a opção de salvar a imagem ou voltar ao setor de consultas.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from "@/services/cores/cor-service.js";
 import rules from '@/utils/rules.js'
 
 export default {
   name: "CoresNovo",
+  components: {
+    Helper
+  },
   data() {
     return {
       corToPost: {},

@@ -36,14 +36,24 @@
         </v-btn>
       </v-row>
     </v-container>
+
+     <Helper>
+      <p>
+        É exibido a listagem de modelos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o modelo em questão.<br/>Ao apertar em "novo modelo", o usuário é redirecionado para inserir um novo modelo.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/modelos/modelos-service.js'
 
 export default {
   name: "ModelosConfig",
+  components: {
+    Helper
+  },
   data() {
     return {
       modelos: [],

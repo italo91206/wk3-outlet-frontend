@@ -22,14 +22,24 @@
         <v-btn @click="salvarMotivo" color="success">Salvar motivo</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do motivo é apresentado o campo "Nome do motivo" para que seja alterado o nome do motivo a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o motivo em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de motivos.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/motivo/motivos-service.js'
 
 export default {
   name: 'MotivosEditar',
+  components: {
+    Helper
+  },
   data(){
     return {
       motivoToPost: {

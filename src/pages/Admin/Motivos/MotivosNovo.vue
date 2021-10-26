@@ -21,14 +21,24 @@
         <v-btn @click="novoMotivo" color="success">Salvar motivo</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do motivo é apresentado o campo "Nome do motivo" para que seja alterado o nome do motivo a ser cadastrado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de motivos.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/motivo/motivos-service.js'
 
 export default {
   name: "MotivosNovo",
+  components: {
+    Helper
+  },
   data(){
     return {
       motivoToPost: {

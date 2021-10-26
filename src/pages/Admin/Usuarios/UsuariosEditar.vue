@@ -123,16 +123,26 @@
         <v-btn @click="atualizarUsuario" color="success">Salvar usuário</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do usuário é apresentado abas.<br/><br/>A aba <b>Informações básicas</b> informa os dados de nome, sobrenome, tipo de pessoa e tipo de permissão.<br/><br/>A aba <b>Informações avançadas</b> informa os dados de RG, CPF, e-mail, senha e a opção de habilitar/desabilitar usuário.<br/>A aba <b>compras</b> mostra a listagem com todas as compras já efetuadas pelo usuário.<br/>A aba <b>acertos</b> informa todos os acertos de estoque realizado pelo cliente, se este for o caso.<br/>A aba <b>newsletter</b> informa todas as newsletter no qual o usuário está cadastrado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o usuário em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de usuários.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from "@/services/usuarios/usuario-service.js";
 import acertosService from "@/services/acerto-estoque/acerto-estoque-service.js";
 import validar from "@/utils/validacoes.js";
 
 export default {
   name: "UsuariosEditar",
+  components: {
+    Helper
+  },
   data() {
     return {
       usuario: {},

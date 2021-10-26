@@ -22,15 +22,25 @@
         <v-btn @click="novo" color="success">Salvar tamanho</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de criar novo tamanho é apresentado o campo "Nome do tamanho" para que seja adicionado o nome do tamanho a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de tamanhos.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/tamanhos/tamanhos-service.js';
 import rules from '@/utils/rules.js';
 
 export default {
   name: 'TamanhosNovo',
+  components: {
+    Helper
+  },
   data(){
     return {
       tamanhoToPost: {

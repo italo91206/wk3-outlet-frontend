@@ -36,14 +36,24 @@
         </v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        É exibido a listagem de marcas cadastradas no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar a marca em questão.<br/>Ao apertar em "nova marca", o usuário é redirecionado para inserir uma nova marca.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/marcas/marcas-service'
 
 export default {
   name: "MarcasConfig",
+  components: {
+    Helper
+  },
   data() {
     return {
       marcas: [],

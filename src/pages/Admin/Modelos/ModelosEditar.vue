@@ -23,15 +23,25 @@
         <v-btn @click="salvarModelo" color="success">Salvar modelo</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do modelo é apresentado o campo "Nome do modelo" para que seja alterado o nome do modelo a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o modelo em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de marcas
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/modelos/modelos-service.js'
 import rules from '@/utils/rules.js';
 
 export default {
   name: 'ModelosEditar',
+  components: {
+    Helper
+  },
   data(){
     return {
       modeloToPost: {},

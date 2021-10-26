@@ -47,14 +47,24 @@
         <v-btn @click="salvarUsuario" color="success">Salvar usuário</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        A tela de adicionar um novo usuário possibilita a inserção de campos como nome, sobrenome, tipo de permissão, e-mail e senha do usuário.<br/><br/>Ao apertar em "salvar usuário" a inserção será feita.<br/>Ao apertar em "voltar" o usuário é redirecionado para a listagem de usuários.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from "@/services/usuarios/usuario-service.js";
 
 export default {
   name: "UsuariosNovo",
+  components: {
+    Helper
+  },
   data() {
     return {
       usuarioToPost: {

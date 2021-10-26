@@ -36,14 +36,25 @@
         </v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Setor que consta com todos os cupons cadastrados, com informações como o código, status, nome, valor, e validade do cupom.<br/><br/>Ao clicar em “editar” será levado para a página de edição de determinado cupom em específico.<br/>Ao clicar em “nova cupom” será levada para a página de cadastro de um novo cupom no site. 
+      </p>
+    </Helper>
+
   </v-main>
 </template>
 
 <script>
 import service from '@/services/cupons/cupons-service.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: 'CuponsConfig',
+  components: {
+    Helper
+  },
   data(){
     return {
       cupons: [],

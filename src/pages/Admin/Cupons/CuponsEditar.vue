@@ -61,15 +61,25 @@
         <v-btn @click="salvarCupom" color="success">Salvar cupom</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Este setor conta com a edição de um cupom em questão, na qual o administrador consegue adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/><br/> Ao final, o usuário tem a opção de salvar, deletar ou voltar para consultas. 
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/cupons/cupons-service.js'
 import rules from '@/utils/rules.js'
 
 export default {
   name: 'CuponsEditar',
+  components: {
+    Helper
+  },
   data() {
     return {
       cupomToPost: {},

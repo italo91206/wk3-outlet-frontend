@@ -41,18 +41,21 @@ export default {
     cursor: pointer;
 }
 
-.helper-wrapper {
+/* .helper-wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
-}
+} */
 
 .helper-wrapper.ativo {
-  top: 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
 }
 
 .helper-modal{
@@ -65,6 +68,8 @@ export default {
   width: 800px;
   height: 400px;
   overflow: auto;
+  transform: translate(20px, 50%);
+  left: 0px;
 }
 
 .helper-wrapper .helper-modal{

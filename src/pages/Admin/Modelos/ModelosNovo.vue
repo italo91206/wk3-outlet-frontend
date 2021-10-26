@@ -22,15 +22,25 @@
         <v-btn @click="novoModelo" color="success">Salvar modelo</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do modelo é apresentado o campo "Nome da marca" para que seja alterado o nome da marca a ser cadastrada.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de modelos
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from '@/services/modelos/modelos-service.js'
 import rules from '@/utils/rules.js';
 
 export default {
   name: 'ModelosEditar',
+  components: {
+    Helper
+  },
   data(){
     return {
       modeloToPost: {},

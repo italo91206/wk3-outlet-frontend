@@ -23,15 +23,25 @@
         <v-btn @click="salvarTamanho" color="success">Salvar tamanho</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Na tela de edição do tamanho é apresentado o campo "Nome do tamanho" para que seja alterado o nome do tamanho a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o tamanho em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de tamanhos
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
+import Helper from '@/components/Helper.vue'
 import service from "@/services/tamanhos/tamanhos-service.js";
 import rules from '@/utils/rules.js';
 
 export default {
   name: "TamanhosEditar",
+  components: {
+    Helper
+  },
   data() {
     return {
       tamanhoToPost: {},
