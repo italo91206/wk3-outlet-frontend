@@ -6,7 +6,7 @@
 
     <section v-else class="container">
       <div class="container product-image-gallery">
-        <div v-if="!produto.imagens" class="product-image-gallery--image">
+        <div v-if="produto.imagens.length == 0" class="product-image-gallery--image">
           <img src="https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png" class="w100"/>
         </div>
 
