@@ -4,9 +4,16 @@
       <h2>Checkout</h2>
       <ul>
         <li v-for="produto in produtos" :key="produto.produto_id">
-          {{ produto.produto_id }} | Qtd: 01 | 
-          {{ produto.variacao.tamanho ? `Tamanho: ${produto.variacao.tamanho}` : null}}
-          {{ produto.variacao.cor ? `Cor: ${produto.variacao.cor}` : null}}
+          <template v-if="produto.variacao">
+            {{ produto.nome_produto }} | Qtd: 01 | 
+            {{ produto.variacao.tamanho ? `Tamanho: ${produto.variacao.tamanho}` : null}}
+            {{ produto.variacao.cor ? `Cor: ${produto.variacao.cor}` : null}}
+          </template>
+
+          <template v-else>
+            {{ produto.nome_produto }} | Qtd: 01 | 
+          </template>
+          
         </li>
       </ul>
     </section>
@@ -14,6 +21,10 @@
     <div class="container">
       <v-btn @click="realizarPagamento">
         Avançar
+      </v-btn>
+
+      <v-btn :to="'/'">
+        Voltar
       </v-btn>
     </div>
   </main>

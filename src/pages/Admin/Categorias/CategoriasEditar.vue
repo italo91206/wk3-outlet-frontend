@@ -36,15 +36,25 @@
         <v-btn @click="salvarCategoria" :disabled="isChanged" color="success">Salvar categoria</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Nesta página é possível editar o nome da categoria como a categoria pai da mesma. Adicionalmente, é possível deletar a categoria em questão.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
 import service from '@/services/categorias/categoria-service.js'
 import rules from '@/utils/rules.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: 'CategoriasEditar',
+  components: {
+    Helper
+  },
   data(){
     return {
       categoriaToPost: {},

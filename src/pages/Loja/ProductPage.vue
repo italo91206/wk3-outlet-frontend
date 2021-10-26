@@ -112,6 +112,11 @@ export default {
 </script>
 
 <style lang="css">
+.product-image-gallery {
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
 .product-image-gallery--image {
   max-width: 300px;
   max-height: 500px;

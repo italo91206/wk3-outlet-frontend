@@ -252,7 +252,7 @@ export default {
   data(){
     return {
       produtoToPost: {
-        nome: '',
+        nome_produto: '',
         preco: null,
         custo: null,
         peso: null,
@@ -361,7 +361,7 @@ export default {
       }
     },
     async salvarProduto(){
-      if(this.produtoToPost.nome_categoria.length < 6)
+      if(this.produtoToPost.nome_produto.length < 6)
         this.$toast.error('Nome de produto muito curto!');
       else if(this.produtoToPost.preco <= 0)
         this.$toast.error('Preço do produto não pode ser vazio')

@@ -35,15 +35,25 @@
         <v-btn @click="salvarCategoria" :disabled="isChanged" color="success">Salvar categoria</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Insira o nome da nova categoria desejada. Opcionalmente, é possível selecionar qual é a sua categoria pai. Evite nomes complexos e muito grandes.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
 import service from '@/services/categorias/categoria-service.js'
 import rules from '@/utils/rules.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: 'CategoriasNovo',
+  components: {
+    Helper
+  },
   data(){
     return {
       categoriaToPost: {},

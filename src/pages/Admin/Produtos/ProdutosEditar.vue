@@ -499,7 +499,7 @@ export default {
         this.$toast.error(response.data.message);
     },
     imagemInput(e){
-      this.imagesChanged = true;
+      
       // console.log('Input de imagens');
       let input = e.target.files;
       let caminhos = [];
@@ -636,6 +636,7 @@ export default {
         caminhos.push(URL.createObjectURL(imagem));
       })
       this.imagens = caminhos;
+      this.imagesChanged = true;
     },
   }
 };

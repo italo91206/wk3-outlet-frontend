@@ -23,14 +23,24 @@
         </v-card>
       </v-row>
     </v-container>
+
+    <Helper>
+      <p>
+        Aqui estão todas os acertos de estoque realizados, com informações sobre qual usuário realizou a ação, quando foi realizado, sob qual motivo e a entrada (ou saída) de quantidade no estoque.
+      </p>
+    </Helper>
   </v-main>
 </template>
 
 <script>
 import service from '@/services/acerto-estoque/acerto-estoque-service.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: 'AcertosConfig',
+  components: {
+    Helper
+  },
   data() {
     return {
       acertos: [],

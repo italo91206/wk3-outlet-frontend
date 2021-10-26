@@ -3,7 +3,9 @@
     <h2>Isto é a página "Dashboard.vue"</h2>
     
     <Helper>
-      teste de slot
+      <p>
+        Utilize o menu lateral à esquerda para navegar. Todas as entidades e ativos de configuração estão agrupados por tipo de ativo e logo depois por tipo de ação.
+      </p>
     </Helper>
   </section>
 </template>

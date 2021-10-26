@@ -3,7 +3,7 @@
     <h2>Este é o carrinho</h2>
     <ul>
       <li v-for="produto in produtos" :key="produto.produto_id">
-        <span>{{ produto.nome }}</span>
+        <span>{{ produto.nome_produto }}</span>
         <a @click="removerProduto(produto)">remover</a>
       </li>
     </ul>

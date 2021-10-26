@@ -34,14 +34,24 @@
         </v-card>
       </v-row>
     </v-container>
+    <Helper>
+      <p>
+        Aqui estão todas as vendas realizadas e o status de cada um. Ao clicar em “ver mais”, será possível encontrar informações mais detalhadas sobre a venda específica
+      </p>
+    </Helper>
+
   </v-main>
 </template>
 
 <script>
 import service from '@/services/vendas/vendas-service.js'
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: 'VendasConfig',
+  components: {
+    Helper
+  },
   data(){
     return {
       vendas: [],
