@@ -50,7 +50,7 @@ export default {
       loading: true,
       termoBusca: '',
       headers: [
-        { text: 'Nome', value: 'nome' },
+        { text: 'Nome', value: 'nome_produto' },
         { text: 'Preço', value: 'preco' },
         { text: 'Estoque', value: 'estoque' },
         { text: 'SKU', value: 'sku' },

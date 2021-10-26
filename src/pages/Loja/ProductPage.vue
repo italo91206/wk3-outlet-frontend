@@ -5,13 +5,28 @@
     </section>
 
     <section v-else class="container">
-      <p><b>Nome do produto:</b> {{produto.nome}}</p>
+      <div class="container product-image-gallery">
+        <div v-if="!produto.imagens" class="product-image-gallery--image">
+          <img src="https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png" class="w100"/>
+        </div>
+
+        <div v-else class="product-image-gallery--image">
+          <img v-for="imagem in produto.imagens" 
+            :key="imagem.imagem_id" 
+            :src="`https://www.italoferreira.dev/static/${imagem.url}`" 
+            :alt="produto.nome"
+            class="w100"
+          />
+        </div>
+      </div>
+
+      <p><b>Nome do produto:</b> {{produto.nome_produto}}</p>
       <p><b>Preço do produto:</b> {{produto.preco | preco}}</p>
       <p><b>Descrição do produto:</b></p>
       <p>{{produto.descricao}}</p>
       <p><b>Modelo:</b> {{produto.modelo}}</p>
       <p><b>Marca:</b> {{produto.marca}}</p>
-      <p><b>Categoria:</b> {{produto.categoria}}</p>
+      <p><b>Categoria:</b> {{produto.nome_categoria}}</p>
 
       <produto-variation 
         :data="produto.variacoes"
@@ -97,5 +112,12 @@ export default {
 </script>
 
 <style lang="css">
+.product-image-gallery--image {
+  max-width: 300px;
+  max-height: 500px;
+}
 
+.w100 {
+  width: 100%;
+}
 </style>

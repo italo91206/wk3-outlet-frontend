@@ -5,20 +5,27 @@
         <v-card class="pa-12 w100" elevation="10">
           <v-form>
             <!-- Renderizar as imagens do produto -->
-            <v-row>
-              <section id="galeria-imagens">
-                <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
-                  <v-img :src="imagem"></v-img>
-                </v-col>
-              </section>
+            <v-row id="imagesRow">
+              <v-col v-for="imagem in produtoToPost.imagens" v-bind:key="imagem.id" class="images-col--imagem">
+                <v-img 
+                  :src="`https://www.italoferreira.dev/static/${imagem.url}`" 
+                  max-height="500" 
+                  max-width="300"
+                ></v-img>
+                <v-btn class="deletar-imagem" color="error" @click="removerImagem(imagem.imagem_id)">Remover</v-btn>
+              </v-col>
             </v-row>
             
             <!-- Input de imagens do produto -->
             <v-row>
               <v-file-input
-                label="Enviar arquivos"
+                label="Enviar imagens"
+                @input="imagemInput"
+                v-model="imagensRaw"
+                multiple
                 outlined
                 dense
+                id="custom-file-input"
               >
               </v-file-input>
             </v-row>
@@ -28,7 +35,7 @@
               <v-col cols="12">
                 <v-text-field 
                   label="Nome do produto" 
-                  v-model="produtoToPost.nome"
+                  v-model="produtoToPost.nome_produto"
                   :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
@@ -93,7 +100,7 @@
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="novasCategorias"
-                  item-text="nome"
+                  item-text="nome_categoria"
                   item-value="id"
                   label="Categorias do produto"
                 ></v-select>
@@ -276,6 +283,7 @@ export default {
       modelos: [],
       marcas: [],
       cores: [],
+      imagensRaw: null,
       estoque_changed: false,
       motivo: '',
       motivos: [],
@@ -296,6 +304,7 @@ export default {
       variacao_tamanhoSelecionado: 0,
       variacao_quantidade: null,
       rules: rules,
+      imagesChanged: false,
     }
   },
   methods: {
@@ -362,6 +371,10 @@ export default {
         this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.atualizarProduto(this.produtoToPost);
         if(response.data.success){
+          if(this.imagesChanged){
+            const novo = response.data.data[0];
+            this.imagemAdicionado(novo);
+          }
           this.$toast.success('Produto foi atualizado com sucesso');
           this.$router.push('/admin/produtos');
         }
@@ -435,29 +448,67 @@ export default {
       else
         console.error(response.data.message);
     },
+    async removerImagem(id){
+      const response = await imagemService.removerImagem(id);
+      if(!response.data.success)
+        this.$toast.error(response.data.message);
+      else{
+        let filtrado = this.produtoToPost.imagens.filter((imagem) => { return imagem.imagem_id != id });
+        this.produtoToPost.imagens = filtrado;
+        // console.log(filtrado);
+        // console.log(this.produtoToPost.imagens[index]);
+      }
+    },
     adicionar(item) {
       if (item.categoria_pai == null)
-        this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
+        this.novasCategorias.push({ nome_categoria: item.nome_categoria, id: item.categoria_id })
       else {
-        var string = `${item.nome}`;
+        var string = `${item.nome_categoria}`;
         var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
         var pai = this.categorias[index];
-        string = `${pai.nome} / ${string}`; 
+        string = `${pai.nome_categoria} / ${string}`; 
 
         while(pai.categoria_pai != null){
           index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
           pai = this.categorias[index];
-          string = `${this.categorias[index].nome} / ${string}`;
+          string = `${this.categorias[index].nome_categoria} / ${string}`;
         }
 
         //console.log(string);
-        this.novasCategorias.push({ nome: string, id: item.categoria_id });
+        this.novasCategorias.push({ nome_categoria: string, id: item.categoria_id });
       }
     },
     deletarConfirm(){
       const acao = confirm('Deseja mesmo remover o produto ? Esta ação é irreversível !');
       if(acao)
         this.deletarProduto();
+    },
+    async imagemAdicionado(novo){
+      const formData = new FormData();
+      const imagefile = document.querySelector("#custom-file-input");
+      const files = imagefile.files;
+
+      files.forEach((item) => {
+        formData.append('fileimage', item);
+      })
+
+      formData.append('id', novo);
+
+      const response = await imagemService.enviarImagens(formData);
+      if(!response.data.success)
+        this.$toast.error(response.data.message);
+    },
+    imagemInput(e){
+      this.imagesChanged = true;
+      // console.log('Input de imagens');
+      let input = e.target.files;
+      let caminhos = [];
+
+      input.forEach((imagem) => {
+        caminhos.push(URL.createObjectURL(imagem));
+      })
+
+      this.imagens = caminhos;
     },
     mudouEstoque(){
       this.estoque_changed = true;
@@ -542,7 +593,7 @@ export default {
       this.recuperarImagens();
       this.novasCategorias.push({
         id: null,
-        nome: 'Nenhum'
+        nome_categoria: 'Nenhum'
       }),
       this.variacoes = this.produtoToPost.variacoes;
     },
@@ -552,7 +603,7 @@ export default {
     variacoes: function(){
       this.variacoes.forEach((variacao) => {
         // console.log(variacao);
-        variacao.nome = this.produtoToPost.nome;
+        variacao.nome = this.produtoToPost.nome_produto;
 
         if(variacao.cor_id){
           //console.log(variacao.cor_id)
@@ -578,20 +629,50 @@ export default {
     },
     marcaSelecionado: function(){
       this.produtoToPost.marca_id = this.marcaSelecionado;
-    }
+    },
+    imagensRaw: function(){
+      let caminhos = [];
+      this.imagensRaw.forEach((imagem) => {
+        caminhos.push(URL.createObjectURL(imagem));
+      })
+      this.imagens = caminhos;
+    },
   }
 };
 </script>
 
 <style lang="css" scoped>
+.deletar-imagem {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  opacity: 0;
+}
+
+.images-col--imagem {
+  position: relative;
+}
+
+.images-col--imagem:hover .deletar-imagem {
+  opacity: 1;
+  transition: all .2s ease;
+}
+
+.imagem-place-holder img{
+  width: 100%;
+  height: 100%;
+}
+
 .imagem-place-holder {
   height: 80px;
   width: 80px;
-  border: #343a40 2px dashed;
+  border: #f4f6f9 2px;
   display: flex;
+  border-style: dashed;
   justify-content: center;
   align-items: center;
-}
+  margin-right: 2px;
+} 
 
 .color-checkbox{
   opacity: 0;

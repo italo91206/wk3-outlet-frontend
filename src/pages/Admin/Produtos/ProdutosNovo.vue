@@ -6,8 +6,11 @@
           <v-form>
             <!-- Renderizar as imagens do produto -->
             <v-row id="imagesRow">
-              <v-col v-for="imagem in imagens" v-bind:key="imagem.id">
-                <v-img :src="imagem" max-height="500" max-width="300"></v-img>
+              <v-col v-for="imagem in imagens" v-bind:key="imagem.id" class="images-col--imagem">
+                <v-img :src="imagem" 
+                  max-height="500" 
+                  max-width="300"
+                ></v-img>
               </v-col>
             </v-row>
 
@@ -16,7 +19,7 @@
               <v-file-input
                 @input="imagemInput"
                 v-model="imagensRaw"
-                label="Enviar arquivos"
+                label="Enviar imagens"
                 multiple
                 outlined
                 dense
@@ -30,7 +33,7 @@
               <v-col cols="12">
                 <v-text-field 
                   label="Nome do produto" 
-                  v-model="produtoToPost.nome"
+                  v-model="produtoToPost.nome_produto"
                   :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
@@ -94,7 +97,7 @@
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="novasCategorias"
-                  item-text="nome"
+                  item-text="nome_categoria"
                   item-value="id"
                   label="Categorias do produto"
                 ></v-select>
@@ -331,7 +334,7 @@ export default {
         // this.categorias.forEach((item) => { this.adicionar(item) })
         this.categorias.push({
           id: null,
-          nome: 'Nenhum'
+          nome_categoria: 'Nenhum'
         })
         this.categorias.forEach((item) => { this.adicionar(item) })
       }
@@ -340,25 +343,25 @@ export default {
     },
     adicionar(item) {
       if (item.categoria_pai == null)
-        this.novasCategorias.push({ nome: item.nome, id: item.categoria_id })
+        this.novasCategorias.push({ nome_categoria: item.nome_categoria, id: item.categoria_id })
       else {
-        var string = `${item.nome}`;
+        var string = `${item.nome_categoria}`;
         var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
         var pai = this.categorias[index];
-        string = `${pai.nome} / ${string}`; 
+        string = `${pai.nome_categoria} / ${string}`; 
 
         while(pai.categoria_pai != null){
           index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
           pai = this.categorias[index];
-          string = `${this.categorias[index].nome} / ${string}`;
+          string = `${this.categorias[index].nome_categoria} / ${string}`;
         }
 
         //console.log(string);
-        this.novasCategorias.push({ nome: string, id: item.categoria_id });
+        this.novasCategorias.push({ nome_categoria: string, id: item.categoria_id });
       }
     },
     async salvarProduto(){
-      if(this.produtoToPost.nome.length < 6)
+      if(this.produtoToPost.nome_categoria.length < 6)
         this.$toast.error('Nome de produto muito curto!');
       else if(this.produtoToPost.preco <= 0)
         this.$toast.error('Preço do produto não pode ser vazio')
@@ -392,8 +395,12 @@ export default {
       if(!response.data.success)
         this.$toast.error(response.data.message);
     },
+    removerImagem(imagem){
+      let filtrado = this.imagens.filter((item) => { return item != imagem})
+      this.imagens = filtrado;
+    },
     imagemInput(e){
-      console.log('Input de imagens');
+      // console.log('Input de imagens');
       let input = e.target.files;
       let caminhos = [];
 
@@ -411,7 +418,7 @@ export default {
         this.$toast.error('A variação precisa de uma quantidade positiva.');
       else{
         let variacao = {};
-        variacao.nome = this.produtoToPost.nome;
+        variacao.nome = this.produtoToPost.nome_produto;
 
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
@@ -476,6 +483,22 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.deletar-imagem {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  opacity: 0;
+}
+
+.images-col--imagem {
+  position: relative;
+}
+
+.images-col--imagem:hover .deletar-imagem {
+  opacity: 1;
+  transition: all .2s ease;
+}
+
 .row+.row {
   margin-top: 24px;
 }

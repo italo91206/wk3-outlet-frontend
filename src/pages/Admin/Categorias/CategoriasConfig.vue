@@ -52,7 +52,7 @@ export default {
       novo: [],
       termoBusca: '',
       headers: [ 
-        { text: 'Nome', value: 'nome' },
+        { text: 'Nome', value: 'nome_categoria' },
         { text: 'Categoria pai', value: 'categoria_pai' },
         { text: 'URL', value: 'url' },
         { text: 'Ações', value: 'categoria_id' },
@@ -74,28 +74,28 @@ export default {
     },
     adicionar(item) {
       if (item.categoria_pai == null)
-        this.novo.push({ nome: item.nome, id: item.categoria_id } )
+        this.novo.push({ nome_categoria: item.nome_categoria, id: item.categoria_id } )
       else {
-        var string = `${item.nome}`;
+        var string = `${item.nome_categoria}`;
         var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
         var pai = this.categorias[index];
-        string = `${pai.nome} / ${string}`; 
+        string = `${pai.nome_categoria} / ${string}`; 
 
         while(pai.categoria_pai != null){
           index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
           pai = this.categorias[index];
-          string = `${this.categorias[index].nome} / ${string}`;
+          string = `${this.categorias[index].nome_categoria} / ${string}`;
         }
 
         //console.log(string);
-        this.novo.push({ nome: string, id: item.categoria_id });
+        this.novo.push({ nome_categoria: string, id: item.categoria_id });
       }
     },
     findById(id){
       let categoria = ''
       this.categorias.forEach((item) => {
         if(item.categoria_id == id){
-          categoria = item.nome
+          categoria = item.nome_categoria
         }
       })
       return categoria;

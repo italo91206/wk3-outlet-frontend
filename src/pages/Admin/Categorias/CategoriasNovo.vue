@@ -9,7 +9,7 @@
               <v-col cols="12">
                 <v-text-field
                   label="Nome da categoria"
-                  v-model="categoriaToPost.nome"
+                  v-model="categoriaToPost.nome_categoria"
                   :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
@@ -20,7 +20,7 @@
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="categorias"
-                  item-text="nome"
+                  item-text="nome_categoria"
                   item-value="categoria_id"
                   label="Categoria pai"
                 ></v-select>
@@ -68,21 +68,21 @@ export default {
     },
     adicionar(item) {
       if (item.categoria_pai == null)
-        this.novo.push({ nome: item.nome, id: item.categoria_id })
+        this.novo.push({ nome_categoria: item.nome_categoria, id: item.categoria_id })
       else {
-        var string = `${item.nome}`;
+        var string = `${item.nome_categoria}`;
         var index = this.categorias.findIndex( i => i.categoria_id == item.categoria_pai);
         var pai = this.categorias[index];
-        string = `${pai.nome} / ${string}`; 
+        string = `${pai.nome_categoria} / ${string}`; 
 
         while(pai.categoria_pai != null){
           index = this.categorias.findIndex( i => i.categoria_id == pai.categoria_pai);
           pai = this.categorias[index];
-          string = `${this.categorias[index].nome} / ${string}`;
+          string = `${this.categorias[index].nome_categoria} / ${string}`;
         }
 
         //console.log(string);
-        this.novo.push({ nome: string, id: item.categoria_id });
+        this.novo.push({ nome_categoria: string, id: item.categoria_id });
       }
     },
     validarNome(e){
