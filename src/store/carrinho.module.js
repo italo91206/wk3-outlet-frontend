@@ -1,7 +1,9 @@
 export const carrinho = {
   namespaced: true,
   state: {
-    carrinho: []
+    carrinho: [],
+    total: 0,
+    desconto: 0,
   },
   actions: {
     getCarrinho({commit}){
@@ -20,8 +22,15 @@ export const carrinho = {
     },
     adicionarProduto(state, payload){
       let produto = { ...payload };
+      let preco = produto.preco;
+      let total = state.total;
+
       delete produto.variacoes;
-      state.carrinho.push(produto);
+      state.carrinho.push(produto); 
+      state.total = total + preco;
+      
+      console.log(preco);
+      console.log(total);
     },
     removerProduto(state, produto){
       let i = 0;
