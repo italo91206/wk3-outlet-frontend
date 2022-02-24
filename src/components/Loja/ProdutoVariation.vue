@@ -34,17 +34,36 @@ export default {
   methods: {
     processaVariacoes(){
       let data = this.data;
+      let cores_aux = [];
+      let tamanhos_aux = [];
+
       // primeira iteração para as cores
       data.forEach((variacao) => {
         if(variacao.cor)
-          this.cores.push(variacao);
+          cores_aux.push(variacao);
       })
 
       // segunda iteração para os tamanhos
       data.forEach((variacao) => {
         if(variacao.tamanho)
-          this.tamanhos.push(variacao);
+          tamanhos_aux.push(variacao);
       })
+
+      // const uniqueAddresses = Array.from(new Set(addresses.map(a => a.id)))
+      //   .map(id => {
+      //     return addresses.find(a => a.id === id)
+      //   })
+
+
+      this.cores = Array.from(new Set(cores_aux.map(c => c.cor)))
+        .map(cor => {
+          return cores_aux.find( c => c.cor === cor )
+        });
+
+      this.tamanhos = Array.from(new Set(tamanhos_aux.map(t => t.tamanho)))
+        .map(tamanho => {
+          return tamanhos_aux.find( t => t.tamanho === tamanho )
+        });
     },
     selecionaCor(cor){
       const resultado = this.data.filter((variacao) => { 
