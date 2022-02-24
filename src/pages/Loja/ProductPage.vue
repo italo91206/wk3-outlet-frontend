@@ -13,7 +13,7 @@
         <div v-else class="product-image-gallery--image">
           <img v-for="imagem in produto.imagens" 
             :key="imagem.imagem_id" 
-            :src="`https://www.italoferreira.dev/static/${imagem.url}`" 
+            :src="`http://wk3outlet.italoferreira.dev.br/static/${imagem.url}`" 
             :alt="produto.nome"
             class="w100"
           />

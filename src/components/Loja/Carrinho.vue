@@ -7,7 +7,7 @@
         
         <div class="wk-carrinho--produto-imagem">
           <template v-if="produto.imagens">
-            <img :src="`https://www.italoferreira.dev/static/${produto.imagens[0].url}`">
+            <img :src="`http://wk3outlet.italoferreira.dev.br/static/${produto.imagens[0].url}`">
           </template>
           
           <template v-else>
