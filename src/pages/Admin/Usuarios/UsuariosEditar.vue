@@ -249,8 +249,11 @@ export default {
     }
   },
   mounted() {
+    const is_admin = this.$store.getters['perfil/isAdmin']
     const id = this.$route.params.id;
     this.listarUsuario(id);
+    if(!is_admin)
+      this.permissoes = this.permissoes.filter((permissao) => permissao.nome != 'Administrador')
   },
   watch: {
     usuario: function() {

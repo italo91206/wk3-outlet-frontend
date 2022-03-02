@@ -92,6 +92,11 @@ export default {
       ],
     };
   },
+  mounted(){
+    const is_admin = this.$store.getters['perfil/isAdmin']
+    if(!is_admin)
+      this.permissoes = this.permissoes.filter((permissao) => permissao.nome != 'Administrador')
+  },
   methods:{
     mudou(){
       this.isChanged = false;
@@ -138,20 +143,20 @@ export default {
     },
   },
   watch: {
-    tipoCargo(){
-      if(this.tipoCargo == 'cliente'){
+    tipoPermissoes(){
+      if(this.tipoPermissoes == 0){
         this.usuarioToPost.isEmployee = false;
         this.usuarioToPost.isAdmin = false;
       }
-      else if(this.tipoCargo == 'administrador'){
-        this.usuarioToPost.isEmployee = false;
-        this.usuarioToPost.isAdmin = true;
-      }
-      else if(this.tipoCargo == 'funcionario'){
+      else if(this.tipoPermissoes == 1){
         this.usuarioToPost.isEmployee = true;
         this.usuarioToPost.isAdmin = false;
       }
-    }
+      else if(this.tipoPermissoes == 2){
+        this.usuarioToPost.isEmployee = true;
+        this.usuarioToPost.isAdmin = true;
+      }
+    },
   }
 };
 </script>

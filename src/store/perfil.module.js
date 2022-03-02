@@ -9,6 +9,11 @@ export const perfil = {
     },
     getPerfil({ commit }) {
       return commit('getPerfil');
+    },
+  },
+  getters: {
+    isAdmin(state){
+      return state.perfil.isAdmin;
     }
   },
   mutations: {
