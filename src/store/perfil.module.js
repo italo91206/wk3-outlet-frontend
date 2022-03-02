@@ -14,6 +14,9 @@ export const perfil = {
   getters: {
     isAdmin(state){
       return state.perfil.isAdmin;
+    },
+    getId(state){
+      return state.perfil.id;
     }
   },
   mutations: {
