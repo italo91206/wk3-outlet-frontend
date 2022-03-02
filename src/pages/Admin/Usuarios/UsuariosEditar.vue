@@ -180,14 +180,16 @@ export default {
       }
     },
     async deletarUsuario(id) {
-      let admin = this.$store.state.perfil.isAdmin;
+      let admin = this.$store.getters['perfil/isAdmin']
+      let my_id = this.$store.getters['perfil/getId']
+
       if(!admin && this.usuario.isAdmin){
         this.$toast.error('Você não tem permissões para isso');
       }
       else{
         const response = await service.deletarUsuario(id);
         if (response.data.success) {
-          if(this.$store.state.perfil.perfil.id == this.usuario.id){
+          if(my_id == this.usuario.id){
             localStorage.removeItem('user');
             this.$store.dispatch('auth/logout');
             this.$router.push('/admin');
