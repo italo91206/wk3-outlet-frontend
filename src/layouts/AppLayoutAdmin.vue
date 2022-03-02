@@ -6,7 +6,7 @@
 
       <v-toolbar-title>{{ this.$route.meta.title }}</v-toolbar-title>
       
-      <v-btn to="/" class="botao-visitar-loja">Visitar loja</v-btn>
+      <v-btn to="/" class="botao-visitar-loja" target="_blank">Visitar loja</v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app>
