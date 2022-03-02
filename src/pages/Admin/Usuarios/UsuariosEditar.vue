@@ -17,6 +17,13 @@
             <div class="w100" v-if="etapa == 1">
               <v-form>
                 <v-col cols="12">
+                  <v-checkbox
+                    v-model="usuario.is_enabled"
+                    label="Usuário habilitado"
+                  ></v-checkbox>
+                </v-col>
+
+                <v-col cols="12">
                   <v-text-field
                     label="Nome"
                     v-model="usuario.nome"
@@ -75,13 +82,6 @@
                     @click:append="show = !show"
                     label="Senha"
                   ></v-text-field>
-                </v-col>
-
-                <v-col cols="12">
-                  <v-checkbox
-                    v-model="usuario.is_enabled"
-                    label="Usuário habilitado"
-                  ></v-checkbox>
                 </v-col>
               </v-form>
             </div>
