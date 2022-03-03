@@ -296,7 +296,21 @@ export default {
         else
           item.valor = `- ${valor}`
       })
-    }
+    },
+    tipoPermissoes(){
+      if(this.tipoPermissoes == 0){
+        this.usuario.isEmployee = false;
+        this.usuario.isAdmin = false;
+      }
+      else if(this.tipoPermissoes == 1){
+        this.usuario.isEmployee = true;
+        this.usuario.isAdmin = false;
+      }
+      else if(this.tipoPermissoes == 2){
+        this.usuario.isEmployee = true;
+        this.usuario.isAdmin = true;
+      }
+    },
   }
 };
 </script>
