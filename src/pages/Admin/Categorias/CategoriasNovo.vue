@@ -10,7 +10,7 @@
                 <v-text-field
                   label="Nome da categoria"
                   v-model="categoriaToPost.nome_categoria"
-                  :rules="[rules.specialCharacters]"
+                  
                 ></v-text-field>
               </v-col>
             </v-row>
