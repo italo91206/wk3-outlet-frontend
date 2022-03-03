@@ -7,7 +7,7 @@
             <v-btn v-bind:class="{ etapaAtivo: etapa == 1}" class="w100" @click="setEtapa(1)">Inf. Básicas</v-btn>
             <v-btn v-bind:class="{ etapaAtivo: etapa == 2}" class="w100" @click="setEtapa(2)">Inf. Avançadas</v-btn>
             <v-btn v-bind:class="{ etapaAtivo: etapa == 3}" class="w100" @click="setEtapa(3)">Compras</v-btn>
-            <v-btn v-bind:class="{ etapaAtivo: etapa == 4}" class="w100" @click="setEtapa(4)">Acertos</v-btn>
+            <v-btn v-if="usuario.isAdmin || usuario.isEmployee" v-bind:class="{ etapaAtivo: etapa == 4}" class="w100" @click="setEtapa(4)">Acertos</v-btn>
             <v-btn v-bind:class="{ etapaAtivo: etapa == 5}" class="w100" @click="setEtapa(5)">Newsletter</v-btn>
           </v-card>
         </v-col>
@@ -212,10 +212,18 @@ export default {
         this.usuario.isEmployee = false;
         this.usuario.isAdmin = true;
       }
+      const my_id = this.$store.getters['perfil/getId']
       const response = await service.atualizarUsuario(this.usuario);
       if (response.data.success) {
-        this.$toast.success("Usuário foi atualizado com sucesso!");
-        this.$router.push("/admin/usuarios");
+        if(my_id == this.usuario.id && this.usuario.is_enabled == false){
+          localStorage.removeItem('user');
+          this.$store.dispatch('auth/logout');
+          this.$router.push('/admin');
+        }
+        else{
+          this.$toast.success("Usuário foi atualizado com sucesso!");
+          this.$router.push("/admin/usuarios");
+        }
       } else this.$toast.error(response.data.message);
     },
     async carregarAcertos(id) {

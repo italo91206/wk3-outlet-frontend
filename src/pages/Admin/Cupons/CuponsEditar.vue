@@ -57,7 +57,7 @@
 
       <v-row class="float-right">
         <v-btn to="/admin/cupons" class="mr-2">Voltar</v-btn>
-        <v-btn @click="deletar" color="error" class="mr-2">Deletar cupom</v-btn>
+        <v-btn @click="deletarCupom" color="error" class="mr-2">Deletar cupom</v-btn>
         <v-btn @click="salvarCupom" color="success">Salvar cupom</v-btn>
       </v-row>
     </v-container>
@@ -118,7 +118,8 @@ export default {
           this.$toast.error(response.data.message);
       }
     },
-    async deletarCupom(id){
+    async deletarCupom(){
+      const id = this.$route.params.id;
       const response = await service.deletarCupom(id);
       if(response.data.success){
         this.$toast.success('Cupom foi deletado com sucesso!');
@@ -126,12 +127,6 @@ export default {
       }
       else
         this.$toast.error(response.data.message);
-    },
-    deletar(){
-      const id = this.$route.params.id;
-      const response = confirm('Tem certeza que deseja remover? Esta ação é irreversível!');
-      if(response)
-        this.deletarCupom(id)
     },
     mudou(){
       this.isChanged = false;
