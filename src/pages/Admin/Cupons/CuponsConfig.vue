@@ -12,11 +12,12 @@
               hide-details
             ></v-text-field>
           </v-card-title>
+
           <v-data-table
             :headers="headers"
             :search="termoBusca"
             :items="cupons"
-            :loading="cupons.length == 0"
+            :loading="cupons.length == null"
             loading-text="Carregando cupons... aguarde"
           >
             <template v-slot:item.cupom_id="{ item }">
@@ -57,7 +58,7 @@ export default {
   },
   data(){
     return {
-      cupons: [],
+      cupons: null,
       termoBusca: '',
       headers: [ 
         { text: 'Código', value: 'codigo' },
