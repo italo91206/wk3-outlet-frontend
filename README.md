@@ -1,24 +1,15 @@
 # wk3-outlet-frontend
 
-## Project setup
-```
-npm install
-```
+## Instruções de deploy
+Não esquecer de adicionar o server rewrite:
 
-### Compiles and hot-reloads for development
 ```
-npm run serve
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
