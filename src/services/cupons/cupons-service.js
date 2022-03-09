@@ -25,10 +25,10 @@ const CupomService = {
     }
   },
 
-  novoCupom: async (cupom) => {
+  novoCupom: async (cupom, quantity_rules, selected_rules) => {
     let dados;
     try{
-      dados = await api.post('/cupom/novo', { cupom: cupom });
+      dados = await api.post('/cupom/novo', { cupom,  quantity_rules, selected_rules});
       return dados;
     }
     catch(err){
