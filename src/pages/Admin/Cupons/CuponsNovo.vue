@@ -149,61 +149,123 @@
                   </v-expansion-panel-header>  
 
                   <v-expansion-panel-content>
-                    <!-- marcas data-table -->
                     <v-row>
-                      <v-text-field
-                        v-model="marca_search"
-                        append-icon="mdi-magnify"
-                        label="Buscar por marcas"
-                        single-line
-                        hide-details
-                      ></v-text-field>
+                      <!-- marcas data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="marca_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por marcas"
+                          single-line
+                          hide-details
+                        ></v-text-field>
 
-                      <v-data-table
-                        v-model="marcas_selected"
-                        :headers="marca_headers"
-                        :search="marca_search"
-                        :items="marcas"
-                        :loading="marcas_loading"
-                        item-key="marca"
-                        show-select
-                        loading-text="Carregando marcas... aguarde"
-                      >
-                      </v-data-table>
-                    </v-row>
+                        <v-data-table
+                          v-model="marcas_selected"
+                          :headers="marca_headers"
+                          :search="marca_search"
+                          :items="marcas"
+                          :loading="marcas_loading"
+                          item-key="marca"
+                          show-select
+                          loading-text="Carregando marcas... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
 
-                    <!-- modelos data-table -->
-                    <v-row>
-                      <v-text-field
-                        v-model="modelo_search"
-                        append-icon="mdi-magnify"
-                        label="Buscar por modelos"
-                        single-line
-                        hide-details
-                      ></v-text-field>
+                      <!-- modelos data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="modelo_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por modelos"
+                          single-line
+                          hide-details
+                        ></v-text-field>
 
-                      <v-data-table
-                        v-model="modelos_selected"
-                        :headers="modelo_headers"
-                        :search="modelo_search"
-                        :items="modelos"
-                        :loading="modelos_loading"
-                        item-key="modelo"
-                        show-select
-                        loading-text="Carregando modelos... aguarde"
-                      >
-                      </v-data-table>
+                        <v-data-table
+                          v-model="modelos_selected"
+                          :headers="modelo_headers"
+                          :search="modelo_search"
+                          :items="modelos"
+                          :loading="modelos_loading"
+                          item-key="modelo"
+                          show-select
+                          loading-text="Carregando modelos... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
                     </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel id="regras-por-variacoes">
+                <v-expansion-panel 
+                  id="regras-por-variacoes"
+                  @click="getVariations"
+                >
                   <v-expansion-panel-header>
                     Por variações (tamanho, cor)
+                    <v-chip class="ma-2 count-chip"
+                      v-if="marcas_selected.length > 0 || modelos_selected.length > 1"
+                    >
+                      {{getVariationsSelected}}
+                    </v-chip>
                   </v-expansion-panel-header>  
 
                   <v-expansion-panel-content>
-                    conteúdo
+                    <v-row>
+                      <!-- cores data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="cor_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por cores"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="cores_selected"
+                          :headers="cor_headers"
+                          :search="cor_search"
+                          :items="cores"
+                          :loading="cores_loading"
+                          item-key="cor"
+                          show-select
+                          loading-text="Carregando cores... aguarde"
+                        >
+                          <template v-slot:item.hexa="{ item }">
+                            <div
+                              :style="`background-color: ${item.hexa}`"
+                              class="color-swatch"
+                            ></div>
+                          </template>
+                        </v-data-table>
+                      </v-col>
+
+                      <!-- tamanhos data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="tamanho_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por tamanhos"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="tamanhos_selected"
+                          :headers="tamanho_headers"
+                          :search="tamanho_search"
+                          :items="tamanhos"
+                          :loading="tamanhos_loading"
+                          item-key="cor"
+                          show-select
+                          loading-text="Carregando tamanhos... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
+                    </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -233,6 +295,8 @@ import categoria_service from '@/services/categorias/categoria-service.js';
 import produto_service from "@/services/produto/produto-service.js";
 import modelo_service from '@/services/modelos/modelos-service.js'
 import marca_service from '@/services/marcas/marcas-service'
+import cor_service from "@/services/cores/cor-service.js";
+import tamanho_service from '@/services/tamanhos/tamanhos-service.js'
 
 import rules from '@/utils/rules.js'
 
@@ -286,9 +350,22 @@ export default {
         { text: 'Modelo', value:'modelo' },
       ],
 
-      colors: [],
+      cores: [],
+      cores_loading: true,
+      cores_selected: [],
+      cor_search: '',
+      cor_headers: [
+        { text: 'Cor', value: 'hexa' },
+        { text: 'Nome', value: 'cor' },
+      ],
       
-      tamanhos: []
+      tamanhos: [],
+      tamanhos_loading: true,
+      tamanhos_selected: [],
+      tamanho_search: '',
+      tamanho_headers: [
+        { text: 'Tamanho', value: 'tamanho' },
+      ]
     }
   },
   methods: {
@@ -359,6 +436,30 @@ export default {
         this.marcas_loading = false;
         this.modelos_loading = false;
       })
+    },
+    async getVariations(){
+      const tamanhos = await tamanho_service.listarTamanhos()
+        .then((response) => {
+          this.tamanhos = response.data.data;
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message)
+        })
+        .finally(() => {
+          this.tamanhos_loading = false;
+        });
+      const cores = await cor_service.listarCores()
+        .then((response) => {
+          this.cores = response.data.data;
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message)
+        })
+        .finally(() => {
+          this.cores_loading = false;
+        });
+
+      await Promise.all([ tamanhos, cores ])
     }
   },
   computed: {
@@ -377,6 +478,12 @@ export default {
       let qtd_modelos = this.modelos_selected.length
       let string = (qtd_marcas + qtd_modelos) > 1 ? "selecionados" : "selecionado"
       return `${qtd_marcas + qtd_modelos} ${string}`
+    },
+    getVariationsSelected(){
+      let qtd_cores = this.cores_selected.length;
+      let qtd_tamanhos = this.tamanhos_selected.length
+      let string = (qtd_cores + qtd_tamanhos) > 1 ? "selecionados" : "selecionado"
+      return `${qtd_cores + qtd_tamanhos} ${string}`
     }
   },
   watch: {
@@ -401,5 +508,10 @@ export default {
 
 .count-chip{
   flex: unset;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
 }
 </style>
