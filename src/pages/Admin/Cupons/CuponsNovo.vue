@@ -5,6 +5,10 @@
         <v-card class="w100 pa-12" elevation="10">
           <v-form>
             <v-row>
+              <h2>Detalhes do cupom</h2>
+            </v-row>
+
+            <v-row>
               <v-col cols="12">
                 <v-text-field
                   label="Código do cupom"
@@ -52,6 +56,80 @@
                 />
               </v-col>
             </v-row>
+
+            <v-row>
+              <h2>Regras do cupom</h2>
+            </v-row>
+
+            <v-row>
+              <v-expansion-panels>
+                <v-expansion-panel 
+                  id="regras-por-categorias"
+                  @click="getCategorias"
+                >
+                  <v-expansion-panel-header>
+                    Por categorias
+                    <v-chip class="ma-2 count-chip"
+                      v-if="categories_select.length > 0"
+                    >
+                      {{getCategoriesSelected}}
+                    </v-chip>
+                  </v-expansion-panel-header>  
+
+                  <v-expansion-panel-content>
+                    <v-text-field
+                      v-model="categoria_search"
+                      append-icon="mdi-magnify"
+                      label="Buscar por categoria"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+
+                    <v-data-table
+                      v-model="categories_select"
+                      :headers="categoria_headers"
+                      :search="categoria_search"
+                      :items="categories"
+                      :loading="categories_loading"
+                      item-key="nome_categoria"
+                      show-select
+                      loading-text="Carregando categorias... aguarde"
+                    >
+                    </v-data-table>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-produtos">
+                  <v-expansion-panel-header>
+                    Por produtos (SKU)
+                  </v-expansion-panel-header>  
+
+                  <v-expansion-panel-content>
+                    conteúdo
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-atributos">
+                  <v-expansion-panel-header>
+                    Por atributos (modelo, marca)
+                  </v-expansion-panel-header>  
+
+                  <v-expansion-panel-content>
+                    conteúdo
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-variacoes">
+                  <v-expansion-panel-header>
+                    Por variações (tamanho, cor)
+                  </v-expansion-panel-header>  
+
+                  <v-expansion-panel-content>
+                    conteúdo
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-row>
           </v-form>
         </v-card>
       </v-row>
@@ -73,6 +151,7 @@
 <script>
 import Helper from '@/components/Helper.vue'
 import service from '@/services/cupons/cupons-service.js'
+import categoria_service from '@/services/categorias/categoria-service.js';
 import rules from '@/utils/rules.js'
 
 export default {
@@ -86,6 +165,24 @@ export default {
       tipoCupom: '',
       radioGroup: null,
       rules: rules,
+      product_rules: [],
+      attribute_rules: [],
+      variation_rules: [],
+      products: [],
+
+      categories: [],
+      categories_loading: true,
+      categories_select: [],
+      categoria_search: '',
+      categoria_headers: [
+        { text: 'Nome', value: 'nome_categoria' },
+        { text: 'Categoria pai', value: 'categoria_pai' },
+      ],
+
+      colors: [],
+      marcas: [],
+      modelos: [],
+      tamanhos: []
     }
   },
   methods: {
@@ -102,6 +199,28 @@ export default {
           this.$toast.error(response.data.message);
       }
     },
+    async getCategorias(){
+      await categoria_service.verCategorias()
+        .then((response) => {
+          this.categories = response.data.data;
+          this.categories = this.categories.filter((categoria) => {
+            return categoria.is_enabled
+          })
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.error)
+        })
+        .finally(() => {
+          this.categories_loading = false;
+        })
+    },
+  },
+  computed: {
+    getCategoriesSelected(){
+      let qtd = this.categories_select.length;
+      let string = qtd > 1 ? "selecionados" : "selecionado"
+      return `${qtd} ${string}`
+    }
   },
   watch: {
     radioGroup: function(){
@@ -121,5 +240,9 @@ export default {
 <style lang="css" scoped>
 .row + .row {
   margin-top: 24px;
+}
+
+.count-chip{
+  flex: unset;
 }
 </style>
