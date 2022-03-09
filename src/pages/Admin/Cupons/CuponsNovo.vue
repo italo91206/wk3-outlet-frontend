@@ -91,6 +91,8 @@
                       :search="categoria_search"
                       :items="categories"
                       :loading="categories_loading"
+                      :options="{itemsPerPage: 5}"
+                      dense
                       item-key="nome_categoria"
                       show-select
                       loading-text="Carregando categorias... aguarde"
@@ -129,6 +131,7 @@
                       :loading="produtos_loading"
                       item-key="nome_produto"
                       show-select
+                      dense
                       loading-text="Carregando produtos... aguarde"
                     >
                     </v-data-table>
@@ -166,6 +169,7 @@
                           :search="marca_search"
                           :items="marcas"
                           :loading="marcas_loading"
+                          :options="{itemsPerPage: 5}"
                           item-key="marca"
                           show-select
                           loading-text="Carregando marcas... aguarde"
@@ -189,6 +193,7 @@
                           :search="modelo_search"
                           :items="modelos"
                           :loading="modelos_loading"
+                          :options="{itemsPerPage: 5}"
                           item-key="modelo"
                           show-select
                           loading-text="Carregando modelos... aguarde"
@@ -206,7 +211,7 @@
                   <v-expansion-panel-header>
                     Por variações (tamanho, cor)
                     <v-chip class="ma-2 count-chip"
-                      v-if="marcas_selected.length > 0 || modelos_selected.length > 1"
+                      v-if="tamanhos_selected.length > 0 || cores_selected.length > 0"
                     >
                       {{getVariationsSelected}}
                     </v-chip>
@@ -230,6 +235,7 @@
                           :search="cor_search"
                           :items="cores"
                           :loading="cores_loading"
+                          :options="{itemsPerPage: 5}"
                           item-key="cor"
                           show-select
                           loading-text="Carregando cores... aguarde"
@@ -259,11 +265,71 @@
                           :search="tamanho_search"
                           :items="tamanhos"
                           :loading="tamanhos_loading"
-                          item-key="cor"
+                          :options="{itemsPerPage: 5}"
+                          item-key="tamanho"
                           show-select
                           loading-text="Carregando tamanhos... aguarde"
                         >
                         </v-data-table>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-quantidade">
+                  <v-expansion-panel-header>
+                    Por quantidade/unidades
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <h4>
+                      Para o cupom ser válido, as condições acima se aplicam à:
+                    </h4>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-radio-group v-model="quantity_rules">
+                          <v-radio
+                            label="Todos os itens do carrinho"
+                            value="todos"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Por quantidade (un)"
+                            value="por_quantidade"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Por valor (R$)"
+                            value="por_valor"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-col>
+
+                      <v-col cols="6" 
+                        v-if="quantity_rules == 'por_valor' || quantity_rules == 'por_quantidade'"
+                      >
+                        <v-row class="pa-5">
+                          <v-col cols="6">
+                            <v-select
+                              :items="
+                              [{ label: 'Maior que', value: 'maior_que'}, 
+                              { label: 'Menor que', value: 'menor_que'}]"
+                              item-value="value"
+                              item-text="label"
+                              v-model="quantity_condition"
+                            ></v-select>
+                          </v-col>
+
+                          <v-col cols="6">
+                            <v-text-field
+                              v-model="quantity_value"
+                              single-line
+                              hide-details
+                              label="Valor/Quantidade"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
                       </v-col>
                     </v-row>
                   </v-expansion-panel-content>
@@ -290,7 +356,7 @@
 
 <script>
 import Helper from '@/components/Helper.vue'
-import service from '@/services/cupons/cupons-service.js'
+import cupons_service from '@/services/cupons/cupons-service.js'
 import categoria_service from '@/services/categorias/categoria-service.js';
 import produto_service from "@/services/produto/produto-service.js";
 import modelo_service from '@/services/modelos/modelos-service.js'
@@ -365,21 +431,41 @@ export default {
       tamanho_search: '',
       tamanho_headers: [
         { text: 'Tamanho', value: 'tamanho' },
-      ]
+      ],
+
+      quantity_rules: 'todos',
+      quantity_value: null,
+      quantity_condition: '',
     }
   },
   methods: {
     async novoCupom(){
       if(this.cupomToPost.validade == '')
         this.$toast.error('Alguns campos não estão válidos');
-      else{      
-        const response = await service.novoCupom(this.cupomToPost);
-        if(response.data.success){
-          this.$toast.success('O cupom foi cadastrado com sucesso!');
-          this.$router.push('/admin/cupons');
+      else {     
+        let quantity_rules = {
+          rules: this.quantity_rules, 
+          value: this.quantity_value, 
+          condition: this.quantity_condition
         }
-        else
-          this.$toast.error(response.data.message);
+
+        let selected_rules = {
+          categorias: this.categories_select,
+          produtos: this.produtos_selected,
+          marcas: this.marcas_selected,
+          modelos: this.modelos_selected,
+          cores: this.cores_selected,
+          tamanhos: this.tamanhos_selected
+        }
+
+        await cupons_service.novoCupom(this.cupomToPost, quantity_rules, selected_rules)
+          .then(() => {
+            this.$toast.success('O cupom foi cadastrado com sucesso!');
+            this.$router.push('/admin/cupons');
+          })
+          .catch((response) => {
+            this.$toast.error(response.data.message);
+          })
       }
     },
     async getCategorias(){
@@ -484,6 +570,16 @@ export default {
       let qtd_tamanhos = this.tamanhos_selected.length
       let string = (qtd_cores + qtd_tamanhos) > 1 ? "selecionados" : "selecionado"
       return `${qtd_cores + qtd_tamanhos} ${string}`
+    },
+    getAllRulesSelected(){
+      let qtd_cores = this.cores_selected.length;
+      let qtd_tamanhos = this.tamanhos_selected.length
+      let qtd_marcas = this.marcas_selected.length;
+      let qtd_modelos = this.modelos_selected.length
+      let qtd_produtos = this.produtos_selected.length;
+      let qtd_categorias = this.categories_select.length;
+
+      return qtd_cores + qtd_tamanhos + qtd_marcas + qtd_modelos + qtd_produtos + qtd_categorias
     }
   },
   watch: {
