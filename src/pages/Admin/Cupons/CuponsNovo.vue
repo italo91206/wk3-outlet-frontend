@@ -135,13 +135,65 @@
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
-                <v-expansion-panel id="regras-por-atributos">
+                <v-expansion-panel 
+                  id="regras-por-atributos"
+                  @click="getAttributes"  
+                >
                   <v-expansion-panel-header>
                     Por atributos (modelo, marca)
+                    <v-chip class="ma-2 count-chip"
+                      v-if="marcas_selected.length > 0 || modelos_selected.length > 1"
+                    >
+                      {{getAtributosSelected}}
+                    </v-chip>
                   </v-expansion-panel-header>  
 
                   <v-expansion-panel-content>
-                    conteúdo
+                    <!-- marcas data-table -->
+                    <v-row>
+                      <v-text-field
+                        v-model="marca_search"
+                        append-icon="mdi-magnify"
+                        label="Buscar por marcas"
+                        single-line
+                        hide-details
+                      ></v-text-field>
+
+                      <v-data-table
+                        v-model="marcas_selected"
+                        :headers="marca_headers"
+                        :search="marca_search"
+                        :items="marcas"
+                        :loading="marcas_loading"
+                        item-key="marca"
+                        show-select
+                        loading-text="Carregando marcas... aguarde"
+                      >
+                      </v-data-table>
+                    </v-row>
+
+                    <!-- modelos data-table -->
+                    <v-row>
+                      <v-text-field
+                        v-model="modelo_search"
+                        append-icon="mdi-magnify"
+                        label="Buscar por modelos"
+                        single-line
+                        hide-details
+                      ></v-text-field>
+
+                      <v-data-table
+                        v-model="modelos_selected"
+                        :headers="modelo_headers"
+                        :search="modelo_search"
+                        :items="modelos"
+                        :loading="modelos_loading"
+                        item-key="modelo"
+                        show-select
+                        loading-text="Carregando modelos... aguarde"
+                      >
+                      </v-data-table>
+                    </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -179,6 +231,9 @@ import Helper from '@/components/Helper.vue'
 import service from '@/services/cupons/cupons-service.js'
 import categoria_service from '@/services/categorias/categoria-service.js';
 import produto_service from "@/services/produto/produto-service.js";
+import modelo_service from '@/services/modelos/modelos-service.js'
+import marca_service from '@/services/marcas/marcas-service'
+
 import rules from '@/utils/rules.js'
 
 export default {
@@ -215,9 +270,24 @@ export default {
         { text: 'Categoria pai', value: 'categoria_pai' },
       ],
 
-      colors: [],
       marcas: [],
+      marcas_loading: true,
+      marcas_selected: [],
+      marca_search: '',
+      marca_headers: [
+        { text: 'Marca', value: 'marca' },
+      ],
+
       modelos: [],
+      modelos_loading: true,
+      modelos_selected: [],
+      modelo_search: '',
+      modelo_headers: [
+        { text: 'Modelo', value:'modelo' },
+      ],
+
+      colors: [],
+      
       tamanhos: []
     }
   },
@@ -265,6 +335,31 @@ export default {
           this.produtos_loading = false;
         })
     },
+    async getAttributes(){
+      const marcas = await marca_service.getMarcas()
+        .then((response) => {
+          this.marcas = response.data.data
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message);
+        });
+      
+      const modelos = await modelo_service.verModelos()
+        .then((response) => {
+          this.modelos = response.data.data
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message);
+        });
+      
+      await Promise.all([
+        marcas, modelos
+      ])
+      .then(() => {
+        this.marcas_loading = false;
+        this.modelos_loading = false;
+      })
+    }
   },
   computed: {
     getCategoriesSelected(){
@@ -276,6 +371,12 @@ export default {
       let qtd = this.produtos_selected.length;
       let string = qtd > 1 ? "selecionados" : "selecionado"
       return `${qtd} ${string}`
+    },
+    getAtributosSelected(){
+      let qtd_marcas = this.marcas_selected.length;
+      let qtd_modelos = this.modelos_selected.length
+      let string = (qtd_marcas + qtd_modelos) > 1 ? "selecionados" : "selecionado"
+      return `${qtd_marcas + qtd_modelos} ${string}`
     }
   },
   watch: {
