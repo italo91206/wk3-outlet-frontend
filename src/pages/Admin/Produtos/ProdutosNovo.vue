@@ -8,8 +8,8 @@
             <v-row id="imagesRow">
               <v-col v-for="imagem in imagens" v-bind:key="imagem.id" class="images-col--imagem">
                 <v-img :src="imagem" 
-                  max-height="500" 
-                  max-width="300"
+                  max-height="100" 
+                  max-width="60"
                 ></v-img>
               </v-col>
             </v-row>
@@ -30,18 +30,15 @@
 
             <!-- Nome do produto -->
             <v-row>
-              <v-col cols="12">
+              <v-col cols="9">
                 <v-text-field 
                   label="Nome do produto" 
                   v-model="produtoToPost.nome_produto"
                   :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <!-- SKU do produto -->
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field 
                   label="SKU" 
                   v-model="produtoToPost.sku"
@@ -50,29 +47,8 @@
               </v-col>
             </v-row>
 
-            <!-- Preço e custo do produto -->
             <v-row>
-              <v-col>
-                <v-text-field 
-                  label="Preço" 
-                  v-model="produtoToPost.preco"
-                  type="number"
-                  :rules="[rules.positiveNumber]"
-                ></v-text-field>
-              </v-col>
-
-              <v-col>
-                <v-text-field 
-                  label="Custo" 
-                  v-model="produtoToPost.custo"
-                  type="number"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <!-- Estoque e peso-->
-            <v-row>
-              <v-col>
+              <v-col cols="3">
                 <v-text-field 
                   label="Estoque" 
                   v-model="produtoToPost.estoque"
@@ -81,7 +57,24 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col>
+              <v-col cols="3">
+                <v-text-field 
+                  label="Preço" 
+                  v-model="produtoToPost.preco"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3">
+                <v-text-field 
+                  label="Custo" 
+                  v-model="produtoToPost.custo"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3">
                 <v-text-field 
                   label="Peso (gramas)" 
                   v-model="produtoToPost.peso"
@@ -90,10 +83,9 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            
-            <!-- Categoria -->
+
             <v-row>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="novasCategorias"
@@ -103,21 +95,7 @@
                 ></v-select>
               </v-col>
 
-              <!--
-                Quando houver uma mudança de estoque
-                é obrigatório escolher um motivo
-              -->
-              <v-col cols="6" v-if="estoque_changed">
-                <v-select
-                  item-text="motivo"
-                  label="Selecione um motivo"
-                ></v-select>
-              </v-col>
-            </v-row>
-
-            <!-- Modelo e Marca-->
-            <v-row>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="modeloSelecionado"
                   :items="modelos"
@@ -127,7 +105,7 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="marcaSelecionado"
                   :items="marcas"
@@ -150,81 +128,92 @@
               </v-col>
             </v-row>
 
-            <h4>Variações de produto</h4>
-
-            <!-- Cor e tamanho -->
             <v-row>
-              <v-col cols="3">
-                <v-select
-                  v-model="variacao_corSelecionado"
-                  :items="cores"
-                  item-text="cor"
-                  item-value="cor_id"
-                  label="Cor"
-                ></v-select>
-              </v-col>
+              <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Variações do produto
+                  </v-expansion-panel-header>
 
-              <v-col cols="3">
-                <v-select
-                  v-model="variacao_tamanhoSelecionado"
-                  :items="tamanhos"
-                  item-text="tamanho"
-                  item-value="tamanho_id"
-                  label="Tamanho"
-                ></v-select>
-              </v-col>
+                  <v-expansion-panel-content>
+                    <!-- Cor e tamanho -->
+                    <v-row>
+                      <v-col cols="3">
+                        <v-select
+                          v-model="variacao_corSelecionado"
+                          :items="cores"
+                          item-text="cor"
+                          item-value="cor_id"
+                          label="Cor"
+                        ></v-select>
+                      </v-col>
 
-              <v-col cols="3">
-                <v-text-field
-                  v-model="variacao_quantidade"
-                  label="Quantidade"
-                  :rules="[rules.positiveNumber]"
-                ></v-text-field>
-              </v-col>
+                      <v-col cols="3">
+                        <v-select
+                          v-model="variacao_tamanhoSelecionado"
+                          :items="tamanhos"
+                          item-text="tamanho"
+                          item-value="tamanho_id"
+                          label="Tamanho"
+                        ></v-select>
+                      </v-col>
 
-              <v-col cols="3" class="flex align-center">
-                <v-btn @click="adicionarVariacao">
-                  Adicionar
-                </v-btn>
-              </v-col>
+                      <v-col cols="3">
+                        <v-text-field
+                          v-model="variacao_quantidade"
+                          label="Quantidade"
+                          :rules="[rules.positiveNumber]"
+                          type="number"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="3" class="flex align-center">
+                        <v-btn @click="adicionarVariacao">
+                          Adicionar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+
+                    <v-data-table
+                      :headers="headersVariacoes"
+                      :items="variacoes"
+                      hide-default-footer
+                      no-data-text="Este produto não possui variações"
+                      :disable-sort="true"
+                    >
+                      <template v-slot:item.acao="{item}">
+                        <a class="link" @click="removerVariacao(item.nome)">
+                          Remover
+                        </a>
+                      </template>
+
+                      <template v-slot:item.quantidade="{item}">
+                        <v-edit-dialog
+                          :return-value.sync="item.quantidade"
+                          large
+                          persistent
+                        >
+                          <div>{{ item.quantidade }}</div>
+                          <template v-slot:input>
+                            <div class="mt-4 text-h6">
+                              Atualizar quantidade
+                            </div>
+                            <v-text-field
+                              v-model="item.quantidade"
+                              :rules="[rules.positiveNotNull]"
+                              label="Quantidade"
+                              single-line
+                              counter
+                              autofocus
+                            ></v-text-field>
+                          </template>
+                        </v-edit-dialog>
+                      </template>
+                    </v-data-table>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-row>
-
-            <v-data-table
-              :headers="headersVariacoes"
-              :items="variacoes"
-              hide-default-footer
-              no-data-text="Este produto não possui variações"
-              :disable-sort="true"
-            >
-              <template v-slot:item.acao="{item}">
-                <a class="link" @click="removerVariacao(item.nome)">
-                  Remover
-                </a>
-              </template>
-
-              <template v-slot:item.quantidade="{item}">
-                <v-edit-dialog
-                  :return-value.sync="item.quantidade"
-                  large
-                  persistent
-                >
-                  <div>{{ item.quantidade }}</div>
-                  <template v-slot:input>
-                    <div class="mt-4 text-h6">
-                      Atualizar quantidade
-                    </div>
-                    <v-text-field
-                      v-model="item.quantidade"
-                      :rules="[rules.positiveNotNull]"
-                      label="Quantidade"
-                      single-line
-                      counter
-                      autofocus
-                    ></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </template>
-            </v-data-table>
           </v-form>
         </v-card>
       </v-row>
@@ -376,6 +365,12 @@ export default {
         this.$toast.error('Nome de produto muito curto!');
       else if(this.produtoToPost.preco <= 0)
         this.$toast.error('Preço do produto não pode ser vazio')
+      else if(this.produtoToPost.categoria_id == null)
+        this.$toast.error('Produto precisa ter uma categoria.')
+      else if(this.produtoToPost.modelo_id == null)
+        this.$toast.error('Produto precisa ter um modelo.')
+        else if(this.produtoToPost.marca_id == null)
+        this.$toast.error('Produto precisa ter uma marca.')
       else{
         this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.novoProduto(this.produtoToPost);
@@ -431,6 +426,7 @@ export default {
         let variacao = {};
         variacao.nome = this.produtoToPost.nome_produto;
 
+
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });
@@ -443,8 +439,15 @@ export default {
           variacao.tamanho = tamanho[0].tamanho;
           variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
         }
-        variacao.quantidade = this.variacao_quantidade;
-        this.variacoes.push(variacao);
+        
+        console.log("variacao nome", variacao.nome)
+        let ja_existe = this.variacoes.filter((v) => { return variacao.nome == v.nome})
+        if(ja_existe.length > 0)
+          ja_existe[0].quantidade += this.variacao_quantidade
+        else{
+          variacao.quantidade = this.variacao_quantidade;
+          this.variacoes.push(variacao);
+        }
 
         this.variacao_tamanhoSelecionado = 0;
         this.variacao_corSelecionado = 0;
@@ -489,6 +492,9 @@ export default {
       })
       this.imagens = caminhos;
     },
+    variacao_quantidade(){
+      this.variacao_quantidade = parseInt(this.variacao_quantidade)
+    }
   }
 };
 </script>

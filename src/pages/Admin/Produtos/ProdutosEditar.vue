@@ -9,8 +9,8 @@
               <v-col v-for="imagem in produtoToPost.imagens" v-bind:key="imagem.id" class="images-col--imagem">
                 <v-img 
                   :src="`https://www.italoferreira.dev/static/${imagem.url}`" 
-                  max-height="500" 
-                  max-width="300"
+                  max-height="100" 
+                  max-width="60"
                 ></v-img>
                 <v-btn class="deletar-imagem" color="error" @click="removerImagem(imagem.imagem_id)">Remover</v-btn>
               </v-col>
@@ -32,18 +32,15 @@
 
             <!-- Nome do produto -->
             <v-row>
-              <v-col cols="12">
+              <v-col cols="9">
                 <v-text-field 
                   label="Nome do produto" 
                   v-model="produtoToPost.nome_produto"
                   :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <!-- SKU do produto -->
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field 
                   label="SKU" 
                   v-model="produtoToPost.sku"
@@ -53,28 +50,7 @@
 
             <!-- Preço e custo do produto -->
             <v-row>
-              <v-col>
-                <v-text-field 
-                  label="Preço" 
-                  v-model="produtoToPost.preco"
-                  type="number"
-                  :rules="[rules.positiveNumber]"
-                ></v-text-field>
-              </v-col>
-
-              <v-col>
-                <v-text-field 
-                  label="Custo" 
-                  v-model="produtoToPost.custo"
-                  type="number"
-                  :rules="[rules.positiveNumber]"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <!-- Estoque e peso-->
-            <v-row>
-              <v-col>
+              <v-col cols="3">
                 <v-text-field 
                   label="Estoque" 
                   v-model="produtoToPost.estoque"
@@ -84,7 +60,25 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col>
+              <v-col cols="3">
+                <v-text-field 
+                  label="Preço" 
+                  v-model="produtoToPost.preco"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3">
+                <v-text-field 
+                  label="Custo" 
+                  v-model="produtoToPost.custo"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="3">
                 <v-text-field 
                   label="Peso (gramas)" 
                   v-model="produtoToPost.peso"
@@ -96,7 +90,7 @@
             
             <!-- Categoria -->
             <v-row>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="novasCategorias"
@@ -106,24 +100,7 @@
                 ></v-select>
               </v-col>
 
-              <!--
-                Quando houver uma mudança de estoque
-                é obrigatório escolher um motivo
-              -->
-              <v-col cols="6" v-if="estoque_changed">
-                <v-select
-                  v-model="motivo"
-                  :items="motivos"
-                  item-text="motivo"
-                  item-value="motivo_id"
-                  label="Selecione um motivo"
-                ></v-select>
-              </v-col>
-            </v-row>
-
-            <!-- Modelo e Marca-->
-            <v-row>
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="modeloSelecionado"
                   :items="modelos"
@@ -133,13 +110,28 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-select
                   v-model="marcaSelecionado"
                   :items="marcas"
                   item-text="marca"
                   item-value="marca_id"
                   label="Marca"
+                ></v-select>
+              </v-col>
+
+              <!--
+                Quando houver uma mudança de estoque
+                é obrigatório escolher um motivo
+              -->
+              <v-col cols="6">
+                <v-select
+                  v-if="estoque_changed"
+                  v-model="motivo"
+                  :items="motivos"
+                  item-text="motivo"
+                  item-value="motivo_id"
+                  label="Selecione um motivo"
                 ></v-select>
               </v-col>
             </v-row>
