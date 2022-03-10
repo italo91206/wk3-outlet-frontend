@@ -459,12 +459,18 @@ export default {
         }
 
         await cupons_service.novoCupom(this.cupomToPost, quantity_rules, selected_rules)
-          .then(() => {
-            this.$toast.success('O cupom foi cadastrado com sucesso!');
-            this.$router.push('/admin/cupons');
+          .then((response) => {
+            if(response.data.success){
+              this.$toast.success('O cupom foi cadastrado com sucesso!');
+              this.$router.push('/admin/cupons');
+            }
+            else
+              this.$toast.error(response.data.message);
           })
-          .catch((response) => {
-            this.$toast.error(response.data.message);
+          .catch((error) => {
+            console.log(error)
+            this.$toast.error("Algo deu errado");
+            this.$router.push('/admin/cupons');
           })
       }
     },
