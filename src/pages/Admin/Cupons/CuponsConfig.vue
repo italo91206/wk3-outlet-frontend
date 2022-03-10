@@ -17,7 +17,7 @@
             :headers="headers"
             :search="termoBusca"
             :items="cupons"
-            :loading="cupons.length == null"
+            :loading="cupons_loading"
             loading-text="Carregando cupons... aguarde"
           >
             <template v-slot:item.cupom_id="{ item }">
@@ -58,7 +58,8 @@ export default {
   },
   data(){
     return {
-      cupons: null,
+      cupons: [],
+      cupons_loading: true,
       termoBusca: '',
       headers: [ 
         { text: 'Código', value: 'codigo' },
@@ -72,11 +73,16 @@ export default {
   },
   methods: {
     async listarCupons(){
-      const response = await service.listarCupons();
-      if(response.data.success)
+      await service.listarCupons()
+      .then((response) => {
         this.cupons = response.data.data;
-      else
+      })
+      .catch((response) => {
         this.$toast.error(response.data.message);
+      })
+      .finally(() => {
+        this.cupons_loading = false;
+      })
     },
     pad(num, size) {
       num = num.toString();
