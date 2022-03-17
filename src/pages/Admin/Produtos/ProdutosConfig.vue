@@ -12,10 +12,11 @@
               hide-details
             ></v-text-field>
           </v-card-title>
+
           <v-data-table
             :headers="headers"
             :search="termoBusca"
-            :items="produtos"
+            :items="enabled_only_filter ? getEnabledOnly : produtos"
             :loading="loading"
             loading-text="Carregando produtos... aguarde"
           >
@@ -25,6 +26,15 @@
               >
                 Editar
               </router-link>
+            </template>
+
+            <template v-slot:top>
+              <v-col>
+                <v-checkbox
+                  v-model="enabled_only_filter"
+                  label="Mostrar somente habilitados"
+                ></v-checkbox>
+              </v-col>
             </template>
           </v-data-table>
         </v-card>
@@ -61,13 +71,15 @@ export default {
       loading: true,
       termoBusca: '',
       headers: [
+        { text: 'Habilitado', value: 'is_enabled' },
         { text: 'Nome', value: 'nome_produto' },
         { text: 'Preço', value: 'preco' },
         { text: 'Estoque', value: 'estoque' },
         { text: 'SKU', value: 'sku' },
         { text: 'URL', value: 'url_visual' },
         { text: 'Ações', value: 'url', filterable: false, },
-      ]
+      ],
+      enabled_only_filter: true,
     };
   },
   methods: {
@@ -84,6 +96,11 @@ export default {
   mounted() {
     this.listarProdutos();
   },
+  computed: {
+    getEnabledOnly(){
+      return this.produtos.filter((c) => { return c.is_enabled == 'Sim' })
+    }
+  },
   filters: {
     preco: function (value) {
       return `R$ ${value.toFixed(2)}`;
@@ -93,6 +110,7 @@ export default {
     produtos: function(){
       this.produtos.forEach((item) => {
         item.url_visual = item.url;
+        item.is_enabled = item.is_enabled ? 'Sim' : 'Não'
       })
     }
   }

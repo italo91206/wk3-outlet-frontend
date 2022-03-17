@@ -426,7 +426,6 @@ export default {
         let variacao = {};
         variacao.nome = this.produtoToPost.nome_produto;
 
-
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
           const cor = this.cores.filter(cor => { return cor.cor_id === variacao.cor_id });

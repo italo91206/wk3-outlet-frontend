@@ -4,13 +4,27 @@
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
           <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-checkbox
+                  v-model="produtoToPost.is_enabled"
+                  label="Produto habilitado"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+
             <!-- Renderizar as imagens do produto -->
             <v-row id="imagesRow">
-              <v-col v-for="imagem in produtoToPost.imagens" v-bind:key="imagem.id" class="images-col--imagem">
+              <v-col 
+                v-for="imagem in produtoToPost.imagens" 
+                v-bind:key="imagem.imagem_id" 
+                class="images-col--imagem"
+              >
                 <v-img 
-                  :src="`https://www.italoferreira.dev/static/${imagem.url}`" 
+                  :src="`http://wk3outlet.italoferreira.dev.br/static/${imagem.url}`" 
                   max-height="100" 
                   max-width="60"
+                  @error="imageLoadingError(imagem)"
                 ></v-img>
                 <v-btn class="deletar-imagem" color="error" @click="removerImagem(imagem.imagem_id)">Remover</v-btn>
               </v-col>
@@ -57,6 +71,7 @@
                   type="number"
                   @change="mudouEstoque"
                   :rules="[rules.required]"
+                  disabled
                 ></v-text-field>
               </v-col>
 
@@ -148,81 +163,33 @@
               </v-col>
             </v-row>
 
-            <h4>Variações de produto</h4>
-
-            <!-- Cor e tamanho -->
+            <!-- Variações do produto -->
             <v-row>
-              <v-col cols="3">
-                <v-select
-                  v-model="variacao_corSelecionado"
-                  :items="cores"
-                  item-text="cor"
-                  item-value="cor_id"
-                  label="Cor"
-                ></v-select>
-              </v-col>
+              <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Variações do produto
+                  </v-expansion-panel-header>
 
-              <v-col cols="3">
-                <v-select
-                  v-model="variacao_tamanhoSelecionado"
-                  :items="tamanhos"
-                  item-text="tamanho"
-                  item-value="tamanho_id"
-                  label="Tamanho"
-                ></v-select>
-              </v-col>
-
-              <v-col cols="3">
-                <v-text-field
-                  v-model="variacao_quantidade"
-                  label="Quantidade"
-                  :rules="[rules.positiveNumber]"
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="3" class="flex align-center">
-                <v-btn @click="adicionarVariacao">
-                  Adicionar
-                </v-btn>
-              </v-col>
+                  <v-expansion-panel-content>
+                    <!-- Tabela das variações -->
+                    <v-data-table
+                      :headers="headersVariacoes"
+                      :items="variacoes"
+                      hide-default-footer
+                      no-data-text="Este produto não possui variações"
+                      :disable-sort="true"
+                    >
+                      <template>
+                        <a class="link" @click="router.push(`/acertar-estoque/${produtoToPost.produto_id}`)">
+                          Remover
+                        </a>
+                      </template>
+                    </v-data-table>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-row>
-
-            <v-data-table
-              :headers="headersVariacoes"
-              :items="variacoes"
-              hide-default-footer
-              no-data-text="Este produto não possui variações"
-              :disable-sort="true"
-            >
-              <template v-slot:item.acao="{item}">
-                <a class="link" @click="removerVariacao(item.variacao_id)">
-                  Remover
-                </a>
-              </template>
-
-              <template v-slot:item.quantidade="{item}">
-                <v-edit-dialog
-                  :return-value.sync="item.quantidade"
-                  large
-                  persistent
-                >
-                  <div>{{ item.quantidade }}</div>
-                  <template v-slot:input>
-                    <div class="mt-4 text-h6">
-                      Atualizar quantidade
-                    </div>
-                    <v-text-field
-                      v-model="item.quantidade"
-                      :rules="[rules.positiveNotNull]"
-                      label="Quantidade"
-                      single-line
-                      counter
-                      autofocus
-                    ></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </template>
-            </v-data-table>
           </v-form>
         </v-card>
       </v-row>
@@ -279,7 +246,6 @@ export default {
         { text: 'Cor', value: 'cor' },
         { text: 'Tamanho', value: 'tamanho' },
         { text: 'Quantidade', value: 'quantidade' },
-        { text: 'Ação', value: 'acao' },
       ],
       modeloSelecionado: '',
       marcaSelecionado: '',
@@ -462,6 +428,10 @@ export default {
         // console.log(this.produtoToPost.imagens[index]);
       }
     },
+    imageLoadingError(imagem){
+      console.log("Imagem não encontrada:", imagem)
+      imagem.url = 'not-found.png'
+    },
     adicionar(item) {
       if (item.categoria_pai == null)
         this.novasCategorias.push({ nome_categoria: item.nome_categoria, id: item.categoria_id })
@@ -539,7 +509,7 @@ export default {
         this.$toast.error('A variação precisa de uma quantidade positiva.');
       else{
         let variacao = {};
-        variacao.nome = this.produtoToPost.nome;
+        variacao.nome = this.produtoToPost.nome_produto;
 
         if(this.variacao_corSelecionado != 0){
           variacao.cor_id = this.variacao_corSelecionado;
@@ -553,8 +523,16 @@ export default {
           variacao.tamanho = tamanho[0].tamanho;
           variacao.nome = `${variacao.nome} ${variacao.tamanho}`;
         }
-        variacao.quantidade = this.variacao_quantidade;
-        this.variacoes.push(variacao);
+
+        console.log("variacao nome", variacao.nome)
+        let ja_existe = this.variacoes.filter((v) => { return variacao.nome == v.nome})
+        
+        if(ja_existe.length > 0)
+          ja_existe[0].quantidade += this.variacao_quantidade
+        else{
+          variacao.quantidade = this.variacao_quantidade;
+          this.variacoes.push(variacao);
+        }
 
         this.variacao_tamanhoSelecionado = 0;
         this.variacao_corSelecionado = 0;
@@ -641,6 +619,9 @@ export default {
       this.imagens = caminhos;
       this.imagesChanged = true;
     },
+    variacao_quantidade(){
+      this.variacao_quantidade = parseInt(this.variacao_quantidade)
+    }
   }
 };
 </script>
