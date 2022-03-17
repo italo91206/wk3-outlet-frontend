@@ -22,6 +22,10 @@
           </v-data-table>
         </v-card>
       </v-row>
+
+      <v-row class="float-right">
+        <v-btn @click="$router.push('/admin/acertar-estoque')" color="success">Realizar acerto</v-btn>
+      </v-row>
     </v-container>
 
     <Helper>
