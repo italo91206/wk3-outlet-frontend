@@ -16,7 +16,7 @@
           <v-data-table
             :headers="headers"
             :search="termoBusca"
-            :items="cupons"
+            :items="enabled_only_filter ? getEnabledOnly : cupons"
             :loading="cupons_loading"
             loading-text="Carregando cupons... aguarde"
           >
@@ -26,6 +26,15 @@
               >
                 Editar
               </router-link>
+            </template>
+
+            <template v-slot:top>
+              <v-col>
+                <v-checkbox
+                  v-model="enabled_only_filter"
+                  label="Mostrar somente habilitados"
+                ></v-checkbox>
+              </v-col>
             </template>
           </v-data-table>
         </v-card>
@@ -59,16 +68,19 @@ export default {
   data(){
     return {
       cupons: [],
+      cupons_before: [],
       cupons_loading: true,
       termoBusca: '',
       headers: [ 
         { text: 'Código', value: 'codigo' },
         { text: 'Status', value: 'status' },
+        { text: 'Habilitado', value: 'is_enabled' },
         { text: 'Nome', value: 'nome' },
         { text: 'Valor', value: 'valor' },
         { text: 'Validade', value: 'validade' },
         { text: 'Ações', value: 'cupom_id' },
-      ]
+      ],
+      enabled_only_filter: true,
     }
   },
   methods: {
@@ -92,6 +104,11 @@ export default {
   },
   mounted(){
     this.listarCupons();
+  },
+  computed: {
+    getEnabledOnly(){
+      return this.cupons.filter((c) => { return c.is_enabled == 'Sim' })
+    }
   },
   watch:{
     cupons: function(){
@@ -123,8 +140,10 @@ export default {
 
         item.validade = `${dia}/${mes}/${ano}`;
 
+        item.is_enabled = item.is_enabled ? 'Sim' : 'Não'
+
       })
-    }
+    },
   }
 }
 </script>

@@ -5,6 +5,15 @@
         <v-card class="w100 pa-12" elevation="10">
           <v-form>
             <v-row>
+              <v-col cols="12">
+                <v-checkbox
+                  v-model="cupomToPost.is_enabled"
+                  label="Cupom habilitado"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+
+            <v-row>
               <h2>Detalhes do cupom</h2>
             </v-row>
 
@@ -317,6 +326,35 @@
                             ></v-text-field>
                           </v-col>
                         </v-row>
+                      </v-col>
+                    </v-row>
+
+                    <h4>Quantidade de uso</h4>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-radio-group v-model="cupomToPost.use_rules">
+                          <v-radio
+                            label="Uso imilitado"
+                            value="ilimited"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Quantidade limitada de uso"
+                            value="limited"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-col>
+
+                      <v-col cols="6" v-if="cupomToPost.use_rules == 'limited'">
+                        <v-text-field
+                          v-model="cupomToPost.use_quantity"
+                          single-line
+                          hide-details
+                          type="number"
+                          label="Quantidade"
+                          class="col-2"
+                        ></v-text-field>
                       </v-col>
                     </v-row>
                   </v-expansion-panel-content>
