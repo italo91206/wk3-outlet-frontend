@@ -29,6 +29,7 @@ import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
 import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
 import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
 import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
+import AcertoEstoque from '@/pages/Admin/Acertos/AcertoEstoque.vue'
 import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
 import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
 import CategoriasEditar from '@/pages/Admin/Categorias/CategoriasEditar.vue'
@@ -130,6 +131,16 @@ const routes = [
     name: 'Acertos de estoque',
     meta: {
       title: 'WK3 Admin | Acertos De Estoque',
+      layout: 'AppLayoutAdmin',
+      is_public: false
+    }
+  },
+  {
+    path: '/admin/acertar-estoque',
+    component: AcertoEstoque,
+    name: 'Acertar estoque',
+    meta: {
+      title: 'WK3 Admin | Acertar estoque',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
