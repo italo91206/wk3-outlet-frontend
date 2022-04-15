@@ -29,6 +29,15 @@
       </v-list-item>
 
       <v-list nav dense>
+        <!-- Item de dashboard -->
+        <v-list-item to="/">
+          <v-list-item-icon>
+            <v-icon small>fas fa-chart-area</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-title>Dashboard</v-list-item-title>
+        </v-list-item>
+
         <!-- Item de vendas -->
         <v-list-item to="/vendas">
           <v-list-item-icon>

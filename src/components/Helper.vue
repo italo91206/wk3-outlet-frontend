@@ -1,93 +1,56 @@
 <template>
-  <aside class="helper-wrapper"  :class="{ ativo: expand == true}">
-    <div @click="expand = true" id="helper-button">
-      <v-icon>far fa-question-circle</v-icon>
-    </div>
-    
-    <aside class="helper-modal">
-      <slot/>
-      <p @click="expand = false" class="link">
-        Entendi
-      </p>
-    </aside>
-  </aside>
+  <v-dialog v-model="dialog" persistent max-width="768">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn color="primary" id="info-button" dark v-bind="attrs" v-on="on">
+        <span class="fas fa-info-circle"></span>
+      </v-btn>
+    </template>
+
+    <v-card>
+      <v-card-title class="text-h5">
+        <slot name="titulo">
+          <p style="color: red">Estou sem título.</p>
+        </slot>
+      </v-card-title>
+
+      <v-card-text>
+        <slot name="texto">
+          <p style="color: red">Estou sem texto.</p>
+        </slot>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="green darken-1" text @click="dialog = false">
+          Entendi
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-  name: 'Helper',
-  data(){
+  name: "Helper",
+  data() {
     return {
-      expand: false,
-    }
-  }
-}
+      dialog: false,
+    };
+  },
+};
 </script>
 
 <style lang="css">
-.link{
-  color: rgb(24, 112, 243);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-#helper-button {
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-}
-
-#helper-button:hover {
-    cursor: pointer;
-}
-
-/* .helper-wrapper {
+#info-button {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-.helper-wrapper.ativo {
-    top: 0;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-}
-
-.helper-modal{
-  border: solid 1px grey;
-  padding: 15px 30px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all .2s ease;
-  background: #fff;
-  width: 800px;
-  height: 400px;
-  overflow: auto;
-  transform: translate(20px, 50%);
-  left: 0px;
-}
-
-.helper-wrapper .helper-modal{
-  opacity: 0;
-  visibility: hidden;
-  transition: all .2s ease;
-}
-
-.helper-wrapper.ativo .helper-modal {
-    opacity: 1;
-    visibility: visible;
-    transition: all .2s ease;
-    box-shadow: -5px -4px 20px 200vw rgb(0 0 0 / 73%);
-}
-
-.helper-modal.ativo {
-  opacity: 1;
-  visibility: visible;
-  transition: all .2s ease;
+  bottom: 25px;
+  right: 25px;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  padding: unset;
+  min-height: unset;
+  min-width: unset;
+  font-size: 21px;
 }
 </style>
