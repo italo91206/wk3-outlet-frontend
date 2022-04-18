@@ -1,7 +1,5 @@
 import Login from '@/pages/Login.vue'
-import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
-import Checkout from '@/pages/Loja/Checkout.vue'
 import CoresConfig from '@/pages/Cores/CoresConfig.vue'
 import CoresEditar from '@/pages/Cores/CoresEditar.vue'
 import CoresNovo from '@/pages/Cores/CoresNovo.vue'
@@ -14,8 +12,6 @@ import ModelosEditar from '@/pages/Modelos/ModelosEditar.vue'
 import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
 import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
 import ProdutosEditar from '@/pages/Produtos/ProdutosEditar.vue'
-import ProductPage from '@/pages/Loja/ProductPage.vue'
-import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
 import UsuariosConfig from '@/pages/Usuarios/UsuariosConfig.vue'
 import UsuariosEditar from '@/pages/Usuarios/UsuariosEditar.vue'
 import UsuariosNovo from '@/pages/Usuarios/UsuariosNovo.vue'
@@ -53,15 +49,6 @@ const routes = [
     meta: {
       title: 'WK3 | Dashboard',
       layout: 'AppLayoutAdmin',
-      is_public: false
-    }
-  },
-  {
-    path: '/checkout',
-    component: Checkout,
-    name: 'Checkout',
-    meta: {
-      title: 'WK3 | Checkout',
       is_public: false
     }
   },
@@ -374,37 +361,7 @@ const routes = [
       layout: 'AppLayoutAdmin',
       is_public: false,
     }
-  },
-  {
-    path: '/',
-    component: Home,
-    name: 'Home',
-    meta: {
-      title: 'WK3 Outlet',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
-  {
-    path: '/:product_url',
-    component: ProductPage,
-    name: 'WK3 Outlet | Página de produto',
-    meta: {
-      title: 'WK3 Homepage',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
-  {
-    path: '*',
-    component: NaoEncontrado,
-    name: 'Não encontrado',
-    meta: {
-      title: 'WK3 Outlet - Nada foi encontrado',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
+  }
 ]
 
 export default routes;
