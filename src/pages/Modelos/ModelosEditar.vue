@@ -25,9 +25,13 @@
     </v-container>
 
     <Helper>
-      <p>
-        Na tela de edição do modelo é apresentado o campo "Nome do modelo" para que seja alterado o nome do modelo a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o modelo em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de marcas
-      </p>
+      <template #titulo>Editar modelo</template>
+
+      <template #texto>
+        <p>
+          Na tela de edição do modelo é apresentado o campo "Nome do modelo" para que seja alterado o nome do modelo a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" o modelo em questão será deletado.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de marcas
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

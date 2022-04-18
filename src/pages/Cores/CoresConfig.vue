@@ -45,9 +45,15 @@
     </v-container>
 
     <Helper>
-      <p>
-       Local na qual é contido as cores disponibilizadas e integradas pelo usuário. É exibido informações básicas como o nome da cor e a pré-visualização da cor em si.<br/>Ao apertar em "Editar" o usuário é redirecionado para a tela de edição da cor em questão.
-      </p>
+      <template #titulo>
+        Consultar cores
+      </template>
+
+      <template #texto>
+        <p>
+        Local na qual é contido as cores disponibilizadas e integradas pelo usuário. É exibido informações básicas como o nome da cor e a pré-visualização da cor em si.<br/>Ao apertar em "Editar" o usuário é redirecionado para a tela de edição da cor em questão.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

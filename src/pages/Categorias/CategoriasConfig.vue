@@ -39,11 +39,17 @@
     </v-container>
 
     <Helper>
-      <p>
-        Aqui estão todas as categorias cadastradas, com informações como categoria pai e a url de busca no catálogo (para o SEO do site).
-        <br/><br/>Ao clicar em “editar” será levado para a página de edição da categoria em específico.<br/>
-        Ao clicar em “nova categoria” será levada para a página de cadastro de uma nova categoria.
-      </p>
+      <template #titulo>
+        Consultar categorias
+      </template>
+
+      <template #texto>
+        <p>
+          Aqui estão todas as categorias cadastradas, com informações como categoria pai e a url de busca no catálogo (para o SEO do site).
+          <br/><br/>Ao clicar em “editar” será levado para a página de edição da categoria em específico.<br/>
+          Ao clicar em “nova categoria” será levada para a página de cadastro de uma nova categoria.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

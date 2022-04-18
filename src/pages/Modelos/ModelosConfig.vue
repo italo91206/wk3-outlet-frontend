@@ -20,9 +20,7 @@
             loading-text="Carregando modelos... aguarde"
           >
             <template v-slot:item.modelo_id="{ item }">
-              <router-link
-                :to="`/modelos/editar/${item.modelo_id}`"
-              >
+              <router-link :to="`/modelos/editar/${item.modelo_id}`">
                 Editar
               </router-link>
             </template>
@@ -31,46 +29,48 @@
       </v-row>
 
       <v-row class="float-right">
-        <v-btn color="success" to="/modelos/novo">
-          Novo modelo
-        </v-btn>
+        <v-btn color="success" to="/modelos/novo"> Novo modelo </v-btn>
       </v-row>
     </v-container>
 
-     <Helper>
-      <p>
-        É exibido a listagem de modelos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o modelo em questão.<br/>Ao apertar em "novo modelo", o usuário é redirecionado para inserir um novo modelo.
-      </p>
+    <Helper>
+      <template #titulo>Consultar modelos</template>
+      <template #texto>
+        <p>
+          É exibido a listagem de modelos cadastrados no sistema.<br /><br />Ao
+          apertar em "editar" o usuário é redirecionado para editar o modelo em
+          questão.<br />Ao apertar em "novo modelo", o usuário é redirecionado
+          para inserir um novo modelo.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>
 
 <script>
-import Helper from '@/components/Helper.vue'
-import service from '@/services/modelos/modelos-service.js'
+import Helper from "@/components/Helper.vue";
+import service from "@/services/modelos/modelos-service.js";
 
 export default {
   name: "ModelosConfig",
   components: {
-    Helper
+    Helper,
   },
   data() {
     return {
       modelos: [],
-      termoBusca: '',
+      termoBusca: "",
       headers: [
-        { text: 'Modelo', value:'modelo' },
-        { text: 'Ações', value: 'modelo_id' }
-      ]
+        { text: "Modelo", value: "modelo" },
+        { text: "Ações", value: "modelo_id" },
+      ],
     };
   },
   methods: {
     async listarModelos() {
       const response = await service.verModelos();
-      if(response.data.success)
-        this.modelos = response.data.data;
-      else
-        this.$toast.error(response.data.message);
+      if (response.data.success) this.modelos = response.data.data;
+      else this.$toast.error(response.data.message);
     },
   },
   mounted() {
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.row+.row {
+.row + .row {
   margin-top: 24px;
 }
 </style>

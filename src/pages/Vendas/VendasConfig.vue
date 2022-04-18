@@ -35,9 +35,15 @@
       </v-row>
     </v-container>
     <Helper>
-      <p>
-        Aqui estão todas as vendas realizadas e o status de cada um. Ao clicar em “ver mais”, será possível encontrar informações mais detalhadas sobre a venda específica
-      </p>
+      <template #titulo>
+        Consulta de vendas
+      </template>
+
+      <template #texto>
+        <p>
+          Aqui estão todas as vendas realizadas e o status de cada um. Ao clicar em <b>“ver mais”</b> será possível encontrar informações mais detalhadas da venda
+        </p>
+      </template>
     </Helper>
 
   </v-main>

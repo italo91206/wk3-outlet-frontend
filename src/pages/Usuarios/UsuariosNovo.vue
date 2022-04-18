@@ -49,9 +49,17 @@
     </v-container>
 
     <Helper>
-      <p>
-        A tela de adicionar um novo usuário possibilita a inserção de campos como nome, sobrenome, tipo de permissão, e-mail e senha do usuário.<br/><br/>Ao apertar em "salvar usuário" a inserção será feita.<br/>Ao apertar em "voltar" o usuário é redirecionado para a listagem de usuários.
-      </p>
+      <template #titulo>
+        Adicionar novo usuário
+      </template>
+
+      <template #texto>
+        <p>
+          A tela de adicionar um novo usuário possibilita a inserção de campos como nome, sobrenome, tipo de permissão, e-mail e senha do usuário. Por padrão o usuário já é cadastrado com o perfil habilitado.<br/>
+          Para inserir informações adicionais de cadastro, basta consultar logo após.
+        </p>
+      </template>
+
     </Helper>
   </v-main>
 </template>

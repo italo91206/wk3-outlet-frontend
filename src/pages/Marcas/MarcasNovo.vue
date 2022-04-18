@@ -24,9 +24,13 @@
     </v-container>
 
     <Helper>
-      <p>
-        Na tela de cadastro de uma nova marca é apresentado o campo "Nome da marca" para que seja inserido o nome da marca a ser cadastrada.<br/>Evite nomes longos e complexos.
-      </p>
+      <template #titulo>Adicionar nova marca</template>
+
+      <template #texto>
+        <p>
+          Na tela de cadastro de uma nova marca é apresentado o campo "Nome da marca" para que seja inserido o nome da marca a ser cadastrada.<br/>Evite nomes longos e complexos.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

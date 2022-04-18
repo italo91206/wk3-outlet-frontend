@@ -25,9 +25,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Na tela de edição da marca é apresentado o campo "Nome da marca" para que seja alterado o nome da marca a ser cadastrada.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" a marca em questão será deletada.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de marcas
-      </p>
+      <template #titulo>
+        Editar marca
+      </template>
+
+      <template #texto>
+        <p>
+          Na tela de edição da marca é apresentado o campo "Nome da marca" para que seja alterado o nome da marca a ser cadastrada.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "deletar" a marca em questão será deletada.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de marcas
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

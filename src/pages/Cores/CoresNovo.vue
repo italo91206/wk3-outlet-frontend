@@ -34,9 +34,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Local na qual o usuário pode inserir o nome de uma nova cor, escolhendo a integração da imagem pela paleta de cores disponibilizada pelo site.<br/>Ao final é constatada a opção de salvar a imagem ou voltar ao setor de consultas.
-      </p>
+      <template #titulo>
+        Adicionar cor
+      </template>
+
+      <template #texto>
+        <p>
+          Local na qual o usuário pode inserir o nome de uma nova cor, escolhendo a integração da imagem pela paleta de cores disponibilizada pelo site.<br/>Ao final é constatada a opção de salvar a imagem ou voltar ao setor de consultas.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

@@ -376,9 +376,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Este setor conta com a integração de um novo cupom, na qual o administrador deve adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/>Ao final, o usuário tem a opção de salvar cupom ou voltar para consultas.
-      </p>
+      <template #titulo>
+        Adicionar novo cupom
+      </template>
+
+      <template #texto>
+        <p>
+          Este setor conta com a integração de um novo cupom, na qual o administrador deve adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/>Ao final, o usuário tem a opção de salvar cupom ou voltar para consultas.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

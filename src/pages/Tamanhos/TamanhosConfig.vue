@@ -38,9 +38,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        É exibido a listagem de tamanhos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o tamanho em questão.<br/>Ao apertar em "novo tamanho", o usuário é redirecionado para inserir um novo tamanho.
-      </p>
+      <template #titulo>
+        Listagem de tamanhos
+      </template>
+
+      <template #texto>
+        <p>
+          É exibido a listagem de tamanhos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o tamanho em questão.<br/>Ao apertar em "novo tamanho", o usuário é redirecionado para inserir um novo tamanho.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

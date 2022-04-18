@@ -24,9 +24,13 @@
     </v-container>
 
     <Helper>
-      <p>
-        Na tela de edição do modelo é apresentado o campo "Nome da marca" para que seja alterado o nome da marca a ser cadastrada.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de modelos
-      </p>
+      <template #titulo>Adicionar novo modelo</template>
+
+      <template #texto>
+        <p>
+          Na tela de edição do modelo é apresentado o campo "Nome da marca" para que seja alterado o nome da marca a ser cadastrada.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de modelos
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

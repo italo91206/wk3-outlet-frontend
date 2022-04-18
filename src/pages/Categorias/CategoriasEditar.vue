@@ -38,9 +38,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Nesta página é possível editar o nome da categoria como a categoria pai da mesma. Adicionalmente, é possível deletar a categoria em questão.
-      </p>
+      <template #titulo>
+        Editar categoria
+      </template>
+
+      <template #texto>
+        <p>
+          Nesta página é possível editar o nome da categoria como a categoria pai da mesma. Adicionalmente, é possível deletar a categoria em questão.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

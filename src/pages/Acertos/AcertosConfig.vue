@@ -16,7 +16,7 @@
             :headers="headers"
             :search="termoBusca"
             :items="acertos"
-            :loading="acertos.length == 0"
+            :loading="acertos == null"
             loading-text="Carregando acertos... aguarde"
           >
           </v-data-table>
@@ -29,9 +29,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Aqui estão todas os acertos de estoque realizados, com informações sobre qual usuário realizou a ação, quando foi realizado, sob qual motivo e a entrada (ou saída) de quantidade no estoque.
-      </p>
+      <template #titulo>
+        Consultar acertos de estoque
+      </template>
+
+      <template #texto>
+        <p>
+          Aqui estão todas os acertos de estoque realizados, com informações sobre qual usuário realizou a ação, quando foi realizado, sob qual motivo e a entrada (ou saída) de quantidade no estoque.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

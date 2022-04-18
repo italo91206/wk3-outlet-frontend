@@ -24,9 +24,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Na tela de criar novo tamanho é apresentado o campo "Nome do tamanho" para que seja adicionado o nome do tamanho a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de tamanhos.
-      </p>
+      <template #titulo>
+        Novo tamanho
+      </template>
+
+      <template #texto>
+        <p>
+          Na tela de criar novo tamanho é apresentado o campo "Nome do tamanho" para que seja adicionado o nome do tamanho a ser editado.<br/><br/>Ao apertar em "salvar" as alterações são salvas.<br/>Ao apertar em "voltar" o usuário é redirecionado de volta para a listagem de tamanhos.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

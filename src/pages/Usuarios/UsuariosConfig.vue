@@ -39,9 +39,18 @@
     </v-container>
 
     <Helper>
-      <p>
-        É exibido a listagem de usuários cadastrados no sistema. As colunas informam alguns dados básicos como: nome do funcionário, email, tipo de permissão e caso o usuário esteja habilitado.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o usuário em questão.<br/>Ao apertar em "novo usuário", o usuário é redirecionado para inserir um novo usuário.
-      </p>
+      <template #titulo>
+        Consulta de usuários
+      </template>
+
+      <template #texto>
+        <p>
+          É exibido a listagem de usuários cadastrados no sistema. As colunas informam alguns dados básicos como: nome do funcionário, email, tipo de permissão e caso o usuário esteja habilitado.<br/>
+          <br/>Ao apertar em "editar" é redirecionado para editar o usuário em questão.
+          <br/>Ao apertar em "novo usuário" é redirecionado para inserir um novo usuário.
+        </p>
+      </template>
+
     </Helper>
   </v-main>
 </template>

@@ -37,9 +37,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Insira o nome da nova categoria desejada. Opcionalmente, é possível selecionar qual é a sua categoria pai. Evite nomes complexos e muito grandes.
-      </p>
+      <template #titulo>
+        Nova categoria
+      </template>
+
+      <template #texto>
+        <p>
+          Insira o nome da nova categoria desejada. Opcionalmente, é possível selecionar qual é a sua categoria pai. Evite nomes complexos e muito grandes.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

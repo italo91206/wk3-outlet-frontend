@@ -38,9 +38,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        É exibido a listagem de motivos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o motivo em questão.<br/>Ao apertar em "novo motivo", o usuário é redirecionado para inserir um novo motivo.
-      </p>
+      <template #titulo>
+        Consultar motivos
+      </template>
+
+      <template #texto>
+        <p>
+          É exibido a listagem de motivos cadastrados no sistema.<br/><br/>Ao apertar em "editar" o usuário é redirecionado para editar o motivo em questão.<br/>Ao apertar em "novo motivo", o usuário é redirecionado para inserir um novo motivo.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

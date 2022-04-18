@@ -46,11 +46,17 @@
     </v-container>
 
     <Helper>
-      <p>
-        Aqui está todas as informações sobre a venda. Será possível consultar quem realizou a compra, se esta possui endereço de entrega, quais os produtos vendidos, quais os valores individuais de cada produto, se foi utilizado algum cupom de desconto, e informações básicas do usuário.
-        <br/><br/>Ao clicar no usuário, será redirecionado para a página de informações mais detalhadas.
-        <br/>Ao clicar em um produto, será redirecionado para a consulta completa do mesmo.
-      </p>
+      <template #titulo>
+        Detalhes da venda
+      </template>
+
+      <template #texto>
+        <p>
+          Aqui está todas as informações sobre a venda. Será possível consultar quem realizou a compra, se esta possui endereço de entrega, quais os produtos vendidos, quais os valores individuais de cada produto, se foi utilizado algum cupom de desconto, e informações básicas do usuário.
+          <br/><br/>Ao clicar no usuário, será redirecionado para a página de informações mais detalhadas.
+          <br/>Ao clicar em um produto, será redirecionado para a consulta completa do mesmo.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

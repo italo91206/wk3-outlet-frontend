@@ -111,6 +111,19 @@
         <v-btn @click="realizarAcerto" color="success">Realizar acerto</v-btn>
       </v-row>
     </v-container>
+
+    <Helper>
+      <template #titulo>
+        Realizar acerto de estoque
+      </template>
+
+      <template #texto>
+        <p>
+          Ao selecionar um produto, basta logo em seguite inserir o novo estoque.
+          Quando este tiver variações, é possível definir novas quantidades também para elas.
+        </p>
+      </template>
+    </Helper>
   </v-main>
 </template>
 
@@ -119,9 +132,13 @@ import motivos_service from "@/services/motivo/motivos-service.js";
 import produto_service from "@/services/produto/produto-service.js";
 import cores_service from "@/services/cores/cor-service.js";
 import tamanho_service from "@/services/tamanhos/tamanhos-service.js";
+import Helper from '@/components/Helper.vue'
 
 export default {
   name: "AcertoEstoque",
+  components: {
+    Helper
+  },
   data() {
     return {
       produtos: [],

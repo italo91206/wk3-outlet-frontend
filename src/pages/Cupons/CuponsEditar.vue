@@ -373,9 +373,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Este setor conta com a edição de um cupom em questão, na qual o administrador consegue adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/><br/> Ao final, o usuário tem a opção de salvar, deletar ou voltar para consultas.
-      </p>
+      <template #titulo>
+        Editar cupom
+      </template>
+
+      <template #texto>
+        <p>
+          Este setor conta com a edição de um cupom em questão, na qual o administrador consegue adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/><br/> Ao final, o usuário tem a opção de salvar, deletar ou voltar para consultas.
+        </p>
+      </template>
     </Helper>
   </v-main>
 </template>

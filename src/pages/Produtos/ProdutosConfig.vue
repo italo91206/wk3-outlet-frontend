@@ -48,9 +48,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        O referido setor consta com todos os produtos cadastrados e alguns atributos. O usuário tem a possibilidade de buscar pelo produtor a partir de referências constatadas em sua integração ao catálogo, oferecendo ao cliente a barra “buscar por produto”.<br/><br/>O produto abrange nome, preço, estoque; SKU, URL e ações com a possibilidade de serem editadas, oferecendo informações mais detalhadas sobre o produto em específico, local no qual seu detalhamento pode ser alterado.<br/><br/>Ao clicar em “novo produto”, será possível ir para o setor de catálogo - produto - novo, dirigindo-se a criação de um novo produto em catálogo.
-      </p>
+      <template #titulo>
+        Consulta de produtos
+      </template>
+
+      <template #texto>
+        <p>
+          O referido setor consta com todos os produtos cadastrados e alguns atributos. O usuário tem a possibilidade de buscar pelo produtor a partir de referências constatadas em sua integração ao catálogo, oferecendo ao cliente a barra “buscar por produto”.<br/><br/>O produto abrange nome, preço, estoque; SKU, URL e ações com a possibilidade de serem editadas, oferecendo informações mais detalhadas sobre o produto em específico, local no qual seu detalhamento pode ser alterado.<br/><br/>Ao clicar em “novo produto”, será possível ir para o setor de catálogo - produto - novo, dirigindo-se a criação de um novo produto em catálogo.
+        </p>
+      </template>
     </Helper>
 
   </v-main>

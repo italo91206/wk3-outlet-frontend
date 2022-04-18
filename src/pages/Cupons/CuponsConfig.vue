@@ -48,9 +48,15 @@
     </v-container>
 
     <Helper>
-      <p>
-        Setor que consta com todos os cupons cadastrados, com informações como o código, status, nome, valor, e validade do cupom.<br/><br/>Ao clicar em “editar” será levado para a página de edição de determinado cupom em específico.<br/>Ao clicar em “nova cupom” será levada para a página de cadastro de um novo cupom no site.
-      </p>
+      <template #titulo>
+        Consultar cupons
+      </template>
+
+      <template #texto>
+        <p>
+          Setor que consta com todos os cupons cadastrados, com informações como o código, status, nome, valor, e validade do cupom.<br/><br/>Ao clicar em “editar” será levado para a página de edição de determinado cupom em específico.<br/>Ao clicar em “nova cupom” será levada para a página de cadastro de um novo cupom no site.
+        </p>
+      </template>
     </Helper>
 
   </v-main>
