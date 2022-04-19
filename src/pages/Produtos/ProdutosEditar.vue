@@ -181,7 +181,7 @@
                       :disable-sort="true"
                     >
                       <template>
-                        <a class="link" @click="router.push(`/acertar-estoque/${produtoToPost.produto_id}`)">
+                        <a class="link" @click="router.push(`/acertos/novo`)">
                           Remover
                         </a>
                       </template>

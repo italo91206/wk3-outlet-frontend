@@ -24,7 +24,7 @@
       </v-row>
 
       <v-row class="float-right">
-        <v-btn @click="$router.push('/acertar-estoque')" color="success">Realizar acerto</v-btn>
+        <v-btn @click="$router.push('/acertos/novo')" color="success">Realizar acerto</v-btn>
       </v-row>
     </v-container>
 

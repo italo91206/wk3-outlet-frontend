@@ -108,9 +108,31 @@
           </v-list-group>
 
           <!-- Acerto de estoque -->
-          <v-list-item to="/acertos">
-            <v-list-item-title> Acerto de estoque </v-list-item-title>
-          </v-list-item>
+          <v-list-group :value="false" no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Acertos de estoque
+                </v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item to="/acertos/novo">
+              <v-list-item-icon>
+                <v-icon small>fas fa-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title> Novo </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/acertos">
+              <v-list-item-icon>
+                <v-icon small>fas fa-list-ul</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title> Consultar </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
         </v-list-group>
 
         <!-- Item de marketing -->

@@ -123,7 +123,7 @@ const routes = [
     }
   },
   {
-    path: '/acertar-estoque',
+    path: '/acertos/novo',
     component: AcertoEstoque,
     name: 'Acertar estoque',
     meta: {
