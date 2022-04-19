@@ -16,7 +16,7 @@
           <v-data-table
             :headers="headers"
             :search="termoBusca"
-            :items="usuarios"
+            :items="enabled_only_filter ? getEnabledOnly : usuarios"
             :loading="usuarios.length == 0"
             loading-text="Carregando usuários... aguarde"
           >
@@ -26,6 +26,15 @@
               >
                 Editar
               </router-link>
+            </template>
+
+            <template v-slot:top>
+              <v-col>
+                <v-checkbox
+                  v-model="enabled_only_filter"
+                  label="Mostrar somente habilitados"
+                ></v-checkbox>
+              </v-col>
             </template>
           </v-data-table>
         </v-card>
@@ -68,6 +77,7 @@ export default {
     return {
       usuarios: [],
       termoBusca: '',
+      enabled_only_filter: true,
       headers: [
         { text: 'Nome', value: 'nomeCompleto' },
         { text: 'Email', value: 'email' },
@@ -84,6 +94,11 @@ export default {
         this.usuarios = response.data.data;
       else
         console.error(response.data.message);
+    }
+  },
+  computed: {
+    getEnabledOnly(){
+      return this.usuarios.filter((u) => { return u.is_enabled == 'Sim' })
     }
   },
   mounted(){
