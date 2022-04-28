@@ -15,9 +15,7 @@ const VendasService = {
   recuperarVenda: async(id) => {
     let response;
     try{
-      response = await api.get('/vendas/venda', {
-        params: { id: id }
-      });
+      response = await api.get(`/vendas/venda/${id}`);
       return response;
     }
     catch(err){
