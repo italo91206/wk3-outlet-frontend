@@ -7,7 +7,7 @@
         </div>
         <h4>Acesso administrativo</h4>
       </v-card-title>
-      
+
       <v-form>
         <v-container>
           <v-row>
@@ -18,7 +18,7 @@
 
           <v-row>
             <v-col cols="12" md="12">
-              <v-text-field 
+              <v-text-field
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show ? 'text' : 'password'"
                 v-model="passwordInput"
@@ -46,7 +46,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="12" md="12" class="esquece-senha--aviso">              
+            <v-col cols="12" md="12" class="esquece-senha--aviso">
               <p v-if="senhaEsqueceu">
                 Por favor contate o administrador para a recuperação de senha.
               </p>
@@ -96,7 +96,7 @@ export default {
         }
       }
       else{
-        
+
         this.$toast.error(res.data.message);
         // console.log(res);
         // console.log('login não existe: ' + res.data.message)
@@ -106,7 +106,7 @@ export default {
     },
     async fazerLogin2() {
       const usuario = {
-        email: this.userInput, 
+        email: this.userInput,
         senha: this.passwordInput,
       }
       const response = await service.fazerLogin(usuario);
@@ -116,7 +116,7 @@ export default {
 
         localStorage.setItem('user', token);
         this.$store.dispatch('perfil/setPerfil', usuario);
-        this.$router.push('/dashboard');
+        this.$router.push('/');
         this.$toast.success(`Bem vindo de volta ${this.$store.state.perfil.perfil.nome}!`);
       }
       else

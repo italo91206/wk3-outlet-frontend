@@ -25,21 +25,20 @@ const CupomService = {
     }
   },
 
-  novoCupom: async (cupom) => {
-    let dados;
-    try{
-      dados = await api.post('/cupom/novo', { cupom: cupom });
-      return dados;
-    }
-    catch(err){
-      console.log(err.message);
-    }
+  novoCupom: async (cupom, quantity_rules, selected_rules) => {
+    return await api.post('/cupom/novo', { cupom,  quantity_rules, selected_rules })
+    .then((response) => {
+      return response
+    })
+    .catch((error) => {
+      return error
+    })
   },
 
-  atualizarCupom: async (cupom) => {
+  atualizarCupom: async (cupom, quantity_rules, selected_rules) => {
     let dados;
     try{
-      dados = await api.put('/cupom/atualizar', { cupom: cupom });
+      dados = await api.put('/cupom/atualizar', { cupom,  quantity_rules, selected_rules });
       return dados;
     }
     catch(err){

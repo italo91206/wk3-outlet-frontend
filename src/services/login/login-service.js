@@ -5,7 +5,8 @@ const LoginService = {
     try {
       const response = await api.post('/login/login', {
         email: usuario.email,
-        password: usuario.senha
+        password: usuario.senha,
+        is_public: false,
       });
       // localStorage.setItem('user', response.data.data.token);
       return response;

@@ -1,0 +1,773 @@
+<template>
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-card class="w100 pa-12" elevation="10">
+          <v-form>
+            <v-row>
+              <v-col cols="12">
+                <v-checkbox
+                  v-model="cupomToPost.is_enabled"
+                  label="Cupom habilitado"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <h2>Detalhes do cupom</h2>
+            </v-row>
+
+            <v-row>
+              <v-col cols="4">
+                <v-text-field
+                  label="Código do cupom"
+                  v-model="cupomToPost.codigo"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="4">
+                <v-text-field
+                  label="Nome do cupom"
+                  v-model="cupomToPost.nome"
+                  :rules="[rules.specialCharacters]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="4">
+                <v-text-field
+                  label="Valor do cupom"
+                  v-model="cupomToPost.valor"
+                  type="number"
+                  :rules="[rules.positiveNumber]"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="6">
+                <v-radio-group v-model="radioGroup" row mandatory>
+                  <v-radio
+                    label="Percentual"
+                    value="percentual"
+                  ></v-radio>
+
+                  <v-radio
+                    label="Valor Fixo"
+                    value="fixo"
+                  ></v-radio>
+                </v-radio-group>
+              </v-col>
+
+              <v-col cols="6">
+                <input
+                  type="datetime-local"
+                  @change="validarData"
+                  v-model="cupomToPost.validade"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <h2>Regras do cupom</h2>
+            </v-row>
+
+            <v-row>
+              <v-expansion-panels>
+                <v-expansion-panel id="regras-por-categorias" >
+                  <v-expansion-panel-header>
+                    Por categorias
+                    <v-chip class="ma-2 count-chip"
+                      v-if="categories_select.length > 0"
+                    >
+                      {{getCategoriesSelected}}
+                    </v-chip>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <v-text-field
+                      v-model="categoria_search"
+                      append-icon="mdi-magnify"
+                      label="Buscar por categoria"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+
+                    <v-data-table
+                      v-model="categories_select"
+                      :headers="categoria_headers"
+                      :search="categoria_search"
+                      :items="categories"
+                      :loading="categories_loading"
+                      :options="{itemsPerPage: 5}"
+                      dense
+                      item-key="nome_categoria"
+                      show-select
+                      loading-text="Carregando categorias... aguarde"
+                    >
+                    </v-data-table>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-produtos" >
+                  <v-expansion-panel-header>
+                    Por produtos (SKU)
+                    <v-chip class="ma-2 count-chip"
+                      v-if="produtos_selected.length > 0"
+                    >
+                      {{getProductsSelected}}
+                    </v-chip>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <v-text-field
+                      v-model="produto_search"
+                      append-icon="mdi-magnify"
+                      label="Buscar por produtos"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+
+                    <v-data-table
+                      v-model="produtos_selected"
+                      :headers="produto_headers"
+                      :search="produto_search"
+                      :items="produtos"
+                      :loading="produtos_loading"
+                      item-key="nome_produto"
+                      show-select
+                      dense
+                      loading-text="Carregando produtos... aguarde"
+                    >
+                    </v-data-table>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-atributos" >
+                  <v-expansion-panel-header>
+                    Por atributos (modelo, marca)
+                    <v-chip class="ma-2 count-chip"
+                      v-if="marcas_selected.length > 0 || modelos_selected.length > 1"
+                    >
+                      {{getAtributosSelected}}
+                    </v-chip>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <v-row>
+                      <!-- marcas data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="marca_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por marcas"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="marcas_selected"
+                          :headers="marca_headers"
+                          :search="marca_search"
+                          :items="marcas"
+                          :loading="marcas_loading"
+                          :options="{itemsPerPage: 5}"
+                          item-key="marca"
+                          show-select
+                          loading-text="Carregando marcas... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
+
+                      <!-- modelos data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="modelo_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por modelos"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="modelos_selected"
+                          :headers="modelo_headers"
+                          :search="modelo_search"
+                          :items="modelos"
+                          :loading="modelos_loading"
+                          :options="{itemsPerPage: 5}"
+                          item-key="modelo"
+                          show-select
+                          loading-text="Carregando modelos... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-variacoes" >
+                  <v-expansion-panel-header>
+                    Por variações (tamanho, cor)
+                    <v-chip class="ma-2 count-chip"
+                      v-if="tamanhos_selected.length > 0 || cores_selected.length > 0"
+                    >
+                      {{getVariationsSelected}}
+                    </v-chip>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <v-row>
+                      <!-- cores data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="cor_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por cores"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="cores_selected"
+                          :headers="cor_headers"
+                          :search="cor_search"
+                          :items="cores"
+                          :loading="cores_loading"
+                          :options="{itemsPerPage: 5}"
+                          item-key="cor"
+                          show-select
+                          loading-text="Carregando cores... aguarde"
+                        >
+                          <template v-slot:item.hexa="{ item }">
+                            <div
+                              :style="`background-color: ${item.hexa}`"
+                              class="color-swatch"
+                            ></div>
+                          </template>
+                        </v-data-table>
+                      </v-col>
+
+                      <!-- tamanhos data-table -->
+                      <v-col cols="6">
+                        <v-text-field
+                          v-model="tamanho_search"
+                          append-icon="mdi-magnify"
+                          label="Buscar por tamanhos"
+                          single-line
+                          hide-details
+                        ></v-text-field>
+
+                        <v-data-table
+                          v-model="tamanhos_selected"
+                          :headers="tamanho_headers"
+                          :search="tamanho_search"
+                          :items="tamanhos"
+                          :loading="tamanhos_loading"
+                          :options="{itemsPerPage: 5}"
+                          item-key="tamanho"
+                          show-select
+                          loading-text="Carregando tamanhos... aguarde"
+                        >
+                        </v-data-table>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel id="regras-por-quantidade">
+                  <v-expansion-panel-header>
+                    Por quantidade/unidades
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    <h4>
+                      Para o cupom ser válido, as condições acima se aplicam à:
+                    </h4>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-radio-group v-model="quantity_rules">
+                          <v-radio
+                            label="Todos os itens do carrinho"
+                            value="todos"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Por quantidade (un)"
+                            value="por_quantidade"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Por valor (R$)"
+                            value="por_valor"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-col>
+
+                      <v-col cols="6"
+                        v-if="quantity_rules == 'por_valor' || quantity_rules == 'por_quantidade'"
+                      >
+                        <v-row class="pa-5">
+                          <v-col cols="6">
+                            <v-select
+                              :items="
+                              [{ label: 'Maior que', value: 'maior_que'},
+                              { label: 'Menor que', value: 'menor_que'}]"
+                              item-value="value"
+                              item-text="label"
+                              v-model="quantity_condition"
+                            ></v-select>
+                          </v-col>
+
+                          <v-col cols="6">
+                            <v-text-field
+                              v-model="quantity_value"
+                              single-line
+                              hide-details
+                              label="Valor/Quantidade"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+
+                    <h4>Quantidade de uso</h4>
+
+                    <v-row>
+                      <v-col cols="6">
+                        <v-radio-group v-model="cupomToPost.use_rules">
+                          <v-radio
+                            label="Uso imilitado"
+                            value="ilimited"
+                          ></v-radio>
+
+                          <v-radio
+                            label="Quantidade limitada de uso"
+                            value="limited"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-col>
+
+                      <v-col cols="6" v-if="cupomToPost.use_rules == 'limited'">
+                        <v-text-field
+                          v-model="cupomToPost.use_quantity"
+                          single-line
+                          hide-details
+                          type="number"
+                          label="Quantidade"
+                          class="col-2"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-row>
+
+      <v-row class="float-right">
+        <v-btn to="/cupons" class="mr-2">Voltar</v-btn>
+        <v-btn @click="deletarCupom" color="error" class="mr-2">Deletar cupom</v-btn>
+        <v-btn @click="salvarCupom" color="success">Salvar cupom</v-btn>
+      </v-row>
+    </v-container>
+
+    <Helper>
+      <template #titulo>
+        Editar cupom
+      </template>
+
+      <template #texto>
+        <p>
+          Este setor conta com a edição de um cupom em questão, na qual o administrador consegue adicionar o código, o nome e o valor do cupom oferecido, podendo esse escolher entre percentual e valor fixo, datando seu término.<br/><br/> Ao final, o usuário tem a opção de salvar, deletar ou voltar para consultas.
+        </p>
+      </template>
+    </Helper>
+  </v-main>
+</template>
+
+<script>
+import Helper from '@/components/Helper.vue'
+import cupons_service from '@/services/cupons/cupons-service.js'
+import categoria_service from '@/services/categorias/categoria-service.js';
+import produto_service from "@/services/produto/produto-service.js";
+import modelo_service from '@/services/modelos/modelos-service.js'
+import marca_service from '@/services/marcas/marcas-service'
+import cor_service from "@/services/cores/cor-service.js";
+import tamanho_service from '@/services/tamanhos/tamanhos-service.js'
+import rules from '@/utils/rules.js'
+
+export default {
+  name: 'CuponsEditar',
+  components: {
+    Helper
+  },
+  data() {
+    return {
+      cupomToPost: {},
+      tipoCupom: '',
+      isChanged: true,
+      erro_validade: '',
+      erro_tipo: '',
+      erro_valor: '',
+      rules: rules,
+      radioGroup: null,
+
+      produtos: [],
+      produtos_loading: true,
+      produtos_selected: [],
+      produto_search: '',
+      produto_headers: [
+        { text: 'Nome', value: 'nome_produto' },
+        { text: 'Preço', value: 'preco' },
+        { text: 'SKU', value: 'sku' },
+      ],
+
+      categories: [],
+      categories_loading: true,
+      categories_select: [],
+      categoria_search: '',
+      categoria_headers: [
+        { text: 'Nome', value: 'nome_categoria' },
+        { text: 'Categoria pai', value: 'categoria_pai' },
+      ],
+
+      marcas: [],
+      marcas_loading: true,
+      marcas_selected: [],
+      marca_search: '',
+      marca_headers: [
+        { text: 'Marca', value: 'marca' },
+      ],
+
+      modelos: [],
+      modelos_loading: true,
+      modelos_selected: [],
+      modelo_search: '',
+      modelo_headers: [
+        { text: 'Modelo', value:'modelo' },
+      ],
+
+      cores: [],
+      cores_loading: true,
+      cores_selected: [],
+      cor_search: '',
+      cor_headers: [
+        { text: 'Cor', value: 'hexa' },
+        { text: 'Nome', value: 'cor' },
+      ],
+
+      tamanhos: [],
+      tamanhos_loading: true,
+      tamanhos_selected: [],
+      tamanho_search: '',
+      tamanho_headers: [
+        { text: 'Tamanho', value: 'tamanho' },
+      ],
+
+      quantity_rules: '',
+      quantity_value: null,
+      quantity_condition: '',
+    }
+  },
+  methods: {
+    carregarDataTables(){
+      let { categories, categories_select, cupomToPost } = this;
+      cupomToPost.categorias_id.forEach((categoria) => {
+        let achado = categories.filter((c) => c.categoria_id == categoria)
+        if(achado.length) categories_select.push(achado[0])
+      })
+
+      let { marcas, marcas_selected } = this;
+      cupomToPost.marcas_id.forEach((marca) => {
+        let achado = marcas.filter((m) => m.marca_id == marca)
+        if(achado.length) marcas_selected.push(achado[0])
+      })
+
+      let { produtos, produtos_selected } = this;
+      cupomToPost.produtos_sku.forEach((produto) => {
+        let achado = produtos.filter((p) => p.sku == produto)
+        if(achado.length) produtos_selected.push(achado[0])
+      })
+
+      let { modelos, modelos_selected } = this;
+      cupomToPost.modelos_id.forEach((modelo) => {
+        let achado = modelos.filter((m) => m.modelo_id == modelo)
+        if(achado.length) modelos_selected.push(achado[0])
+      })
+
+      let { cores, cores_selected } = this;
+      cupomToPost.cores_id.forEach((cor) => {
+        let achado = cores.filter((c) => c.cor_id == cor)
+        if(achado.length) cores_selected.push(achado[0])
+      })
+
+      let { tamanhos, tamanhos_selected } = this;
+      cupomToPost.tamanhos_id.forEach((tamanho) => {
+        let achado = tamanhos.filter((t) => t.tamanho_id == tamanho)
+        if(achado.length) tamanhos_selected.push(achado[0])
+      })
+
+    },
+    async listarCupom(id){
+
+      this.getCategorias()
+      this.getProdutos()
+      this.getMarcas()
+      this.getModelos()
+      this.getTamanhos()
+      this.getCores()
+
+      await cupons_service.listarCupom(id)
+      .then((response) => {
+        this.cupomToPost = response.data.data
+        this.quantity_rules = this.cupomToPost.quantity_rules
+        this.quantity_value = this.cupomToPost.quantity_value
+        this.quantity_condition = this.cupomToPost.quantity_condition
+        this.carregarDataTables();
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        this.categories_loading = false;
+      })
+    },
+    async salvarCupom(){
+      var falta_tipo = this.validarTipo();
+
+      if(falta_tipo || this.cupomToPost.validade == '' || this.erro_data || this.erro_valor)
+        this.$toast.error('Alguns campos não estão válidos');
+      else{
+        let quantity_rules = {
+          rules: this.quantity_rules,
+          value: this.quantity_value,
+          condition: this.quantity_condition
+        }
+
+        let selected_rules = {
+          categorias: this.categories_select,
+          produtos: this.produtos_selected,
+          marcas: this.marcas_selected,
+          modelos: this.modelos_selected,
+          cores: this.cores_selected,
+          tamanhos: this.tamanhos_selected
+        }
+
+        await cupons_service.atualizarCupom(this.cupomToPost, quantity_rules, selected_rules)
+          .then(() => {
+            this.$toast.success('Cupom foi atualizado com sucesso!');
+            this.$router.push('/cupons');
+          })
+          .catch((error) => {
+            this.$toast.error(error.data.message);
+            console.log(error)
+          })
+      }
+    },
+    async deletarCupom(){
+      const id = this.$route.params.id;
+      const response = await cupons_service.deletarCupom(id);
+      if(response.data.success){
+        this.$toast.success('Cupom foi deletado com sucesso!');
+        this.$router.push('/cupons');
+      }
+      else
+        this.$toast.error(response.data.message);
+    },
+    mudou(){
+      this.isChanged = false;
+    },
+    pad(num, size) {
+      num = num.toString();
+      while (num.length < size) num = "0" + num;
+      return num;
+    },
+    validarValor(e){
+      var valor = e.target.value;
+      if(valor < 0.00)
+        this.erro_valor = 'Valor precisa ser positivo';
+      else
+        this.erro_valor = null;
+    },
+    validarData(e){
+      var data = new Date(e.target.value);
+      var hoje = new Date();
+
+      if(data < hoje)
+        this.erro_data = 'Data precisa ser válida';
+      else if(e.target.value == "")
+        this.erro_data = 'Preencha este campo.';
+      else
+        this.erro_data = null;
+    },
+    validarTipo(){
+      if( this.cupomToPost.is_percent == false && this.cupomToPost.is_fixed == false){
+        this.erro_tipo = 'Selecione um tipo';
+        return true;
+      }
+      else{
+        this.erro_tipo = null;
+        return false;
+      }
+    },
+    async getCategorias(){
+      await categoria_service.verCategorias()
+        .then((response) => {
+          this.categories = response.data.data;
+          this.categories = this.categories.filter((categoria) => {
+            return categoria.is_enabled
+          })
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.error)
+        })
+        .finally(() => {
+          this.categories_loading = false;
+        })
+    },
+    async getProdutos() {
+      await produto_service.listarProdutos()
+        .then((response) => {
+          this.produtos = response.data.data;
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.error)
+        })
+        .finally(() => {
+          this.produtos_loading = false;
+        })
+    },
+    async getMarcas(){
+      await marca_service.getMarcas()
+        .then((response) => {
+          this.marcas = response.data.data
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message);
+        })
+        .finally(() => {
+          this.marcas_loading = false;
+        })
+    },
+    async getModelos(){
+      await modelo_service.verModelos()
+        .then((response) => {
+          this.modelos = response.data.data
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message);
+        })
+        .finally(() => {
+          this.modelos_loading = false;
+        })
+    },
+    async getTamanhos(){
+      await tamanho_service.listarTamanhos()
+        .then((response) => {
+          this.tamanhos = response.data.data;
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message)
+        })
+        .finally(() => {
+          this.tamanhos_loading = false;
+        });
+    },
+    async getCores(){
+      await cor_service.listarCores()
+        .then((response) => {
+          this.cores = response.data.data;
+        })
+        .catch((response) => {
+          this.$toast.error(response.data.message)
+        })
+        .finally(() => {
+          this.cores_loading = false;
+        });
+    }
+  },
+  mounted(){
+    const id = this.$route.params.id;
+    this.listarCupom(id);
+  },
+  computed: {
+    getCategoriesSelected(){
+      let qtd = this.categories_select.length;
+      let string = qtd > 1 ? "selecionados" : "selecionado"
+      return `${qtd} ${string}`
+    },
+    getProductsSelected(){
+      let qtd = this.produtos_selected.length;
+      let string = qtd > 1 ? "selecionados" : "selecionado"
+      return `${qtd} ${string}`
+    },
+    getAtributosSelected(){
+      let qtd_marcas = this.marcas_selected.length;
+      let qtd_modelos = this.modelos_selected.length
+      let string = (qtd_marcas + qtd_modelos) > 1 ? "selecionados" : "selecionado"
+      return `${qtd_marcas + qtd_modelos} ${string}`
+    },
+    getVariationsSelected(){
+      let qtd_cores = this.cores_selected.length;
+      let qtd_tamanhos = this.tamanhos_selected.length
+      let string = (qtd_cores + qtd_tamanhos) > 1 ? "selecionados" : "selecionado"
+      return `${qtd_cores + qtd_tamanhos} ${string}`
+    },
+    getAllRulesSelected(){
+      let qtd_cores = this.cores_selected.length;
+      let qtd_tamanhos = this.tamanhos_selected.length
+      let qtd_marcas = this.marcas_selected.length;
+      let qtd_modelos = this.modelos_selected.length
+      let qtd_produtos = this.produtos_selected.length;
+      let qtd_categorias = this.categories_select.length;
+
+      return qtd_cores + qtd_tamanhos + qtd_marcas + qtd_modelos + qtd_produtos + qtd_categorias
+    }
+  },
+  watch: {
+    radioGroup: function(){
+      if(this.radioGroup == 'percentual'){
+        this.cupomToPost.is_fixed = false;
+        this.cupomToPost.is_percent = true;
+      }
+      else{
+        this.cupomToPost.is_fixed = true;
+        this.cupomToPost.is_percent = false;
+      }
+    },
+    cupomToPost: function(){
+      if(this.cupomToPost.is_fixed){
+        this.tipoCupom = "fixo";
+      }
+      else{
+        this.tipoCupom = "percentual";
+      }
+
+      // Formato para datetime-local precisa ser: yyyy-MM-ddThh:mm
+      const validade = this.cupomToPost.validade;
+      const data = new Date(validade);
+
+      let dia = data.getDate();
+      let mes = data.getMonth() + 1;
+      let ano = data.getFullYear();
+      let horas = data.getHours();
+      let minutos = data.getMinutes();
+
+      dia = this.pad(dia, 2);
+      mes = this.pad(mes, 2);
+      horas = this.pad(horas, 2);
+      minutos = this.pad(horas, 2);
+
+      // console.log(`${ano}-${mes}-${dia}T${horas}:${minutos}`);
+      this.cupomToPost.validade = `${ano}-${mes}-${dia}T${horas}:${minutos}`;
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+.row + .row {
+  margin-top: 24px;
+}
+</style>
