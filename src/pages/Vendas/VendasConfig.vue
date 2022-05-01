@@ -17,6 +17,7 @@
             :search="termoBusca"
             :items="vendas"
             :loading="loading"
+            no-data-text="Sem vendas no sistema."
             loading-text="Carregando vendas... aguarde"
           >
             <template v-slot:item.endereco_id="{ item }">
@@ -75,15 +76,20 @@ export default {
   },
   methods: {
     async listarVendas(){
-      const response = await service.listarVendas();
-      if(response.data.success){
-        this.vendas = response.data.data;
-        this.loading = false;
-      }
-      else{
-        this.loading = false;
-        console.error(response.data.message);
-      }
+      await service.listarVendas()
+        .then((response) => {
+          if(response.data.success){
+            this.vendas = response.data.data
+          }
+          else{
+            this.$toast.error(response.data.message)
+          }
+        })
+        .catch((error) => {
+          this.$toast.error("Algo deu errado.")
+          console.log(error)
+        })
+        .finally(() => { this.loading = false })
     },
     pad(num, size) {
       num = num.toString();
