@@ -24,9 +24,10 @@
               :headers="headers"
               :items="produtos"
               :hide-default-footer="true"
+              id="sale-products"
             >
               <template v-slot:item.url="{ item }">
-                <img :src="item.url" alt="" />
+                <img :src="item.imagem_url" alt="" class="w100"/>
               </template>
 
               <template v-slot:item.preco="{ item }">
@@ -41,14 +42,16 @@
 
           <hr />
 
-          <div class="row w100">
-            <v-col cols="6">
+          <div id="sale-info-details" class="row w100">
+            <v-col cols="8">
+              <h3>Informações de contato</h3>
               <p>{{ venda.nome }} {{ venda.sobrenome }}</p>
+              <p>+55 18 99717-9654</p>
               <p>{{ venda.email }}</p>
               <p>{{ getEndereco }}</p>
             </v-col>
 
-            <v-col cols="6">
+            <v-col cols="4">
               <div class="prices-info">
                 <div class="flex">
                   <p>Subtotal</p>
@@ -73,7 +76,7 @@
 
       <v-row class="float-right">
         <v-btn to="/vendas" class="mr-2">Voltar</v-btn>
-        <v-btn color="error" class="mr-2">Estornar pagamento</v-btn>
+        <v-btn color="error" class="mr-2" :disabled="venda.status == 'cancelado'">Estornar pagamento</v-btn>
       </v-row>
     </v-container>
 
@@ -157,15 +160,16 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    },
+    }
   },
   watch: {
     produtos() {
       let { produtos, fallback_url, base_url } = this;
+      console.log(produtos)
 
       produtos.forEach((p) => {
         p.subtotal = p.preco * p.quantidade;
-        p.url = p.url == null ? fallback_url : `${base_url}${p.url}`;
+        p.imagem_url = p.imagem_url == "" ? fallback_url : `${base_url}${p.imagem_url}`;
       });
     },
   },
@@ -193,4 +197,25 @@ export default {
 .flex {
   display: flex;
 }
+
+#sale-products tr {
+    height: 35px !important;
+}
+
+.prices-info > div {
+    justify-content: space-between;
+}
+
+.prices-info p {
+    margin: 2px 0;
+}
+
+#sale-info-details {
+    margin-top: 20px;
+}
+
+#sale-info-details p {
+    margin: 2px 0;
+}
+
 </style>
