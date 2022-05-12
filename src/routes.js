@@ -1,52 +1,49 @@
 import Login from '@/pages/Login.vue'
-import Home from '@/pages/Loja/Homepage.vue'
 import Dashboard from '@/pages/Dashboard.vue'
-import Checkout from '@/pages/Loja/Checkout.vue'
-import CoresConfig from '@/pages/Admin/Cores/CoresConfig.vue'
-import CoresEditar from '@/pages/Admin/Cores/CoresEditar.vue'
-import CoresNovo from '@/pages/Admin/Cores/CoresNovo.vue'
-import MarcasConfig from '@/pages/Admin/Marcas/MarcasConfig.vue'
-import MarcasEditar from '@/pages/Admin/Marcas/MarcasEditar.vue'
-import MarcasNovo from '@/pages/Admin/Marcas/MarcasNovo.vue'
-import ModelosConfig from '@/pages/Admin/Modelos/ModelosConfig.vue'
-import ModelosNovo from '@/pages/Admin/Modelos/ModelosNovo.vue'
-import ModelosEditar from '@/pages/Admin/Modelos/ModelosEditar.vue'
-import ProdutosConfig from '@/pages/Admin/Produtos/ProdutosConfig.vue'
-import ProdutosNovo from '@/pages/Admin/Produtos/ProdutosNovo.vue'
-import ProdutosEditar from '@/pages/Admin/Produtos/ProdutosEditar.vue'
-import ProductPage from '@/pages/Loja/ProductPage.vue'
-import NaoEncontrado from '@/pages/Loja/NaoEncontrado.vue'
-import UsuariosConfig from '@/pages/Admin/Usuarios/UsuariosConfig.vue'
-import UsuariosEditar from '@/pages/Admin/Usuarios/UsuariosEditar.vue'
-import UsuariosNovo from '@/pages/Admin/Usuarios/UsuariosNovo.vue'
-import MotivosConfig from '@/pages/Admin/Motivos/MotivosConfig.vue'
-import MotivosEditar from '@/pages/Admin/Motivos/MotivosEditar.vue'
-import MotivosNovo from '@/pages/Admin/Motivos/MotivosNovo.vue'
-import TamanhosConfig from '@/pages/Admin/Tamanhos/TamanhosConfig.vue'
-import TamanhosEditar from '@/pages/Admin/Tamanhos/TamanhosEditar.vue'
-import TamanhosNovo from '@/pages/Admin/Tamanhos/TamanhosNovo.vue'
-import CuponsConfig from '@/pages/Admin/Cupons/CuponsConfig.vue'
-import CuponsNovo from '@/pages/Admin/Cupons/CuponsNovo.vue'
-import CuponsEditar from '@/pages/Admin/Cupons/CuponsEditar.vue'
-import AcertosConfig from '@/pages/Admin/Acertos/AcertosConfig.vue'
-import CategoriasConfig from '@/pages/Admin/Categorias/CategoriasConfig.vue'
-import CategoriasNovo from '@/pages/Admin/Categorias/CategoriasNovo.vue'
-import CategoriasEditar from '@/pages/Admin/Categorias/CategoriasEditar.vue'
-import VendasConfig from '@/pages/Admin/Vendas/VendasConfig.vue'
-import VendasEditar from '@/pages/Admin/Vendas/VendasEditar.vue'
+import CoresConfig from '@/pages/Cores/CoresConfig.vue'
+import CoresEditar from '@/pages/Cores/CoresEditar.vue'
+import CoresNovo from '@/pages/Cores/CoresNovo.vue'
+import MarcasConfig from '@/pages/Marcas/MarcasConfig.vue'
+import MarcasEditar from '@/pages/Marcas/MarcasEditar.vue'
+import MarcasNovo from '@/pages/Marcas/MarcasNovo.vue'
+import ModelosConfig from '@/pages/Modelos/ModelosConfig.vue'
+import ModelosNovo from '@/pages/Modelos/ModelosNovo.vue'
+import ModelosEditar from '@/pages/Modelos/ModelosEditar.vue'
+import ProdutosConfig from '@/pages/Produtos/ProdutosConfig.vue'
+import ProdutosNovo from '@/pages/Produtos/ProdutosNovo.vue'
+import ProdutosEditar from '@/pages/Produtos/ProdutosEditar.vue'
+import UsuariosConfig from '@/pages/Usuarios/UsuariosConfig.vue'
+import UsuariosEditar from '@/pages/Usuarios/UsuariosEditar.vue'
+import UsuariosNovo from '@/pages/Usuarios/UsuariosNovo.vue'
+import MotivosConfig from '@/pages/Motivos/MotivosConfig.vue'
+import MotivosEditar from '@/pages/Motivos/MotivosEditar.vue'
+import MotivosNovo from '@/pages/Motivos/MotivosNovo.vue'
+import TamanhosConfig from '@/pages/Tamanhos/TamanhosConfig.vue'
+import TamanhosEditar from '@/pages/Tamanhos/TamanhosEditar.vue'
+import TamanhosNovo from '@/pages/Tamanhos/TamanhosNovo.vue'
+import CuponsConfig from '@/pages/Cupons/CuponsConfig.vue'
+import CuponsNovo from '@/pages/Cupons/CuponsNovo.vue'
+import CuponsEditar from '@/pages/Cupons/CuponsEditar.vue'
+import AcertosConfig from '@/pages/Acertos/AcertosConfig.vue'
+import AcertoEstoque from '@/pages/Acertos/AcertoEstoque.vue'
+import CategoriasConfig from '@/pages/Categorias/CategoriasConfig.vue'
+import CategoriasNovo from '@/pages/Categorias/CategoriasNovo.vue'
+import CategoriasEditar from '@/pages/Categorias/CategoriasEditar.vue'
+import VendasConfig from '@/pages/Vendas/VendasConfig.vue'
+import VendasEditar from '@/pages/Vendas/VendasEditar.vue'
 
 const routes = [
   {
-    path: '/admin',
+    path: '/login',
     component: Login,
     name: 'Login',
-    meta: { 
+    meta: {
       title: 'WK3 Administrativo',
       is_public: true
     }
   },
   {
-    path: '/dashboard',
+    path: '/',
     component: Dashboard,
     name: 'Dashboard',
     meta: {
@@ -56,286 +53,287 @@ const routes = [
     }
   },
   {
-    path: '/checkout',
-    component: Checkout,
-    name: 'Checkout',
-    meta: {
-      title: 'WK3 | Checkout',
-      is_public: false
-    }
-  },
-  {
-    path: '/admin/tamanhos',
+    path: '/tamanhos',
     component: TamanhosConfig,
     name: 'Todos os tamanhos',
     meta: {
-      title: 'WK3 Admin | Tamanhos',
+      title: 'WK3 | Tamanhos',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/tamanhos/editar/:id',
+    path: '/tamanhos/editar/:id',
     component: TamanhosEditar,
     name: 'Editar tamanho',
     meta: {
-      title: 'WK3 Admin | Editar Tamanho',
+      title: 'WK3 | Editar Tamanho',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/tamanhos/novo',
+    path: '/tamanhos/novo',
     component: TamanhosNovo,
     name: 'Adicionar novo tamanho',
     meta: {
-      title: 'WK3 Admin | Novo Tamanho',
+      title: 'WK3 | Novo Tamanho',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cupons',
+    path: '/cupons',
     component: CuponsConfig,
     name: 'Todos os cupons',
     meta: {
-      title: 'WK3 Admin | Cupons',
+      title: 'WK3 | Cupons',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cupons/novo',
+    path: '/cupons/novo',
     component: CuponsNovo,
     name: 'Adicionar novo cupom',
     meta: {
-      title: 'WK3 Admin | Novo Cupom',
+      title: 'WK3 | Novo Cupom',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cupons/editar/:id',
+    path: '/cupons/editar/:id',
     component: CuponsEditar,
     name: 'Editar cupom',
     meta: {
-      title: 'WK3 Admin | Editar Cupom',
+      title: 'WK3 | Editar Cupom',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/acertos',
+    path: '/acertos',
     component: AcertosConfig,
     name: 'Acertos de estoque',
     meta: {
-      title: 'WK3 Admin | Acertos De Estoque',
+      title: 'WK3 | Acertos De Estoque',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cores',
+    path: '/acertos/novo',
+    component: AcertoEstoque,
+    name: 'Acertar estoque',
+    meta: {
+      title: 'WK3 | Acertar estoque',
+      layout: 'AppLayoutAdmin',
+      is_public: false
+    }
+  },
+  {
+    path: '/cores',
     component: CoresConfig,
     name: 'Todas as cores',
     meta: {
-      title: 'WK3 Admin | Cores',
+      title: 'WK3 | Cores',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cores/editar/:id',
+    path: '/cores/editar/:id',
     component: CoresEditar,
     name: 'Editar cor',
     meta: {
-      title: 'WK3 Admin | Editar Cor',
+      title: 'WK3 | Editar Cor',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/cores/novo',
+    path: '/cores/novo',
     component: CoresNovo,
     name: 'Adicionar nova cor',
     meta: {
-      title: 'WK3 Admin | Nova Cor',
+      title: 'WK3 | Nova Cor',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/usuarios',
+    path: '/usuarios',
     component: UsuariosConfig,
     name: 'Todos os usuários',
     meta: {
-      title: 'WK3 Admin | Usuários',
+      title: 'WK3 | Usuários',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/usuarios/editar/:id',
+    path: '/usuarios/editar/:id',
     component: UsuariosEditar,
     name: 'Editar usuário',
     meta: {
-      title: 'WK3 Admin | Editar Usuário',
+      title: 'WK3 | Editar Usuário',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/usuarios/novo',
+    path: '/usuarios/novo',
     component: UsuariosNovo,
     name: 'Novo usuário',
     meta: {
-      title: 'WK3 Admin | Novo Usuário',
+      title: 'WK3 | Novo Usuário',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/marcas',
+    path: '/marcas',
     component: MarcasConfig,
     name: 'Todas as marcas',
     meta: {
-      title: 'WK3 Admin | Marcas',
+      title: 'WK3 | Marcas',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/marcas/editar/:id',
+    path: '/marcas/editar/:id',
     component: MarcasEditar,
     name: 'Editar marca',
     meta: {
-      title: 'WK3 Admin | Editar Marca',
+      title: 'WK3 | Editar Marca',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/marcas/novo',
+    path: '/marcas/novo',
     component: MarcasNovo,
     name: 'Cadastrar nova marca',
     meta: {
-      title: 'WK3 Admin | Cadastrar Nova Marca',
+      title: 'WK3 | Cadastrar Nova Marca',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/motivos',
+    path: '/motivos',
     component: MotivosConfig,
     name: 'Todos os motivos',
     meta: {
-      title: 'WK3 Admin | Motivos',
+      title: 'WK3 | Motivos',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/motivos/editar/:id',
+    path: '/motivos/editar/:id',
     component: MotivosEditar,
     name: 'Editar movo',
     meta: {
-      title: 'WK3 Admin | Editar Motivo',
+      title: 'WK3 | Editar Motivo',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/motivos/novo',
+    path: '/motivos/novo',
     component: MotivosNovo,
     name: 'Adicionar novo motivo',
     meta: {
-      title: 'WK3 Admin | Adicionar Novo Motivo',
+      title: 'WK3 | Adicionar Novo Motivo',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/modelos',
+    path: '/modelos',
     component: ModelosConfig,
     name: 'Todos os modelos',
     meta: {
-      title: 'WK3 Admin | Modelos',
+      title: 'WK3 | Modelos',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/modelos/editar/:id',
+    path: '/modelos/editar/:id',
     component: ModelosEditar,
     name: 'Editar modelo',
     meta: {
-      title: 'WK3 Admin | Editar Modelo',
+      title: 'WK3 | Editar Modelo',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/modelos/novo',
+    path: '/modelos/novo',
     component: ModelosNovo,
     name: 'Adicionar novo modelo',
     meta: {
-      title: 'WK3 Admin | Adicionar Novo Modelo',
+      title: 'WK3 | Adicionar Novo Modelo',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/produtos',
+    path: '/produtos',
     component: ProdutosConfig,
     name: 'Todos os produtos',
     meta: {
-      title: 'Wk3 Admin | Produtos',
+      title: 'Wk3 | Produtos',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/vendas',
+    path: '/vendas',
     component: VendasConfig,
     name: 'Todos as vendas',
     meta: {
-      title: 'Wk3 Admin | Vendas',
+      title: 'Wk3 | Vendas',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/vendas/:venda_id',
+    path: '/vendas/:venda_id',
     component: VendasEditar,
     name: 'Informações da Venda',
     meta: {
-      title: 'Wk3 Admin | Venda',
+      title: 'Wk3 | Venda',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/produtos/novo',
+    path: '/produtos/novo',
     component: ProdutosNovo,
     name: 'Adicionar novo produto',
     meta: {
-      title: 'Wk3 Admin | Adicionar Novo Produto',
+      title: 'Wk3 | Adicionar Novo Produto',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/produtos/editar/:product_url',
+    path: '/produtos/editar/:product_url',
     name: 'Editar produto',
     component: ProdutosEditar,
     meta: {
-      title: 'Wk3 Admin | Editar Produto',
+      title: 'Wk3 | Editar Produto',
       layout: 'AppLayoutAdmin',
       is_public: false
     }
   },
   {
-    path: '/admin/categorias',
+    path: '/categorias',
     component: CategoriasConfig,
     name: 'Categorias',
     meta: {
@@ -345,7 +343,7 @@ const routes = [
     }
   },
   {
-    path: '/admin/categorias/editar/:id',
+    path: '/categorias/editar/:id',
     component: CategoriasEditar,
     name: 'Editar Categoria',
     meta: {
@@ -355,7 +353,7 @@ const routes = [
     }
   },
   {
-    path: '/admin/categorias/novo',
+    path: '/categorias/novo',
     component: CategoriasNovo,
     name: 'Nova Categoria',
     meta: {
@@ -363,37 +361,7 @@ const routes = [
       layout: 'AppLayoutAdmin',
       is_public: false,
     }
-  },
-  {
-    path: '/',
-    component: Home,
-    name: 'Home',
-    meta: {
-      title: 'WK3 Outlet',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
-  {
-    path: '/:product_url',
-    component: ProductPage,
-    name: 'WK3 Outlet | Página de produto',
-    meta: {
-      title: 'WK3 Homepage',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
-  {
-    path: '*',
-    component: NaoEncontrado,
-    name: 'Não encontrado',
-    meta: {
-      title: 'WK3 Outlet - Nada foi encontrado',
-      layout: 'AppLayoutDefault',
-      is_public: true
-    }
-  },
+  }
 ]
 
 export default routes;

@@ -17,6 +17,9 @@ export const perfil = {
     },
     getId(state){
       return state.perfil.id;
+    },
+    getPerfil(state){
+      return state.perfil;
     }
   },
   mutations: {
