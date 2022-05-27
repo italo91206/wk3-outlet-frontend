@@ -207,7 +207,7 @@
           </template>
 
           <!-- Produtos -->
-          <v-list-item link>
+          <v-list-item to="/relatorios/produtos">
             <v-list-item-icon>
               <v-icon small>fas fa-tshirt</v-icon>
             </v-list-item-icon>
@@ -216,7 +216,7 @@
           </v-list-item>
 
           <!-- Usuários -->
-          <v-list-item link>
+          <v-list-item to="/relatorios/usuarios">
             <v-list-item-icon>
               <v-icon small>fas fa-user</v-icon>
             </v-list-item-icon>
@@ -225,7 +225,7 @@
           </v-list-item>
 
           <!-- Vendas -->
-          <v-list-item link>
+          <v-list-item to="/relatorios/vendas">
             <v-list-item-icon>
               <v-icon small>fas fa-dollar-sign</v-icon>
             </v-list-item-icon>

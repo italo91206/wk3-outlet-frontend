@@ -1,6 +1,24 @@
 <template>
-  <section class="container">
-    <h2>Isto é a página "Dashboard.vue"</h2>
+  <v-main class="pa-12">
+    <v-container>
+      <v-row>
+        <v-col cols="6">
+          <CardReportSales report-name="tabela-1" />
+        </v-col>
+
+        <v-col cols="6">
+          <CardReportSales report-name="tabela-2"/>
+        </v-col>
+
+        <v-col cols="6">
+          <CardReportSales report-name="tabela-3"/>
+        </v-col>
+
+        <v-col cols="6">
+          <CardReportSales report-name="tabela-4"/>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <Helper>
       <template #titulo>
@@ -25,16 +43,17 @@
         </p>
       </template>
     </Helper>
-  </section>
+  </v-main>
 </template>
 
 <script>
+import CardReportSales from "@/components/CardReportSales.vue"
 import Helper from "@/components/Helper.vue";
 
 export default {
   name: "Dashboard",
   components: {
-    Helper,
+    Helper, CardReportSales
   },
   data() {
     return {
