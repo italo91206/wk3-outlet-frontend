@@ -31,6 +31,9 @@ import CategoriasNovo from '@/pages/Categorias/CategoriasNovo.vue'
 import CategoriasEditar from '@/pages/Categorias/CategoriasEditar.vue'
 import VendasConfig from '@/pages/Vendas/VendasConfig.vue'
 import VendasEditar from '@/pages/Vendas/VendasEditar.vue'
+import RelatorioVendasPage from '@/pages/Relatorios/RelatorioVendasPage.vue'
+import RelatorioUsuariosPage from '@/pages/Relatorios/RelatorioUsuariosPage.vue'
+import RelatorioProdutosPage from '@/pages/Relatorios/RelatorioProdutosPage.vue'
 
 const routes = [
   {
@@ -358,6 +361,36 @@ const routes = [
     name: 'Nova Categoria',
     meta: {
       title: 'WK3 Outlet - Adicionar Nova Categoria',
+      layout: 'AppLayoutAdmin',
+      is_public: false,
+    }
+  },
+  {
+    path: '/relatorios/vendas',
+    component: RelatorioVendasPage,
+    name: 'Relatório de vendas',
+    meta: {
+      title: 'WK3 Outlet - Relatório de vendas',
+      layout: 'AppLayoutAdmin',
+      is_public: false,
+    }
+  },
+  {
+    path: '/relatorios/produtos',
+    component: RelatorioProdutosPage,
+    name: 'Relatório de produtos',
+    meta: {
+      title: 'WK3 Outlet - Relatório de produtos',
+      layout: 'AppLayoutAdmin',
+      is_public: false,
+    }
+  },
+  {
+    path: '/relatorios/usuarios',
+    component: RelatorioUsuariosPage,
+    name: 'Relatório de usuários',
+    meta: {
+      title: 'WK3 Outlet - Relatório de usuários',
       layout: 'AppLayoutAdmin',
       is_public: false,
     }
