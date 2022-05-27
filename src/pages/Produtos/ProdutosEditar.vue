@@ -50,7 +50,6 @@
                 <v-text-field
                   label="Nome do produto"
                   v-model="produtoToPost.nome_produto"
-                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
 
@@ -70,7 +69,6 @@
                   v-model="produtoToPost.estoque"
                   type="number"
                   @change="mudouEstoque"
-                  :rules="[rules.required]"
                   disabled
                 ></v-text-field>
               </v-col>
@@ -80,7 +78,6 @@
                   label="Preço"
                   v-model="produtoToPost.preco"
                   type="number"
-                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -89,7 +86,6 @@
                   label="Custo"
                   v-model="produtoToPost.custo"
                   type="number"
-                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -98,7 +94,6 @@
                   label="Peso (gramas)"
                   v-model="produtoToPost.peso"
                   type="number"
-                  :rules="[rules.positiveNotNull]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -159,6 +154,7 @@
                   v-model="produtoToPost.descricao"
                   type="number"
                   rows="5"
+                  counter="256"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -222,7 +218,7 @@ import modelosService from '@/services/modelos/modelos-service.js'
 import coresService from '@/services/cores/cor-service.js'
 import produtoService from '@/services/produto/produto-service.js'
 import motivosService from '@/services/motivo/motivos-service.js'
-import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
+// import acertoService from '@/services/acerto-estoque/acerto-estoque-service.js'
 import categoriaService from '@/services/categorias/categoria-service.js'
 import imagemService from '@/services/imagens/imagem-service.js'
 import tamanhoService from '@/services/tamanhos/tamanhos-service.js'
@@ -267,6 +263,7 @@ export default {
       erro_preco: null,
       erro_estoque: null,
       erro_peso: null,
+      erro_descricao: null,
       categorias: [],
       tamanhos: [],
       variacoes: [],
@@ -325,24 +322,40 @@ export default {
       else
         this.$toast.error(response.data.message);
     },
-    async salvarProduto(){
-      let liberar = true;
+    fazerValidacao(){
+      let erros = []
+      let {produtoToPost} = this
 
-      if(this.estoque_changed){
-        if(this.motivo == ""){
-          liberar = false;
-          this.$toast.error('Por favor selecione um motivo');
-        }
-        else{
-          const perfil_id = this.$store.state.perfil.perfil.id
-          const acerto = await acertoService.gravarAcerto(this.produtoToPost, perfil_id, this.motivo);
-          if(acerto.data.success)
-            this.$toast.success('Estoque foi acertado com sucesso').
-          else
-            this.$toast.error(acerto.data.message);
-        }
+      if(produtoToPost.descricao.length > 256){
+        this.erro_descricao = true
+        erros.push('descricao')
+        this.$toast.error('Descrição não pode passar de 256 caracteres.')
       }
-      if(liberar){
+      else{
+        this.erro_descricao = false
+        erros = []
+      }
+
+      return erros
+    },
+    async salvarProduto(){
+      let erros = this.fazerValidacao();
+
+      // if(this.estoque_changed){
+      //   if(this.motivo == ""){
+      //     liberar = false;
+      //     this.$toast.error('Por favor selecione um motivo');
+      //   }
+      //   else{
+      //     const perfil_id = this.$store.state.perfil.perfil.id
+      //     const acerto = await acertoService.gravarAcerto(this.produtoToPost, perfil_id, this.motivo);
+      //     if(acerto.data.success)
+      //       this.$toast.success('Estoque foi acertado com sucesso').
+      //     else
+      //       this.$toast.error(acerto.data.message);
+      //   }
+      // }
+      if(erros.length == 0){
         this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.atualizarProduto(this.produtoToPost);
         if(response.data.success){

@@ -29,7 +29,7 @@
 
               <v-col cols="6">
                 <v-text-field
-                  :disabled="!productHasVariations"
+                  :disabled="productHasVariations"
                   label="Quantidade em estoque"
                   v-model="default_product_stock"
                 ></v-text-field>
@@ -157,6 +157,7 @@ export default {
       motivos: [],
       cores: [],
       tamanhos: [],
+      productHasVariations: false,
 
       produto_id_selected: null,
       estoque_options: {},
@@ -171,8 +172,7 @@ export default {
         { text: "Nome", value: "nome" },
         { text: "Cor", value: "cor" },
         { text: "Tamanho", value: "tamanho" },
-        { text: "Quantidade", value: "quantidade" },
-        { text: 'Nova quantidade', value: 'nova_quantidade' },
+        { text: "Quantidade", value: "quantidade" }
       ],
     };
   },
@@ -182,27 +182,26 @@ export default {
       let motivo_id = this.motivo_id_selected
       let produto = this.getSelectedProduct
 
-      console.log("Product has variations ? ", this.productHasVariations)
-      if(this.productHasVariations){
-        produto.estoque = this.get_total_variation_stock
+      if(produto == undefined)
+        this.$toast.error('Você não selecionou nenhum produto.')
+      else if(motivo_id == null)
+        this.$toast.error('Selecione um motivo.')
+      else {
         produto.variacoes = this.variacoes
+        await acerto_service.gravarAcerto(produto, usuario_id, motivo_id)
+          .then((response) => {
+            if(response.data.success){
+              this.$toast.success('Acerto gravado com sucesso')
+              this.$router.push('/acertos')
+            }
+            else
+              this.$toast.error(response.data.message)
+          })
+          .catch((error) => {
+            this.$toast.error("Algo deu errado.")
+            console.log(error)
+          })
       }
-      else
-        produto.estoque = this.default_product_stock
-
-      await acerto_service.gravarAcerto(produto, usuario_id, motivo_id)
-        .then((response) => {
-          if(response.data.success){
-            this.$toast.success('Acerto gravado com sucesso')
-            this.$router.push('/acertos')
-          }
-          else
-            this.$toast.error(response.data.message)
-        })
-        .catch((error) => {
-          this.$toast.error("Algo deu errado.")
-          console.log(error)
-        })
     },
     async removerVariacao(to_delete){
       console.log(to_delete);
@@ -283,9 +282,6 @@ export default {
       console.log("estoque", estoque)
       return estoque;
     },
-    productHasVariations(){
-      return this.variacoes.length == 0 ? false : true;
-    },
     getUsuario() {
       const u = this.$store.getters["perfil/getPerfil"];
       return `${u.nome} ${u.sobrenome}`;
@@ -305,11 +301,18 @@ export default {
         .recuperarVariacoes(this.produto_id_selected)
         .then((response) => {
           this.variacoes = response.data.data;
+          console.log(response.data.data)
         });
       this.estoque_options = this.getSelectedProduct.estoque
       this.default_product_stock = this.getSelectedProduct.estoque
+
+      if(this.variacoes.length ==0 )
+        this.productHasVariations = false
+      else
+        this.productHasVariations = true
     },
     variacoes: function () {
+      this.productHasVariations = this.variacoes.length > 0
       this.variacoes.forEach((variacao) => {
         variacao.nome = this.getSelectedProduct.nome_produto;
 
@@ -333,10 +336,12 @@ export default {
           variacao.nova_quantidade = null
         }
       });
+      if(this.productHasVariations)
+        this.default_product_stock = this.get_total_variation_stock
     },
     variacao_quantidade(){
       this.variacao_quantidade = parseInt(this.variacao_quantidade)
-    }
+    },
   },
 };
 </script>

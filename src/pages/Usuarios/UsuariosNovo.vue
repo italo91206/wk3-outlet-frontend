@@ -92,7 +92,7 @@ export default {
       erro_senha: null,
       erro_cargo: null,
       tipoCargo: 0,
-      tipoPermissoes: null,
+      tipoPermissoes: { nome: 'Cliente', key: '0'},
       permissoes: [
         { nome: 'Cliente', key: '0'},
         { nome: 'Funcionário', key: '1'},

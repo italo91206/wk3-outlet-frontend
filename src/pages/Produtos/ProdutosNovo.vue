@@ -34,7 +34,6 @@
                 <v-text-field
                   label="Nome do produto"
                   v-model="produtoToPost.nome_produto"
-                  :rules="[rules.specialCharacters]"
                 ></v-text-field>
               </v-col>
 
@@ -53,7 +52,6 @@
                   label="Estoque"
                   v-model="produtoToPost.estoque"
                   type="number"
-                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -62,7 +60,6 @@
                   label="Preço"
                   v-model="produtoToPost.preco"
                   type="number"
-                  :rules="[rules.positiveNumber]"
                 ></v-text-field>
               </v-col>
 
@@ -79,7 +76,6 @@
                   label="Peso (gramas)"
                   v-model="produtoToPost.peso"
                   type="number"
-                  :rules="[rules.positiveNotNull]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -124,6 +120,7 @@
                   v-model="produtoToPost.descricao"
                   type="number"
                   rows="5"
+                  counter="256"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -263,7 +260,7 @@ export default {
         custo: null,
         peso: null,
         descricao: '',
-        estoque: null,
+        estoque: 0,
         marca_id: null,
         modelo_id: null,
         categoria_id: null,
@@ -375,8 +372,10 @@ export default {
         this.$toast.error('Produto precisa ter uma categoria.')
       else if(this.produtoToPost.modelo_id == null)
         this.$toast.error('Produto precisa ter um modelo.')
-        else if(this.produtoToPost.marca_id == null)
+      else if(this.produtoToPost.marca_id == null)
         this.$toast.error('Produto precisa ter uma marca.')
+      else if(this.produtoToPost.descricao.length > 256)
+        this.$toast.error('Descrição não pode passar de 256 caracteres.')
       else{
         this.produtoToPost.variacoes = this.variacoes;
         const response = await produtoService.novoProduto(this.produtoToPost);

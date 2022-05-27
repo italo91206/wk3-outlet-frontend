@@ -12,10 +12,11 @@
               hide-details
             ></v-text-field>
           </v-card-title>
+
           <v-data-table
             :headers="headers"
             :search="termoBusca"
-            :items="vendas"
+            :items="getVendas"
             :loading="loading"
             no-data-text="Sem vendas no sistema."
             loading-text="Carregando vendas... aguarde"
@@ -31,10 +32,20 @@
                 Ver mais
               </router-link>
             </template>
+
+            <template v-slot:top>
+              <v-col>
+                <v-checkbox
+                  v-model="delivery_only_filter"
+                  label="Mostrar somente com entrega"
+                ></v-checkbox>
+              </v-col>
+            </template>
           </v-data-table>
         </v-card>
       </v-row>
     </v-container>
+
     <Helper>
       <template #titulo>
         Consulta de vendas
@@ -46,7 +57,6 @@
         </p>
       </template>
     </Helper>
-
   </v-main>
 </template>
 
@@ -64,6 +74,7 @@ export default {
       vendas: [],
       termoBusca: '',
       loading: true,
+      delivery_only_filter: false,
       headers: [
         { text: 'Data da venda', value: 'data_venda' },
         { text: 'Valor da venda', value: 'total' },
@@ -99,6 +110,16 @@ export default {
   },
   mounted(){
     this.listarVendas();
+  },
+  computed: {
+    getVendas(){
+      if(this.delivery_only_filter == true)
+        return this.vendas.filter((v) => {
+          v.endereco_id != null
+        })
+      else
+        return this.vendas
+    }
   },
   watch: {
     vendas: function(){

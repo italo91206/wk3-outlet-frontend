@@ -34,15 +34,15 @@
                     v-model="usuario.sobrenome"
                   ></v-text-field>
 
-                  <v-radio-group v-model="radioGroup">
+                  <v-radio-group v-model="usuario.isCompany">
                     <v-radio
                       label="Pessoa Jurídica"
-                      value="pj"
+                      :value="true"
                     ></v-radio>
 
                     <v-radio
                       label="Pessoa Física"
-                      value="pf"
+                      :value="false"
                     ></v-radio>
                   </v-radio-group>
 
