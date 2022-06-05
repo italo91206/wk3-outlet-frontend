@@ -3,20 +3,10 @@
     <v-container>
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
-          <v-form @input="mudou">
+          <v-form v-model="isValidForm" ref="form" @submit.prevent>
             <!-- Nome da categoria -->
             <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="Nome da categoria"
-                  v-model="categoriaToPost.nome_categoria"
-
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select
                   v-model="categoriaSelecionado"
                   :items="categorias"
@@ -24,6 +14,14 @@
                   item-value="categoria_id"
                   label="Categoria pai"
                 ></v-select>
+              </v-col>
+
+              <v-col cols="6">
+                <v-text-field
+                  label="Nome da categoria"
+                  v-model="categoriaToPost.nome_categoria"
+                  :rules="[rules.specialCharacters, rules.required]"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -33,7 +31,7 @@
       <v-row class="float-right">
         <v-btn to="/categorias" class="mr-2">Voltar</v-btn>
         <v-btn @click="deletar" color="error" class="mr-2">Deletar categoria</v-btn>
-        <v-btn @click="salvarCategoria" :disabled="isChanged" color="success">Salvar categoria</v-btn>
+        <v-btn @click="salvarCategoria" :disabled="isValidForm == false" color="success">Salvar categoria</v-btn>
       </v-row>
     </v-container>
 
@@ -67,8 +65,7 @@ export default {
       categorias: [],
       novo: [],
       categoriaSelecionado: 0,
-      erro_nome: null,
-      isChanged: true,
+      isValidForm: false,
       rules: rules,
     }
   },
@@ -125,28 +122,17 @@ export default {
         this.novo.push({ nome_categoria: string, id: item.categoria_id });
       }
     },
-    validarNome(e){
-      var string = e.target.value;
-      if(/[^A-z\s\d][\\^]?/.test(string))
-        this.erro_nome = "Não é possível inserir caracteres especiais";
-      else
-        this.erro_nome = '';
-    },
     async salvarCategoria(){
-      if(this.categoriaToPost.categoria_pai == this.categoriaToPost.categoria_id)
-        this.$toast.error('Uma categoria não pode ser pai dela mesma.');
-      else{
-        if(this.erro_nome)
-          this.$toast.error('Alguns campos estão inválidos');
-        else{
-          const response = await service.atualizarCategoria(this.categoriaToPost)
-          if(response.data.success){
-            this.$toast.success('Categoria foi atualizada com sucesso!');
-            this.$router.push('/categorias');
-          }
-          else
-            this.$toast.error(response.data.message);
+      this.$refs.form.validate();
+
+      if(this.isValidForm){
+        const response = await service.atualizarCategoria(this.categoriaToPost)
+        if(response.data.success){
+          this.$toast.success('Categoria foi atualizada com sucesso!');
+          this.$router.push('/categorias');
         }
+        else
+          this.$toast.error(response.data.message);
       }
     },
     mudou(){

@@ -3,23 +3,26 @@
     <v-container>
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
-          <v-form>
+          <v-form
+            v-model="isValidForm"
+            ref="form"
+            @submit.prevent
+          >
             <v-row>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-text-field
                   label="Nome da cor"
                   v-model="corToPost.cor"
-                  :rules="[rules.specialCharacters]"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-color-picker
                   dot-size="18"
                   swatches-max-height="200"
                   v-model="colorPicker"
+                  hide-inputs
                 ></v-color-picker>
               </v-col>
             </v-row>
@@ -29,7 +32,7 @@
 
       <v-row class="float-right">
         <v-btn to="/cores" class="mr-2">Voltar</v-btn>
-        <v-btn @click="salvar" color="success">Salvar cor</v-btn>
+        <v-btn @click="salvar" :disabled="isValidForm == false" color="success">Salvar cor</v-btn>
       </v-row>
     </v-container>
 
@@ -61,16 +64,15 @@ export default {
     return {
       corToPost: {},
       colorPicker: {},
-      isChanged: true,
-      erro_nome: null,
+      isValidForm: false,
       rules: rules,
     };
   },
   methods: {
     async salvar() {
-      if(this.erro_nome)
-        this.$toast.error('Alguns campos não estão válidos');
-      else{
+      this.$refs.form.validate();
+
+      if(this.isValidForm){
         const response = await service.salvarCor(this.corToPost);
         if(response.data.success){
           this.$toast.success('Cor adicionada com sucesso!');

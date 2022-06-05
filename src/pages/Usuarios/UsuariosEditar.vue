@@ -4,18 +4,18 @@
       <v-row>
         <v-col cols="3">
           <v-card class="w100 pa-5" elevation="10">
-            <v-btn v-bind:class="{ etapaAtivo: etapa == 1}" class="w100" @click="setEtapa(1)">Inf. Básicas</v-btn>
-            <v-btn v-bind:class="{ etapaAtivo: etapa == 2}" class="w100" @click="setEtapa(2)">Inf. Avançadas</v-btn>
-            <v-btn v-bind:class="{ etapaAtivo: etapa == 3}" class="w100" @click="setEtapa(3)">Compras</v-btn>
-            <v-btn v-if="usuario.isAdmin || usuario.isEmployee" v-bind:class="{ etapaAtivo: etapa == 4}" class="w100" @click="setEtapa(4)">Acertos</v-btn>
-            <v-btn v-bind:class="{ etapaAtivo: etapa == 5}" class="w100" @click="setEtapa(5)">Newsletter</v-btn>
+            <v-btn v-bind:class="{ etapaAtivo: etapa == 1}" class="w100 mb-2" @click="etapa = 1">Inf. Básicas</v-btn>
+            <v-btn v-bind:class="{ etapaAtivo: etapa == 2}" class="w100 mb-2" @click="etapa = 2">Inf. Avançadas</v-btn>
+            <v-btn v-bind:class="{ etapaAtivo: etapa == 3}" class="w100 mb-2" @click="etapa = 3">Compras</v-btn>
+            <v-btn v-if="usuario.isAdmin || usuario.isEmployee" v-bind:class="{ etapaAtivo: etapa == 4}" class="w100 mb-2" @click="etapa = 4">Acertos</v-btn>
+            <v-btn v-bind:class="{ etapaAtivo: etapa == 5}" class="w100" @click="etapa = 5">Newsletter</v-btn>
           </v-card>
         </v-col>
 
         <v-col cols="9">
           <v-card class="w100 pa-10" elevation="10">
             <div class="w100" v-if="etapa == 1">
-              <v-form>
+              <v-form v-model="isValidForm_basico" ref="form_basico" @submit.prevent >
                 <v-col cols="12">
                   <v-checkbox
                     v-model="usuario.is_enabled"
@@ -27,11 +27,13 @@
                   <v-text-field
                     label="Nome"
                     v-model="usuario.nome"
+                    :rules="[rules.required, rules.specialCharacters]"
                   ></v-text-field>
 
                   <v-text-field
                     label="Sobrenome"
                     v-model="usuario.sobrenome"
+                    :rules="[rules.required, rules.specialCharacters]"
                   ></v-text-field>
 
                   <v-radio-group v-model="usuario.isCompany">
@@ -58,21 +60,28 @@
             </div>
 
             <div class="w100" v-if="etapa == 2">
-              <v-form>
+              <v-form v-model="isValidForm_avancado" ref="form_avancado" @submit.prevent >
                 <v-col cols="12">
                   <v-text-field
                     label="RG"
                     v-model="usuario.rg"
+                    :rules="[rules.required, rules.onlyNumbers]"
+                    maxlength="9"
+                    counter="9"
                   ></v-text-field>
 
                   <v-text-field
                     label="CPF"
                     v-model="usuario.cpf"
+                    :rules="[rules.required, rules.onlyNumbers]"
+                    maxlength="11"
+                    counter="11"
                   ></v-text-field>
 
                   <v-text-field
                     label="E-mail"
                     v-model="usuario.email"
+                    :rules="[rules.email, rules.required]"
                   ></v-text-field>
 
                   <v-text-field
@@ -100,12 +109,14 @@
                   hide-details
                 ></v-text-field>
               </v-card-title>
+
               <v-data-table
                 :headers="headers"
                 :search="termoBusca"
                 :items="acertos"
-                :loading="acertos.length == 0"
+                :loading="loading"
                 loading-text="Carregando acertos... aguarde"
+                no-data-text="Usuário não fez acertos."
               >
               </v-data-table>
             </div>
@@ -120,7 +131,7 @@
       <v-row class="float-right">
         <v-btn to="/usuarios" class="mr-2">Voltar</v-btn>
         <v-btn @click="deletar" color="error" class="mr-2">Deletar usuário</v-btn>
-        <v-btn @click="atualizarUsuario" color="success">Salvar usuário</v-btn>
+        <v-btn @click="atualizarUsuario" :disabled="buttonIsValid == false" color="success">Salvar usuário</v-btn>
       </v-row>
     </v-container>
 
@@ -147,7 +158,7 @@
 import Helper from '@/components/Helper.vue'
 import service from "@/services/usuarios/usuario-service.js";
 import acertosService from "@/services/acerto-estoque/acerto-estoque-service.js";
-import validar from "@/utils/validacoes.js";
+import rules from "@/utils/rules.js";
 
 export default {
   name: "UsuariosEditar",
@@ -159,13 +170,12 @@ export default {
       usuario: {},
       isAdmin: false,
       isEmployee: false,
-      isChanged: true,
+      isValidForm_basico: false,
+      isValidForm_avancado: false,
       etapa: 1,
-      erro_nome: null,
-      erro_sobrenome: null,
       radioGroup: null,
       tipoPermissoes: 0,
-      acertos: null,
+      acertos: [],
       show: 'text',
       permissoes: [
         { nome: 'Cliente', key: 0},
@@ -177,7 +187,10 @@ export default {
         { text: 'Produto', value: 'produto' },
         { text: 'Estoque (anterior)', value: 'valor' },
         { text: 'Motivo', value: 'motivo' },
-      ]
+      ],
+      rules: rules,
+      termoBusca: "",
+      loading: false,
     };
   },
   methods: {
@@ -223,35 +236,58 @@ export default {
         this.usuario.isEmployee = false;
         this.usuario.isAdmin = true;
       }
-      const my_id = this.$store.getters['perfil/getId']
-      const response = await service.atualizarUsuario(this.usuario);
-      if (response.data.success) {
-        if(my_id == this.usuario.id && this.usuario.is_enabled == false){
-          localStorage.removeItem('user');
-          this.$store.dispatch('auth/logout');
-          this.$router.push('/admin');
+
+      let is_valid = this.validarFormulario()
+      if(is_valid){
+        const my_id = this.$store.getters['perfil/getId']
+        const response = await service.atualizarUsuario(this.usuario);
+        if (response.data.success) {
+          if(my_id == this.usuario.id && this.usuario.is_enabled == false){
+            localStorage.removeItem('user');
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/admin');
+          }
+          else{
+            this.$toast.success("Usuário foi atualizado com sucesso!");
+            this.$router.push("/usuarios");
+          }
+        } else this.$toast.error(response.data.message);
         }
-        else{
-          this.$toast.success("Usuário foi atualizado com sucesso!");
-          this.$router.push("/usuarios");
-        }
-      } else this.$toast.error(response.data.message);
     },
     async carregarAcertos(id) {
-      const response = await acertosService.listarAcertosPorUsuario(id);
-      if(response.data.success){
-        this.acertos = response.data.data;
+      this.loading = true;
+
+      await acertosService.listarAcertosPorUsuario(id)
+        .then((response) => {
+          if(response.data.success)
+            this.acertos = response.data.data;
+          else
+            this.$toast.error(response.data.message)
+        })
+        .catch((error) => {
+          this.$toast.error("Algo deu errado")
+          console.log(error)
+        })
+        .finally(() => { this.loading = false })
+    },
+    validarFormulario(){
+      let is_valid = false;
+      const { etapa } = this
+
+      if(etapa == 1){
+        this.$refs.form_basico.validate()
+        is_valid = this.isValidForm_basico
       }
+      else if(etapa == 2){
+        this.$refs.form_avancado.validate()
+        is_valid = this.isValidForm_avancado
+      }
+
+      return is_valid
     },
     mudarPessoa(tipo) {
       if (tipo == "pj") this.usuario.isCompany = true;
       else if (tipo == "pf") this.usuario.isCompany = false;
-    },
-    mudou() {
-      this.isChanged = false;
-    },
-    setEtapa(num) {
-      this.etapa = num;
     },
     deletar() {
       let id = this.$route.params.id;
@@ -262,12 +298,6 @@ export default {
       while (num.length < size) num = "0" + num;
       return num;
     },
-    validar_nome(e) {
-      this.erro_nome = validar.validarNome(e.target.value);
-    },
-    validar_sobrenome(e) {
-      this.erro_sobrenome = validar.validarNome(e.target.value);
-    }
   },
   mounted() {
     const is_admin = this.$store.getters['perfil/isAdmin']
@@ -330,6 +360,18 @@ export default {
         this.usuario.isAdmin = true;
       }
     },
+  },
+  computed: {
+    buttonIsValid(){
+      let { etapa } = this;
+
+      if(etapa == 1)
+        return this.isValidForm_basico
+      else if(etapa == 2)
+        return this.isValidForm_avancado
+      else
+        return true
+    }
   }
 };
 </script>

@@ -3,7 +3,11 @@
     <v-container>
       <v-row>
         <v-card class="w100 pa-12" elevation="10">
-          <v-form>
+          <v-form
+            v-model="isValidForm"
+            ref="form"
+            @submit.prevent
+          >
             <v-row>
               <v-col cols="12">
                 <v-checkbox
@@ -22,6 +26,7 @@
                 <v-text-field
                   label="Código do cupom"
                   v-model="cupomToPost.codigo"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -29,7 +34,7 @@
                 <v-text-field
                   label="Nome do cupom"
                   v-model="cupomToPost.nome"
-                  :rules="[rules.specialCharacters]"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -38,7 +43,8 @@
                   label="Valor do cupom"
                   v-model="cupomToPost.valor"
                   type="number"
-                  :rules="[rules.positiveNumber]"
+                  :rules="[rules.positiveNumber, rules.required]"
+                  :hide-spin-buttons="true"
                 ></v-text-field>
               </v-col>
 
@@ -57,11 +63,47 @@
               </v-col>
 
               <v-col cols="6">
-                <input
-                  type="datetime-local"
-                  @change="validarData"
-                  v-model="cupomToPost.validade"
-                />
+                <v-dialog
+                  ref="dialog"
+                  v-model="modal"
+                  :return-value.sync="cupomToPost.validade"
+                  persistent
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="getValidadeCupom"
+                      label="Data de validade"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </template>
+
+                  <v-date-picker
+                    v-model="cupomToPost.validade"
+                    scrollable
+                    locale="pt-BR"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="modal = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.dialog.save(cupomToPost.validade)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-dialog>
               </v-col>
             </v-row>
 
@@ -368,7 +410,7 @@
       <v-row class="float-right">
         <v-btn to="/cupons" class="mr-2">Voltar</v-btn>
         <v-btn @click="deletarCupom" color="error" class="mr-2">Deletar cupom</v-btn>
-        <v-btn @click="salvarCupom" color="success">Salvar cupom</v-btn>
+        <v-btn @click="salvarCupom" :disabled="isValidForm == false" color="success">Salvar cupom</v-btn>
       </v-row>
     </v-container>
 
@@ -406,12 +448,9 @@ export default {
     return {
       cupomToPost: {},
       tipoCupom: '',
-      isChanged: true,
-      erro_validade: '',
-      erro_tipo: '',
-      erro_valor: '',
       rules: rules,
       radioGroup: null,
+      modal: false,
 
       produtos: [],
       produtos_loading: true,
@@ -468,6 +507,8 @@ export default {
       quantity_rules: '',
       quantity_value: null,
       quantity_condition: '',
+
+      isValidForm: false,
     }
   },
   methods: {
@@ -534,11 +575,9 @@ export default {
       })
     },
     async salvarCupom(){
-      var falta_tipo = this.validarTipo();
+      this.$refs.form.validate()
 
-      if(falta_tipo || this.cupomToPost.validade == '' || this.erro_data || this.erro_valor)
-        this.$toast.error('Alguns campos não estão válidos');
-      else{
+      if(this.isValidForm){
         let quantity_rules = {
           rules: this.quantity_rules,
           value: this.quantity_value,
@@ -589,17 +628,6 @@ export default {
         this.erro_valor = 'Valor precisa ser positivo';
       else
         this.erro_valor = null;
-    },
-    validarData(e){
-      var data = new Date(e.target.value);
-      var hoje = new Date();
-
-      if(data < hoje)
-        this.erro_data = 'Data precisa ser válida';
-      else if(e.target.value == "")
-        this.erro_data = 'Preencha este campo.';
-      else
-        this.erro_data = null;
     },
     validarTipo(){
       if( this.cupomToPost.is_percent == false && this.cupomToPost.is_fixed == false){
@@ -692,6 +720,15 @@ export default {
     this.listarCupom(id);
   },
   computed: {
+    getValidadeCupom(){
+      const value = this.cupomToPost.validade
+      if(value){
+        const data = new Date(value)
+        return `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`
+      }
+      else
+        return ""
+    },
     getCategoriesSelected(){
       let qtd = this.categories_select.length;
       let string = qtd > 1 ? "selecionados" : "selecionado"
@@ -743,24 +780,26 @@ export default {
       else{
         this.tipoCupom = "percentual";
       }
+      console.log(this.cupomToPost.validade)
+      // this.cupomToPost.validade = null
 
       // Formato para datetime-local precisa ser: yyyy-MM-ddThh:mm
-      const validade = this.cupomToPost.validade;
-      const data = new Date(validade);
+      // const validade = this.cupomToPost.validade;
+      // const data = new Date(validade);
 
-      let dia = data.getDate();
-      let mes = data.getMonth() + 1;
-      let ano = data.getFullYear();
-      let horas = data.getHours();
-      let minutos = data.getMinutes();
+      // let dia = data.getDate();
+      // let mes = data.getMonth() + 1;
+      // let ano = data.getFullYear();
+      // let horas = data.getHours();
+      // let minutos = data.getMinutes();
 
-      dia = this.pad(dia, 2);
-      mes = this.pad(mes, 2);
-      horas = this.pad(horas, 2);
-      minutos = this.pad(horas, 2);
+      // dia = this.pad(dia, 2);
+      // mes = this.pad(mes, 2);
+      // horas = this.pad(horas, 2);
+      // minutos = this.pad(horas, 2);
 
       // console.log(`${ano}-${mes}-${dia}T${horas}:${minutos}`);
-      this.cupomToPost.validade = `${ano}-${mes}-${dia}T${horas}:${minutos}`;
+      // this.cupomToPost.validade = `${ano}-${mes}-${dia}T${horas}:${minutos}`;
     }
   }
 }

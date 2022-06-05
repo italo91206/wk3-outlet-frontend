@@ -3,13 +3,17 @@
     <v-container>
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
-          <v-form>
+          <v-form
+            v-model="isValidForm"
+            ref="form"
+            @submit.prevent
+          >
             <v-row>
               <v-col cols="12">
                 <v-text-field
                   label="Nome da marca"
                   v-model="marcaToPost.marca"
-                  :rules="[rules.specialCharacters]"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -20,7 +24,7 @@
       <v-row class="float-right">
         <v-btn to="/marcas" class="mr-2">Voltar</v-btn>
         <v-btn @click="deletar" color="error" class="mr-2">Deletar marca</v-btn>
-        <v-btn @click="salvarMarca" color="success">Salvar marca</v-btn>
+        <v-btn @click="salvarMarca" :disabled="isValidForm == false" color="success">Salvar marca</v-btn>
       </v-row>
     </v-container>
 
@@ -51,8 +55,7 @@ export default {
   data(){
     return {
       marcaToPost: {},
-      isChanged: true,
-      erro_nome: null,
+      isValidForm: false,
       rules: rules,
     }
   },
@@ -65,9 +68,9 @@ export default {
         this.$toast.error(response.data.message);
     },
     async salvarMarca(){
-      if(this.erro_nome)
-        this.$toast.error('Alguns campos estão inválidos');
-      else{
+      this.$refs.form.validate()
+
+      if(this.isValidForm){
         const response = await service.salvarMarca(this.marcaToPost);
         if(response.data.success){
           this.$toast.success('Marca foi atualizada com sucesso');
@@ -85,16 +88,6 @@ export default {
       }
       else
         this.$toast.error(response.data.message);
-    },
-    mudou(){
-      this.isChanged = false;
-    },
-    validarNome(e){
-      var string = e.target.value;
-      if(/[^A-z\s\d][\\^]?/.test(string))
-        this.erro_nome = "Não é possível inserir caracteres especiais";
-      else
-        this.erro_nome = null;
     },
     deletar(){
       const response = confirm('Tem certeza que deseja remover? Esta ação é irreversível!');

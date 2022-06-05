@@ -3,7 +3,11 @@
     <v-container>
       <v-row>
         <v-card class="w100 pa-12" elevation="10">
-          <v-form>
+          <v-form
+            v-model="isValidForm"
+            ref="form"
+            @submit.prevent
+          >
             <v-row>
               <h2>Detalhes do cupom</h2>
             </v-row>
@@ -13,7 +17,7 @@
                 <v-text-field
                   label="Código do cupom"
                   v-model="cupomToPost.codigo"
-                  :rules="[rules.required]"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -21,7 +25,7 @@
                 <v-text-field
                   label="Nome do cupom"
                   v-model="cupomToPost.nome"
-                  :rules="[rules.specialCharacters]"
+                  :rules="[rules.specialCharacters, rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -30,7 +34,8 @@
                   label="Valor do cupom"
                   v-model="cupomToPost.valor"
                   type="number"
-                  :rules="[rules.positiveNumber]"
+                  :rules="[rules.positiveNumber, rules.required]"
+                  :hide-spin-buttons="true"
                 ></v-text-field>
               </v-col>
 
@@ -49,11 +54,47 @@
               </v-col>
 
               <v-col cols="6">
-                <input
-                  type="datetime-local"
-                  v-model="cupomToPost.validade"
-                  :rules="[rules.required]"
-                />
+                <v-dialog
+                  ref="dialog"
+                  v-model="modal"
+                  :return-value.sync="cupomToPost.validade"
+                  persistent
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="getValidadeCupom"
+                      label="Data de validade"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </template>
+
+                  <v-date-picker
+                    v-model="cupomToPost.validade"
+                    scrollable
+                    locale="pt-BR"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="modal = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.dialog.save(cupomToPost.validade)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-dialog>
               </v-col>
             </v-row>
 
@@ -371,7 +412,7 @@
 
       <v-row class="float-right">
         <v-btn to="/cupons" class="mr-2">Voltar</v-btn>
-        <v-btn @click="novoCupom" color="success">Salvar cupom</v-btn>
+        <v-btn @click="novoCupom" :disabled="isValidForm == false" color="success">Salvar cupom</v-btn>
       </v-row>
     </v-container>
 
@@ -415,6 +456,7 @@ export default {
       product_rules: [],
       attribute_rules: [],
       variation_rules: [],
+      modal: false,
 
       produtos: [],
       produtos_loading: true,
@@ -471,13 +513,14 @@ export default {
       quantity_rules: 'todos',
       quantity_value: null,
       quantity_condition: '',
+      isValidForm: false,
     }
   },
   methods: {
     async novoCupom(){
-      if(this.cupomToPost.validade == '')
-        this.$toast.error('Alguns campos não estão válidos');
-      else {
+      this.$refs.form.validate()
+
+      if(this.isValidForm){
         let quantity_rules = {
           rules: this.quantity_rules,
           value: this.quantity_value,
@@ -590,6 +633,15 @@ export default {
     }
   },
   computed: {
+    getValidadeCupom(){
+      const value = this.cupomToPost.validade
+      if(value){
+        const data = new Date(value)
+        return `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`
+      }
+      else
+        return ""
+    },
     getCategoriesSelected(){
       let qtd = this.categories_select.length;
       let string = qtd > 1 ? "selecionados" : "selecionado"

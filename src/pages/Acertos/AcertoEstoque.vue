@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
-          <v-form>
+          <v-form v-model="isValidForm" ref="form" @submit.prevent>
             <!-- Nome do usuario -->
             <v-row>
               <v-col cols="6">
@@ -17,7 +17,7 @@
 
             <!-- Nome do produto -->
             <v-row>
-              <v-col cols="6">
+              <v-col cols="8">
                 <v-autocomplete
                   v-model="produto_id_selected"
                   :items="produtos"
@@ -27,11 +27,12 @@
                 ></v-autocomplete>
               </v-col>
 
-              <v-col cols="6">
+              <v-col cols="4">
                 <v-text-field
                   :disabled="productHasVariations"
                   label="Quantidade em estoque"
                   v-model="default_product_stock"
+                  :rules="[rules.required, rules.positiveNotNull]"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -145,6 +146,7 @@ import cores_service from "@/services/cores/cor-service.js";
 import tamanho_service from "@/services/tamanhos/tamanhos-service.js";
 import acerto_service from '@/services/acerto-estoque/acerto-estoque-service.js';
 import Helper from '@/components/Helper.vue'
+import rules from "@/utils/rules.js";
 
 export default {
   name: "AcertoEstoque",
@@ -174,6 +176,9 @@ export default {
         { text: "Tamanho", value: "tamanho" },
         { text: "Quantidade", value: "quantidade" }
       ],
+
+      rules: rules,
+      isValidForm: false,
     };
   },
   methods: {
