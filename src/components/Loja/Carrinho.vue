@@ -1,15 +1,15 @@
 <template>
   <aside id="wk-carrinho">
     <h2>Este é o carrinho</h2>
-    
+
     <ul id="wk-carrinho--lista-produtos">
       <li v-for="produto in produtos" :key="produto.produto_id" class="wk-carrinho--produto-item">
-        
+
         <div class="wk-carrinho--produto-imagem">
           <template v-if="produto.imagens">
-            <img :src="`http://wk3outlet.italoferreira.dev.br/static/${produto.imagens[0].url}`">
+            <img :src="`http://wk3outlet.com.br/static/${produto.imagens[0].url}`">
           </template>
-          
+
           <template v-else>
             <img src="https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png">
           </template>
@@ -18,20 +18,20 @@
         <div class="wk-carrinho--produto-text">
           <span class="wk-carrinho--produto-nome">{{ produto.nome_produto }}</span>
 
-          <span 
+          <span
             v-if="produto.variacao.cor"
             class="wk-carrinho--produto-variation-span"
           >
             {{produto.variacao.cor  }}
           </span>
 
-          <span 
+          <span
             v-if="produto.variacao.tamanho"
             class="wk-carrinho--produto-variation-span"
           >
             {{produto.variacao.tamanho  }}
           </span>
-          
+
           <span class="w100 wk-carrinho--produto-preco">
             {{ produto.preco | preco}}
           </span>

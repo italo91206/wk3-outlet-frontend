@@ -3,7 +3,11 @@
     <v-container>
       <v-row>
         <v-card class="pa-12 w100" elevation="10">
-          <v-form v-model="isValidForm" ref="form" @submit.prevent>
+          <v-form
+            v-model="isValidForm"
+            ref="form"
+            @submit.prevent
+          >
             <v-row>
               <v-col cols="12">
                 <v-checkbox
@@ -21,7 +25,7 @@
                 class="images-col--imagem"
               >
                 <v-img
-                  :src="`http://wk3outlet.italoferreira.dev.br/static/${imagem.url}`"
+                  :src="`http://wk3outlet.com.br/static/${imagem.url}`"
                   max-height="100"
                   max-width="60"
                   @error="imageLoadingError(imagem)"
