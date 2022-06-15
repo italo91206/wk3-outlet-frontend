@@ -5,9 +5,10 @@
 
       <v-toolbar-title>{{ this.$route.meta.title }}</v-toolbar-title>
 
-      <v-btn to="/" class="botao-visitar-loja" target="_blank"
-        >Visitar loja</v-btn
-      >
+      <a :href="getStorefrontURL" target="_blank">
+        <v-btn class="botao-visitar-loja">Visitar loja</v-btn>
+      </a>
+
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app>
@@ -426,6 +427,15 @@ export default {
       this.$store.dispatch("auth/logout");
       this.$router.push("/admin");
     },
+  },
+  computed: {
+    getStorefrontURL(){
+      let env = process.env.NODE_ENV;
+      if(env === 'production')
+        return "http://www.wk3outlet.com.br/"
+      else
+        return "/"
+    }
   },
   mounted() {
     this.nome = this.$store.state.perfil.perfil.nome;
