@@ -111,6 +111,7 @@
             :items="vendas"
             :loading="loading"
             loading-text="Carregando vendas... aguarde"
+            no-data-text="Não foi encontrado vendas no sistema."
           >
             <template v-slot:item.data_venda="{ item }">
               {{ item.data_venda | localtime }}
@@ -231,7 +232,10 @@ export default {
         }
     },
     price: function(value){
-      return `R$ ${value.toFixed(2)}`
+      let response = null
+      if(value != null)
+        response = `R$ ${value.toFixed(2)}`
+      return response
     }
   },
   watch: {
