@@ -20,6 +20,8 @@
             :loading="loading"
             no-data-text="Sem vendas no sistema."
             loading-text="Carregando vendas... aguarde"
+            sort-by="data_venda"
+            :sort-desc="true"
           >
             <template v-slot:item.endereco_id="{ item }">
               {{ item.endereco_id == null ? 'Não' : 'Sim'}}
@@ -136,6 +138,8 @@ export default {
         item.data_venda = `${dia}/${mes}/${ano}`;
 
         item.total = `R$ ${item.total.toFixed(2)}`
+
+        item.cliente = `${item.nome} ${item.sobrenome}`
       })
     }
   }

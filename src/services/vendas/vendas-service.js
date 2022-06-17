@@ -21,6 +21,17 @@ const VendasService = {
     catch(err){
       console.log(err.message);
     }
+  },
+
+  cancelarVenda: async(id) => {
+    let response;
+    try{
+      response = await api.delete(`/vendas/cancelar/${id}`);
+      return response;
+    }
+    catch(err){
+      console.log(err.message)
+    }
   }
 }
 

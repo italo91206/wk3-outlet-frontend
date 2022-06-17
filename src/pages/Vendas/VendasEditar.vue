@@ -76,7 +76,12 @@
 
       <v-row class="float-right">
         <v-btn to="/vendas" class="mr-2">Voltar</v-btn>
-        <v-btn color="error" class="mr-2" :disabled="venda.status == 'cancelado'">Estornar pagamento</v-btn>
+        <v-btn color="error" class="mr-2"
+          :disabled="isRefundable"
+          @click="cancelarVenda"
+        >
+          Estornar pagamento
+        </v-btn>
       </v-row>
     </v-container>
 
@@ -139,8 +144,28 @@ export default {
 
       return `${dia}/${mes}/${ano}`;
     },
+    isRefundable(){
+      let status = this.venda.status
+      if(status == 'aprovado')
+        return false
+      else
+        return true
+    }
   },
   methods: {
+    async cancelarVenda(){
+      const id = this.$route.params.venda_id;
+      this.loading = true;
+
+      await service.cancelarVenda(id)
+        .catch((error) => {
+          console.log(error)
+          this.$toast.error("Algo deu errado")
+        })
+        .finally(() => {
+          this.recuperarVenda(id)
+        })
+    },
     async recuperarVenda(id) {
       await service
         .recuperarVenda(id)
@@ -175,7 +200,10 @@ export default {
   },
   filters: {
     preco: function (value) {
-      return `R$ ${value.toFixed(2)}`;
+      let response = null
+      if(value)
+        return `R$ ${value.toFixed(2)}`;
+      return response
     },
   },
   mounted() {
